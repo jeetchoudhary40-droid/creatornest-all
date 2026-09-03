@@ -1,0 +1,66 @@
+[
+  {
+    "id": "usr_1786705374811_7q9z",
+    "numeric_id": "CR-102",
+    "full_name": "Jeet",
+    "email": "jeetchoudhary40@gmail.com",
+    "password": "Jeet@123",
+    "role": "creator",
+    "user_type": "creator",
+    "plan_tier": "free",
+    "status": "active",
+    "phone": "+918766077505",
+    "whatsapp": "+918766077505",
+    "permissions": [
+      "creator_roster",
+      "ai_tools_access",
+      "wall_of_deals"
+    ],
+    "notes": "",
+    "created_at": "2026-08-14T11:02:54.811Z",
+    "updated_at": "2026-08-14T11:02:54.811Z"
+  },
+  {
+    "id": "usr_1786698556083_8kdk",
+    "numeric_id": "CR-101",
+    "full_name": "Riya Sen (Creator)",
+    "email": "riya@creatornest.in",
+    "password": "nest1234",
+    "role": "creator",
+    "user_type": "creator",
+    "plan_tier": "pro",
+    "status": "active",
+    "phone": "",
+    "whatsapp": "",
+    "permissions": [
+      "wall_of_deals",
+      "creator_roster",
+      "ai_tools_access"
+    ],
+    "notes": "",
+    "created_at": "2026-08-14T09:09:16.083Z",
+    "updated_at": "2026-08-14T09:09:16.083Z"
+  },
+  {
+    "id": "usr_ad_01",
+    "numeric_id": "AD-01",
+    "full_name": "Super Admin",
+    "email": "admin@creatornest.in",
+    "password": "admin1234",
+    "role": "super_admin",
+    "user_type": "admin",
+    "plan_tier": "enterprise",
+    "status": "active",
+    "phone": "+91 98765 43210",
+    "permissions": [
+      "all",
+      "manage_users",
+      "manage_roster",
+      "manage_applications",
+      "wall_of_deals",
+      "manage_finances"
+    ],
+    "created_at": "2026-08-14T00:00:00.000Z",
+    "updated_at": "2026-08-14T00:00:00.000Z"
+  }
+]

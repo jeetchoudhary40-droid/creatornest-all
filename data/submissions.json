@@ -1,0 +1,309 @@
+[
+  {
+    "id": "sub_1788323310975_att18",
+    "timestamp": "2026-09-02T04:28:30.880Z",
+    "istTime": "2/9/2026, 9:58:30 am IST",
+    "source": "Homepage CTA",
+    "role": "team",
+    "applicantName": "test name",
+    "applicantEmail": "test@gmail.com",
+    "subject": "🚀 [Growth Plan Request] test name (100K - 500K)",
+    "data": {
+      "Name": "test name",
+      "Email": "test@gmail.com",
+      "Contact Number / WhatsApp": "9999999999",
+      "I am a": "Team / Creative Talent",
+      "Creator Category / Niche": "Entertainment & Comedy",
+      "Followers / Audience Size": "100K - 500K",
+      "Profile / Platform Link": "youtubelink",
+      "Message / Growth Goals": "i wnat to collab"
+    }
+  },
+  {
+    "id": "sub_1788177686779_43jeh",
+    "timestamp": "2026-08-31T12:01:26.778Z",
+    "istTime": "31/8/2026, 5:31:26 pm IST",
+    "source": "Contact Page (Executive Inbound)",
+    "role": "general",
+    "applicantName": "Jeet Choudhary",
+    "applicantEmail": "jeetchoudhary40@gmail.com",
+    "subject": "📬 New general Application: Jeet Choudhary (Creator Nest)",
+    "data": {
+      "Full Name": "Jeet Choudhary",
+      "Work Email": "jeetchoudhary40@gmail.com",
+      "Phone / Direct Line": "645415454",
+      "Organization / Channel": "oYO ROOM",
+      "Inquiry Category": "💬  General Inquiry / Media Interview",
+      "Budget / Scale": "N/A (Creator Representation)",
+      "Referenced Creator": "Jeet Choudhary",
+      "Message Details": "Hi Creator Nest team, we are interested in collaborating with Jeet Choudhary. Here are our campaign goals and timeline:\n\n"
+    }
+  },
+  {
+    "id": "sub_1788157977671_1z6a9",
+    "timestamp": "2026-08-31T06:32:57.671Z",
+    "istTime": "31/8/2026, 12:02:57 pm IST",
+    "source": "Homepage CTA",
+    "role": "brand",
+    "applicantName": "Jeet Choudhary",
+    "applicantEmail": "jeetchoudhary40@gmail.com",
+    "subject": "🚀 [Growth Plan Request] Jeet Choudhary (100K - 500K)",
+    "data": {
+      "Name": "Jeet Choudhary",
+      "Email": "jeetchoudhary40@gmail.com",
+      "Contact Number / WhatsApp": "4564564654564",
+      "I am a": "Brand / SaaS Founder / Agency",
+      "Tech Niche / Category": "Mobile Apps Review",
+      "Followers / Audience Size": "100K - 500K",
+      "Profile / Platform Link": "Test.com",
+      "Message / Growth Goals": "56546456 gbhgghg"
+    }
+  },
+  {
+    "id": "sub_1788157327274_emnr4",
+    "timestamp": "2026-08-31T06:22:07.262Z",
+    "istTime": "31/8/2026, 11:52:07 am IST",
+    "source": "Homepage CTA",
+    "role": "other",
+    "applicantName": "Jeet Choudhary",
+    "applicantEmail": "jeetchoudhary40@gmail.com",
+    "subject": "🚀 [Growth Plan Request] Jeet Choudhary (50K - 100K)",
+    "data": {
+      "Name": "Jeet Choudhary",
+      "Email": "jeetchoudhary40@gmail.com",
+      "Contact Number / WhatsApp": "4564564654564",
+      "I am a": "Other",
+      "Tech Niche / Category": "Other Tech",
+      "Followers / Audience Size": "50K - 100K",
+      "Profile / Platform Link": "Test.com",
+      "Message / Growth Goals": "Growth goles about our product"
+    }
+  },
+  {
+    "id": "sub_1787311186635_q2fxa",
+    "timestamp": "2026-08-21T11:19:46.604Z",
+    "istTime": "21/8/2026, 4:49:46 pm IST",
+    "source": "Contact Page",
+    "role": "general",
+    "applicantName": "test",
+    "applicantEmail": "jeetchoudhary40@gmail.com",
+    "subject": "📬 New general Application: test (Creator Nest)",
+    "data": {
+      "Name": "test",
+      "Email": "jeetchoudhary40@gmail.com",
+      "Phone": "+918766077505",
+      "Inquiry Type": "💬  General Question",
+      "Message": "I want to collab with Jeet choudhary"
+    }
+  },
+  {
+    "id": "sub_1787121116650_tijni",
+    "timestamp": "2026-08-19T06:31:56.636Z",
+    "istTime": "19/8/2026, 12:01:56 pm IST",
+    "source": "Brand Landing Page - Strategy Request",
+    "role": "Brand",
+    "applicantName": "Jeet Choudhary",
+    "applicantEmail": "jeetchoudhary40@gmail.com",
+    "subject": "📬 New Brand Application: Jeet Choudhary (Creator Nest)",
+    "data": {
+      "Full Name": "Jeet Choudhary",
+      "Company / Brand Name": "CREATOR NEST MEDIA",
+      "Business Email": "jeetchoudhary40@gmail.com",
+      "Phone / WhatsApp": "8766077505",
+      "Estimated Budget": "₹5L – ₹20L",
+      "Campaign Goal": "✨ Creator Roster",
+      "Brief / Requirements": "I WANT TO COLLAB WITH THIS TEAM"
+    }
+  },
+  {
+    "id": "sub_1786697212243_uozsn",
+    "timestamp": "2026-08-14T08:46:52.243Z",
+    "istTime": "14/8/2026, 2:16:52 pm IST",
+    "source": "Join Page - Creator",
+    "role": "creator",
+    "applicantName": "Sample Creator",
+    "applicantEmail": "sample@gmail.com",
+    "subject": "🎬 [Creator Application] Sample Creator (Creator)",
+    "data": {
+      "Role / Category": "Creator",
+      "Full Name": "Sample Creator",
+      "Email": "sample@gmail.com",
+      "YouTube Link": "@samplehandle",
+      "Website": "mywebsite.com"
+    },
+    "status": "contacted",
+    "updated_at": "2026-08-14T10:55:32.336Z"
+  },
+  {
+    "id": "sub_1786695747979_p6k43",
+    "timestamp": "2026-08-14T08:22:27.979Z",
+    "istTime": "14/8/2026, 1:52:27 pm IST",
+    "source": "Contact Page",
+    "role": "general",
+    "applicantName": "test",
+    "applicantEmail": "jeetchoudhary40@gmail.com",
+    "subject": "📬 New general Application: test (Creator Nest)",
+    "data": {
+      "Name": "test",
+      "Email": "jeetchoudhary40@gmail.com",
+      "Phone": "+918766077505",
+      "Inquiry Type": "💬  General Question",
+      "Message": "ok this is contact page"
+    }
+  },
+  {
+    "id": "sub_1786694606448_kyxax",
+    "timestamp": "2026-08-14T08:03:26.448Z",
+    "istTime": "14/8/2026, 1:33:26 pm IST",
+    "source": "Join Page - Brand",
+    "role": "brand",
+    "applicantName": "chinkara kumar",
+    "applicantEmail": "workemail@gmail.com",
+    "subject": "🏢 [Brand Inquiry] Chinkara Creation (₹50K - ₹2L)",
+    "data": {
+      "Role / Category": "Brand Partner",
+      "Company / Brand Name": "Chinkara Creation",
+      "Website": "https://www.youtube.com/",
+      "Industry Niche": "Technology / SaaS",
+      "Contact Person": "chinkara kumar",
+      "Work Email": "workemail@gmail.com",
+      "Phone Number": "999999999999",
+      "WhatsApp": "999999999999",
+      "City / Country": "",
+      "Campaign Type": "Influencer Marketing",
+      "Estimated Budget": "₹50K - ₹2L",
+      "Target Creator Tier": "All Tiers Combined",
+      "Target Audience / Niches": "All matching niches",
+      "Campaign Brief / Details": "i will discus on to one"
+    }
+  },
+  {
+    "id": "sub_1786691466484_froj0",
+    "timestamp": "2026-08-14T07:11:06.484Z",
+    "istTime": "14/8/2026, 12:41:06 pm IST",
+    "source": "Join Page - Creator",
+    "role": "creator",
+    "applicantName": "Jeet choudhary",
+    "applicantEmail": "jeetchoudhary40@gmail.com",
+    "subject": "🎬 [Creator Application] Jeet choudhary (250K)",
+    "data": {
+      "Role / Category": "Creator",
+      "Full Name": "Jeet choudhary",
+      "Email": "jeetchoudhary40@gmail.com",
+      "Phone": "+918766077505",
+      "WhatsApp": "+918766077505",
+      "City / Country": "jaipur",
+      "Primary Platform": "YouTube",
+      "Followers / Audience Size": "250K",
+      "Content Niche / Category": "Comedy & Entertainment",
+      "Average Views / Reach": "50K - 200K",
+      "YouTube Link": "https://www.youtube.com/@nehanagar",
+      "Instagram Link": "None provided",
+      "Portfolio / Other Link": "None provided",
+      "Support / Services Needed": "High-Paying Brand Deals",
+      "Creator Vision / Notes": "i want brand deals "
+    }
+  },
+  {
+    "id": "sub_1786691315294_ebm4e",
+    "timestamp": "2026-08-14T07:08:35.285Z",
+    "istTime": "14/8/2026, 12:38:35 pm IST",
+    "source": "Homepage CTA",
+    "role": "creator",
+    "applicantName": "Test Creator",
+    "applicantEmail": "test@gmail.com",
+    "subject": "🚀 [Growth Plan Request] Test Creator (50K - 100K)",
+    "data": {
+      "Name": "Test Creator",
+      "Email": "test@gmail.com",
+      "I am a": "Creator / Influencer",
+      "Profile / Platform Link": "youtube.com/@testchannel",
+      "Followers / Audience Size": "50K - 100K",
+      "Message": "Testing live form email delivery"
+    }
+  },
+  {
+    "id": "sub_1786690958739_0b05x",
+    "timestamp": "2026-08-14T07:02:38.739Z",
+    "istTime": "14/8/2026, 12:32:38 pm IST",
+    "source": "Join Page - Creator",
+    "role": "creator",
+    "applicantName": "Jeet choudhary",
+    "applicantEmail": "jeetchoudhary40@gmail.com",
+    "subject": "🎬 [Creator Application] Jeet choudhary (50K)",
+    "data": {
+      "Role / Category": "Creator",
+      "Full Name": "Jeet choudhary",
+      "Email": "jeetchoudhary40@gmail.com",
+      "Phone": "+918766077505",
+      "WhatsApp": "+918766077505",
+      "City / Country": "jaipur",
+      "Primary Platform": "YouTube",
+      "Followers / Audience Size": "50K",
+      "Content Niche / Category": "Technology & Gadgets",
+      "Average Views / Reach": "50K - 200K",
+      "YouTube Link": "None provided",
+      "Instagram Link": "None provided",
+      "Portfolio / Other Link": "None provided",
+      "Support / Services Needed": "High-Paying Brand Deals",
+      "Creator Vision / Notes": "i want to jion this platform"
+    }
+  },
+  {
+    "id": "sub_1786690920082_c2rgk",
+    "timestamp": "2026-08-14T07:02:00.081Z",
+    "istTime": "14/8/2026, 12:32:00 pm IST",
+    "source": "Homepage CTA",
+    "role": "creator",
+    "applicantName": "test",
+    "applicantEmail": "dfdfdf@gmail.com",
+    "subject": "🚀 [Growth Plan Request] test (100K - 500K)",
+    "data": {
+      "Name": "test",
+      "Email": "dfdfdf@gmail.com",
+      "I am a": "Creator / Influencer",
+      "Profile / Platform Link": "https://www.youtube.com/@nehanagar/featured",
+      "Followers / Audience Size": "100K - 500K",
+      "Message": "i wont to connect to you"
+    }
+  },
+  {
+    "id": "sub_1786690766675_emiv2",
+    "timestamp": "2026-08-14T06:59:26.675Z",
+    "istTime": "14/8/2026, 12:29:26 pm IST",
+    "source": "Join Page - Creator",
+    "role": "creator",
+    "applicantName": "Riya Sen",
+    "applicantEmail": "riya@gmail.com",
+    "subject": "🎬 [Creator Application] Riya Sen (250K)",
+    "data": {
+      "Role / Category": "Creator",
+      "Full Name": "Riya Sen",
+      "Email": "riya@gmail.com",
+      "Phone": "+91 9876543210",
+      "WhatsApp": "+91 9876543210",
+      "Primary Platform": "YouTube",
+      "Followers / Audience Size": "250K",
+      "Content Niche / Category": "Finance & Crypto",
+      "YouTube Link": "https://youtube.com/@riyasen"
+    }
+  },
+  {
+    "id": "sub_1786690751434_d0u0u",
+    "timestamp": "2026-08-14T06:59:11.434Z",
+    "istTime": "14/8/2026, 12:29:11 pm IST",
+    "source": "Homepage CTA",
+    "role": "Team / Freelancer",
+    "applicantName": "Aakash Mehra",
+    "applicantEmail": "aakash@gmail.com",
+    "subject": "🚀 [Growth Plan Request] Aakash Mehra (50K - 100K)",
+    "data": {
+      "Name": "Aakash Mehra",
+      "Email": "aakash@gmail.com",
+      "I am a": "Creator / Influencer",
+      "Profile / Platform Link": "youtube.com/@aakashmehra",
+      "Followers / Audience Size": "50K - 100K",
+      "Message": "Looking for premium brand sponsorships in tech niche."
+    }
+  }
+]
