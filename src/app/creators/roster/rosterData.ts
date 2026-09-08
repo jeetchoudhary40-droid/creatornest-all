@@ -211,6 +211,36 @@ export const allCreators: Creator[] = [
     twitterUrl: "https://twitter.com/saumya1singh",
     websiteUrl: "https://topmate.io/saumya1singh",
     businessEmail: "collabs@creatornest.in"
+  },
+  {
+    id: 7,
+    name: "Praveen Janawa",
+    channelName: "Dear Kisan",
+    niche: "Agriculture & Farming",
+    niches: [
+      "Agriculture & Farming",
+      "Education & Upskilling",
+      "Rural Tech & Innovation"
+    ],
+    platform: "Both",
+    youtube: "745K",
+    youtubeNum: 745000,
+    instagram: "142K",
+    instaNum: 142000,
+    location: "Haryana, India",
+    avd: "76%",
+    avgViewsLast10: 85000,
+    topGrowing: true,
+    featured: true,
+    rank: 7,
+    img: "/images/creators/praveen-janawa.jpg",
+    bio: "Founder of Dear Kisan (745K+ subscribers, 120M+ views). India's leading agriculture & farming YouTuber from Haryana — covering crop management, farming tips, pesticide research, modern machinery reviews, and kisan welfare. Empowering Indian farmers with practical field knowledge since 2019.",
+    youtubeUrl: "https://www.youtube.com/@dear_kisan",
+    youtubeHandle: "@dear_kisan",
+    instaUrl: "https://www.instagram.com/dear_kisan/",
+    instaHandle: "@dear_kisan",
+    websiteUrl: "https://dearkisan.com",
+    businessEmail: "collabs@creatornest.in"
   }
 ];
 
@@ -228,7 +258,8 @@ export const niches = [
   "Web Development",
   "Mobile Apps Review",
   "Podcasting & Storytelling",
-  "Cybersecurity & Data"
+  "Cybersecurity & Data",
+  "Agriculture & Farming"
 ];
 
 export const platforms = ["All", "Youtube", "Instagram"];
