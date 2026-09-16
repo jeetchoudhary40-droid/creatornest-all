@@ -159,7 +159,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-white/5 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 gap-4">
-          <p>© {new Date().getFullYear()} Creator Nest. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} CreatorNest Media. All rights reserved.</p>
           <div className="flex items-center space-x-6">
             <span className="text-gray-500">Built for India&apos;s Creator Economy</span>
           </div>
