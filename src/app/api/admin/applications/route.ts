@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { verifyAdminRequest } from '@/lib/security';
 
 const SUBMISSIONS_FILE_PATH = path.join(process.cwd(), 'data', 'submissions.json');
 
@@ -30,7 +31,11 @@ function saveSubmissionsToFile(submissions: any[]) {
   }
 }
 
-export async function GET() {
+// GET all applications (Protected)
+export async function GET(req: NextRequest) {
+  const auth = verifyAdminRequest(req);
+  if (!auth.authorized) return auth.errorResponse!;
+
   try {
     const submissions = getSubmissionsFromFile();
     return NextResponse.json({ success: true, count: submissions.length, applications: submissions });
@@ -39,7 +44,11 @@ export async function GET() {
   }
 }
 
+// PUT update application (Protected)
 export async function PUT(req: NextRequest) {
+  const auth = verifyAdminRequest(req);
+  if (!auth.authorized) return auth.errorResponse!;
+
   try {
     const body = await req.json();
     const { id, status, adminNotes } = body;
@@ -74,7 +83,11 @@ export async function PUT(req: NextRequest) {
   }
 }
 
+// DELETE application (Protected)
 export async function DELETE(req: NextRequest) {
+  const auth = verifyAdminRequest(req);
+  if (!auth.authorized) return auth.errorResponse!;
+
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');

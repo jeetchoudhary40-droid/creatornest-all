@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { ITEMS } from './marketplace/marketData';
+import { STATIC_POSTS } from './blog/blogData';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://creatornest.in';
@@ -43,5 +44,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticSitemaps, ...dynamicServices, ...dynamicTools];
+  // Dynamic blog detail pages
+  const dynamicBlogPosts = STATIC_POSTS.map((post) => ({
+    url: `${siteUrl}/blog/${post.slug}`,
+    lastModified: new Date(post.created_at),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+
+  return [...staticSitemaps, ...dynamicServices, ...dynamicTools, ...dynamicBlogPosts];
 }

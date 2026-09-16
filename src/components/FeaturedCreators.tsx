@@ -69,22 +69,21 @@ export default function FeaturedCreators() {
   }, []);
 
   return (
-    <section id="creators" className="py-24 bg-[#080B0F] relative overflow-hidden">
+    <section id="creators" className="py-14 bg-[#080B0F] relative overflow-hidden">
       <div className="absolute top-0 right-0 p-12 opacity-10 rotate-12">
         <Sparkles className="w-64 h-64 text-primary" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.1 }}
           >
-            <h2 className="text-3xl md:text-5xl font-bold mb-4 italic">The Nest <span className="text-primary">Roster</span></h2>
-            <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-              A curated network of creators across Tech, Education, Entertainment, Lifestyle & Gaming building real influence, income, and personal brands.
-              <span className="block mt-2 text-primary/80 text-sm font-medium tracking-wide">Every creator here is actively growing and monetizing through our ecosystem.</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 italic">The Nest <span className="text-primary">Roster</span></h2>
+            <p className="text-gray-400 max-w-xl mx-auto text-sm sm:text-base">
+              Curated creators across Tech, Education, Entertainment, Lifestyle & Gaming — actively growing and monetizing through our ecosystem.
             </p>
           </motion.div>
         </div>
@@ -188,7 +187,7 @@ export default function FeaturedCreators() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-16 text-center"
+          className="mt-10 text-center"
         >
           <Link href="/creators/roster" className="inline-flex items-center justify-center px-8 py-4 font-bold text-white bg-surface/50 border border-white/10 hover:border-primary/50 hover:bg-white/5 rounded-full transition-all group shadow-lg">
             View Complete Roster

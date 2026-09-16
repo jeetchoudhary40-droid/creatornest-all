@@ -75,11 +75,19 @@ export default function AdminUsersPage() {
   const [editForm, setEditForm] = useState<Partial<UserAccount>>({});
   const [saving, setSaving] = useState(false);
 
+  const getAuthHeaders = () => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
+    return {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
+  };
+
   // Fetch users from /api/admin/users
   const fetchUsers = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/admin/users');
+      const res = await fetch('/api/admin/users', { headers: getAuthHeaders() });
       const data = await res.json();
       if (data.success && Array.isArray(data.users)) {
         setUsers(data.users);
@@ -152,7 +160,7 @@ export default function AdminUsersPage() {
     try {
       const res = await fetch('/api/admin/users', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({
           numericId: createForm.numericId.trim().toUpperCase(),
           fullName: createForm.fullName.trim(),
@@ -204,7 +212,7 @@ export default function AdminUsersPage() {
     try {
       const res = await fetch('/api/admin/users', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({
           id: detailUser.id,
           numericId: editForm.numeric_id,
@@ -240,7 +248,7 @@ export default function AdminUsersPage() {
     try {
       const res = await fetch('/api/admin/users', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ id: user.id, status: newStatus }),
       });
       if (res.ok) {
@@ -262,7 +270,10 @@ export default function AdminUsersPage() {
     if (!confirm(`Are you sure you want to permanently delete account ${user.numeric_id} (${user.full_name})?`)) return;
 
     try {
-      const res = await fetch(`/api/admin/users?id=${user.id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/users?id=${user.id}`, { 
+        method: 'DELETE',
+        headers: getAuthHeaders(),
+      });
       const data = await res.json();
       if (!res.ok || !data.success) {
         throw new Error(data.error || 'Failed to delete user.');

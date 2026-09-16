@@ -30,12 +30,12 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="py-24 bg-background relative border-t border-white/5">
+    <section id="faq" className="py-14 bg-background relative border-t border-white/5">
       <div className="absolute top-0 right-1/4 w-[300px] h-[300px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        <div className="text-center mb-16">
+        <div className="text-center mb-8">
           <h2 className="text-3xl md:text-5xl font-bold mb-4">Got <span className="text-primary italic">Questions?</span></h2>
           <p className="text-gray-400 text-lg">Everything you need to know about partnering with Creator Nest.</p>
         </div>

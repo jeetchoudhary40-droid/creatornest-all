@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+import { verifyAdminRequest } from '@/lib/security';
 
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const isServiceKeyValid = serviceKey && serviceKey !== 'PASTE_YOUR_SERVICE_ROLE_KEY_HERE';
@@ -16,15 +17,12 @@ if (!isServiceKeyValid) {
 }
 
 export async function POST(request: NextRequest) {
+  const auth = verifyAdminRequest(request);
+  if (!auth.authorized) return auth.errorResponse!;
+
   try {
     const body = await request.json();
     const { action, table, data, id, where } = body;
-
-    // Simple auth check — require an admin token in the header
-    const authToken = request.headers.get('x-admin-token');
-    if (authToken !== 'mock_access_token_admin' && !authToken?.startsWith('mock_access_token_')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
 
     let result;
 

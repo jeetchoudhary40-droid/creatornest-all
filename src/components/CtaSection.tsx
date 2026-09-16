@@ -107,7 +107,7 @@ export default function CtaSection() {
   };
 
   return (
-    <section id="contact" className="py-24 relative overflow-hidden bg-background">
+    <section id="contact" className="py-16 relative overflow-hidden bg-background">
       {/* Background Ambient Glows */}
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[160px] pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[160px] pointer-events-none" />

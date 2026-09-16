@@ -10,6 +10,7 @@ export interface TranslationDictionary {
 export const TRANSLATIONS: TranslationDictionary = {
   // ── Navbar ──
   nav_home: { en: 'Home', hi: 'होम' },
+  nav_courses: { en: 'N School', hi: 'एन स्कूल' },
   nav_roster: { en: 'Roster', hi: 'क्रिएटर रोस्टर' },
   nav_marketplace: { en: 'Market Place', hi: 'मार्केटप्लेस' },
   nav_about: { en: 'About Us', hi: 'हमारे बारे में' },

@@ -91,6 +91,7 @@ export const viewport: Viewport = {
 
 import Providers from "./providers";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 
 const organizationJsonLd = {
   '@context': 'https://schema.org',
@@ -159,6 +160,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-background text-foreground antialiased font-sans">
         <Providers>
           {children}
+          <ScrollToTopButton />
           <WhatsAppWidget />
         </Providers>
       </body>

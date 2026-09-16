@@ -1,64 +1,96 @@
-import { supabase } from '@/lib/supabase';
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
-import { ArrowLeft, Calendar, User } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-
-import { STATIC_POSTS } from '../blogData';
+import { STATIC_POSTS, BlogPost } from '../blogData';
+import ArticleClientView from './ArticleClientView';
 
 // Revalidate every hour
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
-  try {
-    const { data: posts } = await supabase
-      .from('blog_posts')
-      .select('slug')
-      .eq('status', 'published');
-
-    if (posts && posts.length > 0) {
-      return posts.map((post) => ({
-        slug: post.slug,
-      }));
-    }
-  } catch (err) {
-    console.warn("generateStaticParams failed, falling back to static params", err);
-  }
-
+  // Pre-render all static posts immediately for instant navigation
   return STATIC_POSTS.map(p => ({ slug: p.slug }));
 }
 
-async function getPost(slug: string) {
+async function getPost(slug: string): Promise<BlogPost | null> {
+  // 1. Fast path: Match static post immediately (0ms delay, zero network lag)
+  const staticPost = STATIC_POSTS.find(p => p.slug === slug);
+  if (staticPost) {
+    return staticPost;
+  }
+
+  // 2. Fallback: If not in static posts, query Supabase with a tight 1s timeout
   try {
+    const { supabase } = await import('@/lib/supabase');
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 1000);
+
     const { data, error } = await supabase
       .from('blog_posts')
       .select('*, author:author_id(full_name, avatar_url)')
       .eq('slug', slug)
       .eq('status', 'published')
+      .abortSignal(controller.signal)
       .single();
 
-    if (!error && data) return data;
-  } catch (err) {
-    console.warn("Supabase fetch failed for blog post detail, falling back to static", err);
+    clearTimeout(timeout);
+
+    if (!error && data) {
+      return {
+        ...data,
+        category: data.category || 'strategy',
+        readTime: data.readTime || '5 min read',
+        tags: data.tags || ['Creator Economy'],
+        author: data.author || {
+          full_name: 'Creator Nest Team',
+          avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80',
+          role: 'Creator Strategist'
+        }
+      };
+    }
+  } catch {
+    // Graceful fallback
   }
 
-  const staticPost = STATIC_POSTS.find(p => p.slug === slug);
-  return staticPost || null;
+  return null;
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
   const post = await getPost(resolvedParams.slug);
-  if (!post) return { title: 'Post Not Found' };
+  if (!post) return { title: 'Post Not Found | Creator Nest' };
 
   return {
     title: `${post.title} | Creator Nest Blog`,
     description: post.excerpt,
+    keywords: post.tags || ['creator strategy', 'youtube growth', 'brand deals', 'creator news'],
+    alternates: {
+      canonical: `https://creatornest.in/blog/${post.slug}`,
+    },
     openGraph: {
+      title: `${post.title} | Creator Nest Blog`,
+      description: post.excerpt,
+      url: `https://creatornest.in/blog/${post.slug}`,
+      siteName: 'Creator Nest',
+      images: post.featured_image ? [
+        {
+          url: post.featured_image,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        }
+      ] : [],
+      type: 'article',
+      publishedTime: post.created_at,
+      authors: [post.author?.full_name || 'Creator Nest'],
+      tags: post.tags,
+    },
+    twitter: {
+      card: 'summary_large_image',
       title: post.title,
       description: post.excerpt,
-      images: post.featured_image ? [{ url: post.featured_image }] : [],
+      images: post.featured_image ? [post.featured_image] : [],
+      creator: '@creatornest',
     },
   };
 }
@@ -71,64 +103,76 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     notFound();
   }
 
+  // Related posts (excluding current post)
+  const relatedPosts = STATIC_POSTS.filter(p => p.slug !== post.slug).slice(0, 3);
+
+  // Schema.org BlogPosting structured data
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    image: post.featured_image,
+    datePublished: post.created_at,
+    dateModified: post.created_at,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://creatornest.in/blog/${post.slug}`,
+    },
+    author: {
+      '@type': 'Person',
+      name: post.author?.full_name || 'Creator Nest Team',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Creator Nest',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://creatornest.in/images/og-cover.png',
+      },
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://creatornest.in',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Blog',
+        item: 'https://creatornest.in/blog',
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: post.title,
+        item: `https://creatornest.in/blog/${post.slug}`,
+      },
+    ],
+  };
+
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-[#070B11] text-white flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+
       <Navbar />
       
-      <main className="flex-1 pt-32 pb-20">
-        <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="mb-8">
-            <Link href="/blog" className="inline-flex items-center gap-2 text-gray-400 hover:text-primary transition-colors text-sm font-medium">
-              <ArrowLeft className="w-4 h-4" /> Back to Blog
-            </Link>
-          </div>
-
-          <header className="mb-12 text-center">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
-              {post.title}
-            </h1>
-            
-            <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-400">
-              <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                <time dateTime={post.created_at}>
-                  {new Date(post.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                </time>
-              </div>
-              
-              {/* If you link author_id to profiles, it would render here. 
-                  For now we just show a static fallback if no author is linked */}
-              <div className="flex items-center gap-2">
-                {post.author?.avatar_url ? (
-                  <img src={post.author.avatar_url} alt={post.author.full_name} className="w-6 h-6 rounded-full" />
-                ) : (
-                  <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center">
-                    <User className="w-3 h-3 text-gray-400" />
-                  </div>
-                )}
-                <span>{post.author?.full_name || 'Creator Nest Team'}</span>
-              </div>
-            </div>
-          </header>
-
-          {post.featured_image && (
-            <div className="mb-16 rounded-3xl overflow-hidden border border-white/5 shadow-2xl bg-white/5 aspect-video relative">
-              <img 
-                src={post.featured_image} 
-                alt={post.title} 
-                className="w-full h-full object-cover"
-              />
-            </div>
-          )}
-
-          <div 
-            className="prose prose-invert prose-lg max-w-none prose-headings:font-bold prose-a:text-primary hover:prose-a:text-primary/80 prose-img:rounded-2xl"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
-
-        </article>
-      </main>
+      {/* Client view with language switching reactivity */}
+      <ArticleClientView post={post} relatedPosts={relatedPosts} />
 
       <Footer />
     </div>

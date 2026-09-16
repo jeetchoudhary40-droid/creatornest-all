@@ -5,7 +5,8 @@ import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ChevronLeft, PlayCircle, CheckCircle2, Circle, Lock, Menu, X, MessageSquare, Download, Play, Loader2,
-  BookOpen, Copy, Check, Calculator, Sparkles, ArrowRight, Video, FileText, ChevronRight, Share2, Globe
+  BookOpen, Copy, Check, Calculator, Sparkles, ArrowRight, Video, FileText, ChevronRight, Share2, Globe,
+  Home, ShoppingBag, User, GraduationCap, ArrowLeft
 } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
@@ -272,6 +273,7 @@ export default function CourseLearnPage({ params }: { params: Promise<{ id: stri
 
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
   const [sidebarOpen, setSidebarOpen] = useState(false); // Mobile: closed by default, desktop handled responsively
+  const [isSiteNavOpen, setIsSiteNavOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'resources' | 'qna' | 'rating'>('overview');
   const [showVideoCompanion, setShowVideoCompanion] = useState(false);
 
@@ -502,8 +504,8 @@ export default function CourseLearnPage({ params }: { params: Promise<{ id: stri
         }`}
       >
         <div className="p-4 border-b border-white/10 flex items-center justify-between">
-          <Link href={`/nschool/course/${id}`} className="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1.5 transition-colors">
-            <ChevronLeft className="w-4 h-4" /> {isHindi ? 'कोर्स विवरण पर लौटें' : 'Back to Course Overview'}
+          <Link href={`/nschool/course/${id}`} className="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1.5 transition-colors bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
+            <ArrowLeft className="w-3.5 h-3.5" /> {isHindi ? '← कोर्स विवरण' : '← Course Overview'}
           </Link>
           <button 
             onClick={() => setSidebarOpen(false)} 
@@ -585,6 +587,43 @@ export default function CourseLearnPage({ params }: { params: Promise<{ id: stri
             </div>
           ))}
         </div>
+
+        {/* Quick Platform Navigation Links */}
+        <div className="p-3 border-t border-white/10 bg-white/[0.02] space-y-1.5 shrink-0">
+          <p className="text-[10px] uppercase font-extrabold tracking-widest text-slate-400 px-1 pt-1">
+            {isHindi ? 'प्लेटफॉर्म नेविगेशन' : 'Platform Navigation'}
+          </p>
+          <div className="grid grid-cols-2 gap-1.5">
+            <Link
+              href="/nschool"
+              className="flex items-center gap-2 p-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold text-slate-300 hover:text-white transition-colors border border-white/5"
+            >
+              <GraduationCap className="w-3.5 h-3.5 text-cyan-400" />
+              <span>{isHindi ? 'सभी कोर्सेस' : 'All Courses'}</span>
+            </Link>
+            <Link
+              href="/"
+              className="flex items-center gap-2 p-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold text-slate-300 hover:text-white transition-colors border border-white/5"
+            >
+              <Home className="w-3.5 h-3.5 text-emerald-400" />
+              <span>{isHindi ? 'होम' : 'Home'}</span>
+            </Link>
+            <Link
+              href="/marketplace"
+              className="flex items-center gap-2 p-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold text-slate-300 hover:text-white transition-colors border border-white/5"
+            >
+              <ShoppingBag className="w-3.5 h-3.5 text-amber-400" />
+              <span>{isHindi ? 'मार्केटप्लेस' : 'Marketplace'}</span>
+            </Link>
+            <Link
+              href="/profile"
+              className="flex items-center gap-2 p-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold text-slate-300 hover:text-white transition-colors border border-white/5"
+            >
+              <User className="w-3.5 h-3.5 text-purple-400" />
+              <span>{isHindi ? 'प्रोफाइल' : 'Profile'}</span>
+            </Link>
+          </div>
+        </div>
       </motion.aside>
 
       {/* Main Content Area */}
@@ -593,41 +632,56 @@ export default function CourseLearnPage({ params }: { params: Promise<{ id: stri
         {activeLesson ? (
           <>
             {/* Responsive Top Bar Header */}
-            <header className="h-16 border-b border-white/10 bg-[#0C121B]/95 backdrop-blur-md sticky top-0 z-30 flex items-center px-3 sm:px-6 justify-between flex-shrink-0 gap-2">
+            <header className="h-16 border-b border-white/10 bg-[#0C121B]/95 backdrop-blur-md sticky top-0 z-30 flex items-center px-2 sm:px-6 justify-between flex-shrink-0 gap-1.5 sm:gap-2">
               
-              {/* Left: Menu Trigger & Title */}
-              <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+              {/* Left Controls: Back button + Chapters drawer button + Site Menu button */}
+              <div className="flex items-center gap-1 sm:gap-2 min-w-0 flex-1">
+                {/* 1. Direct Back to Course Overview Button */}
+                <Link
+                  href={`/nschool/course/${id}`}
+                  className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-cyan-400 hover:text-cyan-300 border border-white/10 transition-colors shrink-0 text-xs font-bold"
+                  title={isHindi ? 'कोर्स विवरण पर वापस जाएं' : 'Back to Course Overview'}
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">{isHindi ? 'कोर्स' : 'Course'}</span>
+                </Link>
+
+                {/* 2. Chapters / Curriculum Drawer Toggle */}
                 <button 
                   onClick={() => setSidebarOpen(true)} 
-                  className="flex items-center gap-1.5 px-2.5 py-1.5 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition-colors cursor-pointer shrink-0 border border-white/10"
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 bg-white/5 hover:bg-white/10 rounded-xl text-xs font-bold text-slate-200 hover:text-white transition-colors cursor-pointer shrink-0 border border-white/10"
                   aria-label="Open Curriculum Drawer"
                 >
-                  <Menu className="w-4 h-4 text-cyan-400" /> 
-                  <span className="hidden xs:inline">{isHindi ? 'पाठ्यक्रम' : 'Chapters'}</span>
+                  <BookOpen className="w-3.5 h-3.5 text-cyan-400" /> 
+                  <span className="text-[11px] sm:text-xs">{isHindi ? 'पाठ्यक्रम' : 'Chapters'}</span>
                 </button>
 
-                <div className="min-w-0">
-                  <div className="flex items-center gap-1.5 sm:gap-2">
-                    <span className="text-[9px] sm:text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
-                      {isReadingCourse ? (isHindi ? 'गाइड' : 'Read') : 'Video'}
-                    </span>
-                    {activeLesson.duration && (
-                      <span className="text-[10px] sm:text-xs text-slate-400 font-medium hidden sm:inline">⏱️ {activeLesson.duration}</span>
-                    )}
-                  </div>
-                  <h1 className="text-xs sm:text-sm font-bold text-white truncate max-w-[140px] xs:max-w-[200px] sm:max-w-xs md:max-w-md">
+                {/* 3. Site Navigation Dropdown / Drawer Button */}
+                <button
+                  onClick={() => setIsSiteNavOpen(!isSiteNavOpen)}
+                  className="flex items-center gap-1 px-2 py-1.5 bg-white/5 hover:bg-white/10 rounded-xl text-xs font-bold text-slate-300 hover:text-white transition-colors cursor-pointer shrink-0 border border-white/10"
+                  aria-label="Navigate to Platform Pages"
+                  title={isHindi ? 'अन्य पेज पर जाएं' : 'Go to other pages'}
+                >
+                  <Menu className="w-3.5 h-3.5 text-emerald-400" />
+                  <span className="hidden xs:inline text-[11px] sm:text-xs">{isHindi ? 'पेज' : 'Pages'}</span>
+                </button>
+
+                {/* Title */}
+                <div className="min-w-0 flex-1 ml-0.5 sm:ml-1 hidden md:block">
+                  <h1 className="text-xs sm:text-sm font-bold text-white truncate max-w-[160px] lg:max-w-md">
                     {currentLocalized.title}
                   </h1>
                 </div>
               </div>
               
               {/* Right: Language Switcher & Complete Button */}
-              <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-                <LanguageSwitcher compact className="scale-90 sm:scale-100" />
+              <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                <LanguageSwitcher compact layoutIdPrefix="course-learn-top" />
 
                 <button 
                   onClick={() => toggleComplete(activeLesson.id)}
-                  className={`flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
+                  className={`flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
                     completedLessons.has(activeLesson.id) 
                       ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.2)]' 
                       : 'bg-white/5 border-white/10 text-slate-300 hover:bg-white/10'
@@ -641,6 +695,113 @@ export default function CourseLearnPage({ params }: { params: Promise<{ id: stri
                 </button>
               </div>
             </header>
+
+            {/* Quick Site Navigation Dropdown / Drawer */}
+            <AnimatePresence>
+              {isSiteNavOpen && (
+                <>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onClick={() => setIsSiteNavOpen(false)}
+                    className="fixed inset-0 top-16 bg-black/75 backdrop-blur-sm z-40 cursor-pointer"
+                  />
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="fixed top-16 left-0 right-0 max-w-xl mx-auto bg-[#0E1522] border-b border-white/15 p-4 rounded-b-2xl shadow-2xl z-50 space-y-3"
+                  >
+                    <div className="flex items-center justify-between pb-2 border-b border-white/10">
+                      <p className="text-xs font-black uppercase tracking-wider text-cyan-300">
+                        {isHindi ? 'नेविगेट करें (पेज चुनें)' : 'Go to Platform Page'}
+                      </p>
+                      <button
+                        onClick={() => setIsSiteNavOpen(false)}
+                        className="p-1 rounded-lg text-slate-400 hover:text-white bg-white/5 cursor-pointer"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <Link
+                        href={`/nschool/course/${id}`}
+                        onClick={() => setIsSiteNavOpen(false)}
+                        className="flex items-center gap-2.5 p-2.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-xs font-bold transition-all"
+                      >
+                        <BookOpen className="w-4 h-4 shrink-0" />
+                        <div>
+                          <p className="leading-tight">{isHindi ? 'कोर्स विवरण' : 'Course Overview'}</p>
+                          <span className="text-[10px] text-slate-400 font-normal">{isHindi ? 'मुख्य पेज' : 'Main page'}</span>
+                        </div>
+                      </Link>
+
+                      <Link
+                        href="/nschool"
+                        onClick={() => setIsSiteNavOpen(false)}
+                        className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/10 text-xs font-bold transition-all"
+                      >
+                        <GraduationCap className="w-4 h-4 text-primary shrink-0" />
+                        <div>
+                          <p className="leading-tight">{isHindi ? 'सभी कोर्सेस' : 'N School'}</p>
+                          <span className="text-[10px] text-slate-400 font-normal">{isHindi ? 'कोर्स लाइब्रेरी' : 'All courses'}</span>
+                        </div>
+                      </Link>
+
+                      <Link
+                        href="/"
+                        onClick={() => setIsSiteNavOpen(false)}
+                        className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/10 text-xs font-bold transition-all"
+                      >
+                        <Home className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <div>
+                          <p className="leading-tight">{isHindi ? 'होम पेज' : 'Home'}</p>
+                          <span className="text-[10px] text-slate-400 font-normal">{isHindi ? 'मुख्य वेबसाइट' : 'Main site'}</span>
+                        </div>
+                      </Link>
+
+                      <Link
+                        href="/marketplace"
+                        onClick={() => setIsSiteNavOpen(false)}
+                        className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/10 text-xs font-bold transition-all"
+                      >
+                        <ShoppingBag className="w-4 h-4 text-amber-400 shrink-0" />
+                        <div>
+                          <p className="leading-tight">{isHindi ? 'मार्केटप्लेस' : 'Market Place'}</p>
+                          <span className="text-[10px] text-slate-400 font-normal">{isHindi ? 'टूल्स व सर्विसेज' : 'Tools & services'}</span>
+                        </div>
+                      </Link>
+
+                      <Link
+                        href="/profile"
+                        onClick={() => setIsSiteNavOpen(false)}
+                        className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/10 text-xs font-bold transition-all"
+                      >
+                        <User className="w-4 h-4 text-cyan-400 shrink-0" />
+                        <div>
+                          <p className="leading-tight">{isHindi ? 'मेरी प्रोफाइल' : 'My Profile'}</p>
+                          <span className="text-[10px] text-slate-400 font-normal">{isHindi ? 'अकाउंट व प्रोग्रेस' : 'Account & progress'}</span>
+                        </div>
+                      </Link>
+
+                      <Link
+                        href="/marketplace?tab=tools"
+                        onClick={() => setIsSiteNavOpen(false)}
+                        className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/10 text-xs font-bold transition-all"
+                      >
+                        <Calculator className="w-4 h-4 text-rose-400 shrink-0" />
+                        <div>
+                          <p className="leading-tight">{isHindi ? 'क्रिएटर टूल्स' : 'Creator Tools'}</p>
+                          <span className="text-[10px] text-slate-400 font-normal">{isHindi ? 'कैलकुलेटर' : 'Calculators'}</span>
+                        </div>
+                      </Link>
+                    </div>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
 
             {/* Optional Video Player */}
             {(!isReadingCourse || showVideoCompanion) && (

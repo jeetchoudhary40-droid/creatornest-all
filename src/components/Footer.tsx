@@ -65,6 +65,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/blog" className="text-gray-400 hover:text-primary transition-colors text-sm sm:text-base flex items-center gap-1.5">
+                  <span>Blog</span>
+                  <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-primary/10 text-primary border border-primary/20">New</span>
+                </Link>
+              </li>
+              <li>
                 <Link href="/about" className="text-gray-400 hover:text-primary transition-colors text-sm sm:text-base">
                   About Us
                 </Link>

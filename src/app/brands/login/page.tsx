@@ -18,15 +18,30 @@ export default function BrandLoginPage() {
     setLoading(true);
     setError('');
 
-    // Mock Login for Testing (Bypass Backend)
-    setTimeout(() => {
-      if (email === 'test@brand.com' && password === 'test1234') {
-        router.push('/brands/dashboard');
-      } else {
-        setError('Invalid credentials. Use test@brand.com / test1234 for testing.');
-        setLoading(false);
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: email.trim(), password }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('access_token', data.access_token);
+          localStorage.setItem('refresh_token', data.refresh_token);
+          localStorage.setItem('user', JSON.stringify(data.user));
+        }
+        router.push('/dashboard/brand');
+        return;
       }
-    }, 1000);
+
+      setError(data.error || 'Invalid credentials. Please contact your administrator.');
+    } catch (err: any) {
+      setError(err.message || 'Login failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

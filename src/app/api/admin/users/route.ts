@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { verifyAdminRequest } from '@/lib/security';
 
 const USERS_FILE_PATH = path.join(process.cwd(), 'data', 'users.json');
 
@@ -31,8 +32,11 @@ function saveUsersToFile(users: any[]) {
   }
 }
 
-// GET all users
-export async function GET() {
+// GET all users (Protected)
+export async function GET(req: NextRequest) {
+  const auth = verifyAdminRequest(req);
+  if (!auth.authorized) return auth.errorResponse!;
+
   try {
     const users = getUsersFromFile();
     // Return users without exposing plaintext password by default (or clean for admin)
@@ -46,8 +50,11 @@ export async function GET() {
   }
 }
 
-// POST: Create a new user (e.g. CR-101, BR-202, TM-303, AD-02)
+// POST: Create a new user (Protected)
 export async function POST(req: NextRequest) {
+  const auth = verifyAdminRequest(req);
+  if (!auth.authorized) return auth.errorResponse!;
+
   try {
     const body = await req.json();
     const {
@@ -72,60 +79,58 @@ export async function POST(req: NextRequest) {
 
     const users = getUsersFromFile();
 
-    // Auto-generate numeric ID if not provided
-    let finalNumericId = (numericId || '').trim().toUpperCase();
+    // Generate or validate Numeric ID (e.g. CR-105, BR-201, TM-301)
+    let finalNumericId = numericId ? numericId.toUpperCase().trim() : '';
+
     if (!finalNumericId) {
       const prefixMap: Record<string, string> = {
         creator: 'CR',
         brand: 'BR',
         team_member: 'TM',
         admin: 'AD',
+        super_admin: 'AD',
       };
-      const prefix = prefixMap[role] || 'USR';
-      const count = users.filter(u => (u.numeric_id || '').startsWith(prefix)).length + 101;
-      finalNumericId = `${prefix}-${count}`;
+      const prefix = prefixMap[role] || 'US';
+      const existingWithPrefix = users.filter(u => u.numeric_id && u.numeric_id.startsWith(prefix));
+      const nextNum = existingWithPrefix.length + 101;
+      finalNumericId = `${prefix}-${nextNum}`;
     }
 
-    // Check for ID collision
-    const existing = users.find(
-      u => (u.numeric_id || '').toUpperCase() === finalNumericId ||
-           (email && u.email && u.email.toLowerCase() === email.toLowerCase())
-    );
+    // Check duplicate numericId
+    if (users.some(u => u.numeric_id?.toLowerCase() === finalNumericId.toLowerCase())) {
+      return NextResponse.json(
+        { success: false, error: `User ID "${finalNumericId}" already exists.` },
+        { status: 409 }
+      );
+    }
 
-    if (existing) {
-      if ((existing.numeric_id || '').toUpperCase() === finalNumericId) {
-        return NextResponse.json(
-          { success: false, error: `User ID "${finalNumericId}" already exists.` },
-          { status: 400 }
-        );
-      }
-      if (email && existing.email && existing.email.toLowerCase() === email.toLowerCase()) {
-        return NextResponse.json(
-          { success: false, error: `An account with email "${email}" already exists.` },
-          { status: 400 }
-        );
-      }
+    // Check duplicate email (if provided)
+    if (email && users.some(u => u.email?.toLowerCase() === email.toLowerCase().trim())) {
+      return NextResponse.json(
+        { success: false, error: `User with email "${email}" already exists.` },
+        { status: 409 }
+      );
     }
 
     const newUser = {
-      id: `usr_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+      id: `usr_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
       numeric_id: finalNumericId,
-      full_name: fullName,
-      email: email || `${finalNumericId.toLowerCase()}@creatornest.in`,
+      full_name: fullName.trim(),
+      email: email ? email.toLowerCase().trim() : '',
       password: password || 'nest1234',
-      role: role,
-      user_type: role,
-      plan_tier: planTier || (role === 'brand' ? 'enterprise' : 'pro'),
+      role: role.toLowerCase(),
+      user_type: role.toLowerCase(),
+      plan_tier: planTier || (role === 'admin' ? 'enterprise' : 'free'),
       status: 'active',
       phone: phone || '',
       whatsapp: whatsapp || phone || '',
-      permissions: Array.isArray(permissions) ? permissions : ['wall_of_deals', 'dashboard_access'],
+      permissions: permissions || (role === 'admin' ? ['all'] : ['wall_of_deals']),
       notes: notes || '',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
 
-    users.unshift(newUser);
+    users.push(newUser);
     saveUsersToFile(users);
 
     return NextResponse.json({
@@ -138,8 +143,11 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// PUT: Update an existing user
+// PUT: Update an existing user (Protected)
 export async function PUT(req: NextRequest) {
+  const auth = verifyAdminRequest(req);
+  if (!auth.authorized) return auth.errorResponse!;
+
   try {
     const body = await req.json();
     const { id, numericId, fullName, email, password, role, status, planTier, permissions, phone, whatsapp, notes } = body;
@@ -185,8 +193,11 @@ export async function PUT(req: NextRequest) {
   }
 }
 
-// DELETE: Remove a user
+// DELETE: Remove a user (Protected)
 export async function DELETE(req: NextRequest) {
+  const auth = verifyAdminRequest(req);
+  if (!auth.authorized) return auth.errorResponse!;
+
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');

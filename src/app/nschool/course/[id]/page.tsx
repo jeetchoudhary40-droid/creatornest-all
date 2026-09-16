@@ -216,22 +216,35 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
-          {/* Breadcrumb & Language Switcher Row */}
-          <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
-            <div className="flex items-center gap-2 text-xs text-slate-400">
-              <Link href="/nschool" className="hover:text-white transition-colors flex items-center gap-1 font-semibold">
-                <ArrowLeft className="w-3.5 h-3.5" /> {isHindi ? 'एन स्कूल' : 'N School'}
-              </Link>
-              <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-              <span style={{ color: course.accent }} className="font-semibold">{courseCategory}</span>
-              <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-              <span className="text-white truncate max-w-[220px] font-bold">{courseTitle}</span>
-            </div>
+          {/* Mobile Back & Quick Nav Bar */}
+          <div className="flex items-center justify-between gap-3 mb-6 flex-wrap">
+            <Link 
+              href="/nschool" 
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 text-cyan-400 hover:text-cyan-300 transition-colors text-xs font-bold"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>{isHindi ? '← सभी कोर्सेस (N School)' : '← Back to All Courses'}</span>
+            </Link>
 
             <div className="flex items-center gap-2">
               <span className="text-xs text-slate-400 font-bold hidden sm:inline">Language / भाषा:</span>
-              <LanguageSwitcher />
+              <LanguageSwitcher compact layoutIdPrefix="course-overview-top" />
             </div>
+          </div>
+
+          {/* Breadcrumb Trail */}
+          <div className="hidden sm:flex items-center gap-2 text-xs text-slate-400 mb-6">
+            <Link href="/" className="hover:text-white transition-colors font-semibold">
+              {isHindi ? 'होम' : 'Home'}
+            </Link>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
+            <Link href="/nschool" className="hover:text-white transition-colors font-semibold">
+              {isHindi ? 'एन स्कूल' : 'N School'}
+            </Link>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
+            <span style={{ color: course.accent }} className="font-semibold">{courseCategory}</span>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
+            <span className="text-white truncate max-w-[220px] font-bold">{courseTitle}</span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">

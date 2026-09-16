@@ -32,10 +32,18 @@ export default function AdminApplicationsPage() {
   const [selectedLead, setSelectedLead] = useState<SubmissionLead | null>(null);
   const [savingStatus, setSavingStatus] = useState(false);
 
+  const getAuthHeaders = () => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
+    return {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
+  };
+
   const fetchLeads = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/admin/applications');
+      const res = await fetch('/api/admin/applications', { headers: getAuthHeaders() });
       const json = await res.json();
       if (json.success && Array.isArray(json.applications)) {
         setLeads(json.applications);
@@ -56,7 +64,7 @@ export default function AdminApplicationsPage() {
     try {
       const res = await fetch('/api/admin/applications', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ id: leadId, status: newStatus }),
       });
       if (res.ok) {
@@ -75,7 +83,10 @@ export default function AdminApplicationsPage() {
   const handleDelete = async (leadId: string) => {
     if (!confirm('Are you sure you want to delete this submission record?')) return;
     try {
-      const res = await fetch(`/api/admin/applications?id=${leadId}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/applications?id=${leadId}`, { 
+        method: 'DELETE',
+        headers: getAuthHeaders(),
+      });
       if (res.ok) {
         setLeads(prev => prev.filter(l => l.id !== leadId));
         if (selectedLead && selectedLead.id === leadId) setSelectedLead(null);

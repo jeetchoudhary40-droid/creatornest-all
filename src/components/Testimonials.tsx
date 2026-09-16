@@ -34,7 +34,7 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section id="testimonials" className="py-24 bg-surface/30 border-y border-white/5 relative overflow-hidden">
+    <section id="testimonials" className="py-14 bg-surface/30 border-y border-white/5 relative overflow-hidden">
       {/* Background glow */}
       <div className="absolute top-1/2 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 
@@ -43,21 +43,21 @@ export default function Testimonials() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
-          className="text-center mb-16"
+          className="text-center mb-8"
         >
-          <div className="inline-flex items-center space-x-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 mb-6">
+          <div className="inline-flex items-center space-x-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 mb-4">
             <Star className="w-4 h-4 text-primary fill-primary" />
             <span className="text-sm text-primary font-medium">Creator Success Stories</span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
             Real Creators. <span className="text-primary italic">Real Results.</span>
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-            Don't take our word for it — hear from creators who transformed their channels into businesses with the Creator Nest system.
+          <p className="text-gray-400 max-w-xl mx-auto text-sm sm:text-base">
+            Hear from creators who transformed their channels into businesses.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {testimonials.map((t, i) => (
             <motion.div
               key={i}
@@ -65,36 +65,36 @@ export default function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
               transition={{ delay: i * 0.15 }}
-              whileHover={{ y: -8 }}
-              className="bg-surface border border-white/5 hover:border-primary/20 rounded-3xl p-8 flex flex-col space-y-6 transition-all group shadow-xl relative"
+              whileHover={{ y: -6 }}
+              className="bg-surface border border-white/5 hover:border-primary/20 rounded-2xl p-5 sm:p-6 flex flex-col space-y-4 transition-all group shadow-xl relative"
             >
               {/* Quote icon */}
-              <Quote className="w-8 h-8 text-primary/30 absolute top-6 right-6" />
+              <Quote className="w-7 h-7 text-primary/30 absolute top-5 right-5" />
 
               {/* Stars */}
-              <div className="flex space-x-1">
+              <div className="flex space-x-0.5">
                 {Array.from({ length: 5 }).map((_, s) => (
-                  <Star key={s} className="w-4 h-4 text-primary fill-primary" />
+                  <Star key={s} className="w-3.5 h-3.5 text-primary fill-primary" />
                 ))}
               </div>
 
               {/* Quote text */}
-              <p className="text-gray-300 leading-relaxed text-sm italic flex-1">
+              <p className="text-gray-300 leading-relaxed text-xs sm:text-sm italic flex-1">
                 &ldquo;{t.quote}&rdquo;
               </p>
 
               {/* Metric Badge */}
-              <div className="bg-primary/10 border border-primary/20 rounded-xl px-4 py-2 text-primary text-sm font-bold w-fit">
+              <div className="bg-primary/10 border border-primary/20 rounded-lg px-3 py-1.5 text-primary text-xs font-bold w-fit">
                 🚀 {t.metric}
               </div>
 
               {/* Author */}
-              <div className="flex items-center space-x-4 pt-2 border-t border-white/5">
-                <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center font-black text-white text-sm`}>
+              <div className="flex items-center space-x-3 pt-2 border-t border-white/5">
+                <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center font-black text-white text-xs`}>
                   {t.avatar}
                 </div>
                 <div>
-                  <p className="font-bold text-white group-hover:text-primary transition-colors">{t.name}</p>
+                  <p className="font-bold text-white text-sm group-hover:text-primary transition-colors">{t.name}</p>
                   <p className="text-gray-500 text-xs">{t.niche}</p>
                 </div>
               </div>

@@ -17,16 +17,16 @@ export default function Logo({
   animated = true,
 }: LogoProps) {
   const sizeMap = {
-    sm: { box: 'w-10 h-10 sm:w-11 sm:h-11', img: 44, text: 'text-xl sm:text-2xl', sub: 'text-[10px]' },
-    md: { box: 'w-12 h-12 sm:w-14 sm:h-14', img: 60, text: 'text-2xl sm:text-3xl', sub: 'text-[11px] sm:text-[12px]' },
-    lg: { box: 'w-16 h-16 sm:w-20 sm:h-20', img: 84, text: 'text-3xl sm:text-4xl', sub: 'text-xs sm:text-sm' },
-    xl: { box: 'w-24 h-24 sm:w-28 sm:h-28', img: 120, text: 'text-4xl sm:text-5xl', sub: 'text-sm sm:text-base' },
+    sm: { box: 'w-8 h-8 sm:w-10 sm:h-10', img: 40, text: 'text-base sm:text-xl', sub: 'text-[8px] sm:text-[10px]' },
+    md: { box: 'w-9 h-9 sm:w-12 sm:h-12 md:w-14 md:h-14', img: 48, text: 'text-base sm:text-2xl md:text-3xl', sub: 'text-[9px] sm:text-[11px] md:text-[12px]' },
+    lg: { box: 'w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20', img: 72, text: 'text-2xl sm:text-3xl md:text-4xl', sub: 'text-xs sm:text-sm' },
+    xl: { box: 'w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28', img: 110, text: 'text-3xl sm:text-4xl md:text-5xl', sub: 'text-sm sm:text-base' },
   };
 
   const currentSize = sizeMap[size] || sizeMap.md;
 
   return (
-    <div className={`flex items-center gap-3 sm:gap-4 ${className}`}>
+    <div className={`flex items-center gap-2 sm:gap-3 shrink-0 ${className}`}>
       {/* 3D Glowing Neon Animated Circular "N" Logo Icon */}
       <motion.div
         className={`relative ${currentSize.box} flex items-center justify-center shrink-0 select-none rounded-full`}

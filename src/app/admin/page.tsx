@@ -22,48 +22,41 @@ export default function AdminLoginPage() {
     setError('');
 
     try {
-      // 1. Try real backend authentication first
-      const res = await fetch(`${API_URL}/auth/login`, {
+      // 1. Authenticate via Next.js secure auth API
+      const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ identifier: email.trim(), password }),
       });
       
-      if (res.ok) {
-        const data = await res.json();
-        const meRes = await fetch(`${API_URL}/auth/me`, {
-          headers: { Authorization: `Bearer ${data.access_token}` },
-        });
-        
-        if (meRes.ok) {
-          const meData = await meRes.json();
-          if (meData.role === 'admin' || meData.role === 'super_admin') {
-            if (typeof window !== 'undefined') {
-              localStorage.setItem('access_token', data.access_token);
-              localStorage.setItem('refresh_token', data.refresh_token);
-              localStorage.setItem('user', JSON.stringify({
-                id: meData.id,
-                email: meData.email,
-                full_name: meData.full_name,
-                role: meData.role,
-                user_type: meData.role
-              }));
-            }
-            router.push('/admin/dashboard');
-            return;
-          } else {
-            throw new Error('Access denied. Admin role required.');
+      const data = await res.json();
+      if (res.ok && data.success) {
+        if (data.user.role === 'admin' || data.user.role === 'super_admin') {
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('access_token', data.access_token);
+            localStorage.setItem('refresh_token', data.refresh_token);
+            localStorage.setItem('user', JSON.stringify(data.user));
           }
+          router.push('/admin/dashboard');
+          return;
+        } else {
+          throw new Error('Access denied. Administrator privileges required.');
         }
       }
       
-      // If backend call failed, fall back to mock check in non-production environments
-      if (IS_DEV && email === 'admin@creatornest.in' && password === 'admin1234') {
+      // If server returned error message
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      // Dev fallback with secure credentials
+      if (IS_DEV && email.trim() === 'admin@creatornest.in' && password === 'Nest#Admin@2026!Secured') {
         if (typeof window !== 'undefined') {
           localStorage.setItem('access_token', 'mock_access_token_admin');
           localStorage.setItem('refresh_token', 'mock_refresh_token');
           localStorage.setItem('user', JSON.stringify({
-            id: 'admin-1',
+            id: 'usr_ad_01',
+            numeric_id: 'AD-01',
             email: 'admin@creatornest.in',
             full_name: 'Super Admin',
             role: 'super_admin'
@@ -71,16 +64,16 @@ export default function AdminLoginPage() {
         }
         router.push('/admin/dashboard');
       } else {
-        setError('Invalid credentials. Use admin@creatornest.in / admin1234 for testing in development.');
+        setError('Invalid credentials. Please verify your administrator username and password.');
       }
     } catch (err: any) {
-      // Check dev fallback if API is offline
-      if (IS_DEV && email === 'admin@creatornest.in' && password === 'admin1234') {
+      if (IS_DEV && email.trim() === 'admin@creatornest.in' && password === 'Nest#Admin@2026!Secured') {
         if (typeof window !== 'undefined') {
           localStorage.setItem('access_token', 'mock_access_token_admin');
           localStorage.setItem('refresh_token', 'mock_refresh_token');
           localStorage.setItem('user', JSON.stringify({
-            id: 'admin-1',
+            id: 'usr_ad_01',
+            numeric_id: 'AD-01',
             email: 'admin@creatornest.in',
             full_name: 'Super Admin',
             role: 'super_admin'
@@ -88,7 +81,7 @@ export default function AdminLoginPage() {
         }
         router.push('/admin/dashboard');
       } else {
-        setError(err.message || 'Login failed. Ensure API server is online.');
+        setError(err.message || 'Login failed. Please check your credentials.');
       }
     } finally {
       setLoading(false);

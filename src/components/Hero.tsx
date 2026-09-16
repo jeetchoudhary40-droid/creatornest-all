@@ -112,8 +112,8 @@ export default function Hero() {
               </motion.div>
 
               <Image 
-                src="/images/hero.png" 
-                alt="Creator Growth Studio Workspace" 
+                src="/images/hero-home.jpg" 
+                alt="Creator Nest Production Command Center & Growth Studio" 
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover"

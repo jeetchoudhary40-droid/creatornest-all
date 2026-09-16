@@ -116,6 +116,7 @@ function LeaderboardCard({ creator, index }: { creator: CreatorType; index: numb
 /* ───────── Creator Card with Refined Single-Line Stats ───────── */
 function CreatorCard({ creator }: { creator: CreatorType }) {
   const displayNiches = creator.niches && creator.niches.length > 0 ? creator.niches : [creator.niche];
+  const [showOverlay, setShowOverlay] = useState(false);
 
   return (
     <motion.div
@@ -127,7 +128,10 @@ function CreatorCard({ creator }: { creator: CreatorType }) {
       className="bg-[#0B0F15] rounded-2xl border border-white/10 hover:border-primary/40 transition-all group shadow-xl hover:shadow-[0_0_30px_rgba(0,242,254,0.2)] relative flex flex-col overflow-hidden"
     >
       {/* Image Area */}
-      <div className="relative w-full aspect-[4/5] overflow-hidden bg-white/5 flex items-center justify-center">
+      <div
+        className="relative w-full aspect-[4/5] overflow-hidden bg-white/5 flex items-center justify-center cursor-pointer"
+        onClick={() => setShowOverlay(prev => !prev)}
+      >
         {creator.img ? (
           <Image
             src={creator.img}
@@ -142,10 +146,10 @@ function CreatorCard({ creator }: { creator: CreatorType }) {
         )}
 
         {/* Ambient Dark Gradient for Non-Hover State */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0B0F15] via-[#0B0F15]/40 to-transparent opacity-90 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none" />
+        <div className={`absolute inset-0 bg-gradient-to-t from-[#0B0F15] via-[#0B0F15]/40 to-transparent transition-opacity duration-300 pointer-events-none ${showOverlay ? 'opacity-0' : 'opacity-90 group-hover:opacity-0'}`} />
 
         {/* Smaller Top Badges (Trending / Top Rated) */}
-        <div className="absolute top-2 left-2 right-2 flex items-center justify-between z-10 pointer-events-none group-hover:opacity-0 transition-opacity duration-300">
+        <div className={`absolute top-2 left-2 right-2 flex items-center justify-between z-10 pointer-events-none transition-opacity duration-300 ${showOverlay ? 'opacity-0' : 'group-hover:opacity-0'}`}>
           {creator.topGrowing ? (
             <span className="bg-emerald-500/25 backdrop-blur-md border border-emerald-500/50 text-emerald-300 text-[9px] font-black px-2 py-0.5 rounded-full flex items-center shadow-md">
               <TrendingUp className="w-2.5 h-2.5 mr-1 text-emerald-400" /> Trending
@@ -161,7 +165,7 @@ function CreatorCard({ creator }: { creator: CreatorType }) {
         </div>
 
         {/* Default Name, Channel & Single Primary Niche Overlay */}
-        <div className="absolute bottom-2.5 left-2.5 right-2.5 z-10 group-hover:opacity-0 group-hover:translate-y-2 transition-all duration-300 pointer-events-none flex flex-col gap-0.5">
+        <div className={`absolute bottom-2.5 left-2.5 right-2.5 z-10 transition-all duration-300 pointer-events-none flex flex-col gap-0.5 ${showOverlay ? 'opacity-0 translate-y-2' : 'group-hover:opacity-0 group-hover:translate-y-2'}`}>
           {/* Full Creator Name + Verified Badge */}
           <h3 className="text-base sm:text-lg font-bold text-white flex items-center drop-shadow-md">
             <span className="truncate">{creator.name}</span>
@@ -188,8 +192,8 @@ function CreatorCard({ creator }: { creator: CreatorType }) {
           </div>
         </div>
 
-        {/* Polished Hover Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#06090F]/95 via-[#06090F]/85 to-[#06090F]/60 backdrop-blur-[1.5px] opacity-0 group-hover:opacity-100 transition-all duration-300 z-20 flex flex-col justify-between p-3.5 sm:p-4 border-b border-primary/20">
+        {/* Polished Hover/Tap Overlay — visible on hover (desktop) or tap (mobile) */}
+        <div className={`absolute inset-0 bg-gradient-to-t from-[#06090F]/95 via-[#06090F]/85 to-[#06090F]/60 backdrop-blur-[1.5px] transition-all duration-300 z-20 flex flex-col justify-between p-3.5 sm:p-4 border-b border-primary/20 ${showOverlay ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
           {/* Top Header */}
           <div>
             <h3 className="text-base sm:text-lg font-bold text-white flex items-center drop-shadow-md mb-0.5">
@@ -230,6 +234,7 @@ function CreatorCard({ creator }: { creator: CreatorType }) {
               <Link
                 href={`/contact?creator=${encodeURIComponent(creator.name)}`}
                 className="flex-1 py-2 px-3 rounded-lg bg-gradient-to-r from-primary via-cyan-300 to-primary hover:from-cyan-300 hover:to-primary text-[#05080E] text-xs font-black flex items-center justify-center gap-1.5 transition-all shadow-[0_0_15px_rgba(0,242,254,0.3)] active:scale-[0.98]"
+                onClick={(e) => e.stopPropagation()}
               >
                 <Handshake className="w-3.5 h-3.5 text-[#05080E] shrink-0" />
                 <span>Want to Collab</span>
@@ -242,6 +247,7 @@ function CreatorCard({ creator }: { creator: CreatorType }) {
                   rel="noopener noreferrer"
                   className="p-2 rounded-lg bg-black/50 hover:bg-black/80 border border-white/20 text-white hover:text-primary transition-all shrink-0"
                   title="View YouTube Channel"
+                  onClick={(e) => e.stopPropagation()}
                 >
                   <Video className="w-3.5 h-3.5 text-red-500" />
                 </a>
@@ -251,7 +257,7 @@ function CreatorCard({ creator }: { creator: CreatorType }) {
         </div>
       </div>
 
-      {/* Single-Line Compact Platform Stats Bar */}
+      {/* Bottom Bar: Stats + Always-Visible Collab Button on Mobile */}
       <div className="p-2 sm:p-2.5 bg-[#080B10]">
         <div className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] transition-colors border border-white/5">
           {/* YouTube */}
@@ -274,6 +280,15 @@ function CreatorCard({ creator }: { creator: CreatorType }) {
             </div>
           </div>
         </div>
+
+        {/* Mobile-Only Collab Button — always visible without hover */}
+        <Link
+          href={`/contact?creator=${encodeURIComponent(creator.name)}`}
+          className="mt-2 w-full py-2.5 rounded-lg bg-gradient-to-r from-primary via-cyan-300 to-primary text-[#05080E] text-xs font-black flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all shadow-[0_0_12px_rgba(0,242,254,0.25)] sm:hidden"
+        >
+          <Handshake className="w-3.5 h-3.5 text-[#05080E] shrink-0" />
+          <span>Want to Collab</span>
+        </Link>
       </div>
     </motion.div>
   );

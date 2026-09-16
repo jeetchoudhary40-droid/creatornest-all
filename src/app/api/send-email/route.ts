@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import fs from 'fs';
 import path from 'path';
+import { verifyAdminRequest, checkRateLimit, getClientIp } from '@/lib/security';
 
 const PRIMARY_EMAIL = process.env.CONTACT_EMAIL || 'hellocreatornest@gmail.com';
 
@@ -43,8 +44,11 @@ function saveLocalSubmission(submission: Record<string, any>) {
   }
 }
 
-// GET endpoint to fetch logged submissions (for admin & debugging)
+// GET endpoint to fetch logged submissions (Protected — Admin Only)
 export async function GET(req: NextRequest) {
+  const auth = verifyAdminRequest(req);
+  if (!auth.authorized) return auth.errorResponse!;
+
   try {
     ensureDataDir();
     const raw = fs.existsSync(SUBMISSIONS_FILE) ? fs.readFileSync(SUBMISSIONS_FILE, 'utf-8') : '[]';
@@ -62,6 +66,14 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    const clientIp = getClientIp(req);
+    const rateCheck = checkRateLimit(`send_email_${clientIp}`, 6, 60000);
+    if (!rateCheck.success) {
+      return NextResponse.json(
+        { error: `Too many submissions. Please wait ${rateCheck.resetInSec}s before submitting again.` },
+        { status: 429 }
+      );
+    }
     const body = await req.json();
     const { source, role, data, applicantEmail, applicantName } = body as {
       source: string;

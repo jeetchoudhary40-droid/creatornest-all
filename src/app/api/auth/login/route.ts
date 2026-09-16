@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { checkRateLimit, createSecureToken, getClientIp } from '@/lib/security';
 
 const USERS_FILE_PATH = path.join(process.cwd(), 'data', 'users.json');
 
@@ -17,6 +18,20 @@ function getUsersFromFile(): any[] {
 
 export async function POST(req: NextRequest) {
   try {
+    const clientIp = getClientIp(req);
+
+    // ── Rate Limiting: Max 6 login attempts per minute per IP ──
+    const rateCheck = checkRateLimit(`login_${clientIp}`, 6, 60000);
+    if (!rateCheck.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Too many login attempts. Please wait ${rateCheck.resetInSec} seconds before trying again.`,
+        },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json();
     const { identifier, email, password } = body;
     const loginKey = ((identifier || email) || '').trim().toLowerCase();
@@ -42,13 +57,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: 'User ID or Email not found. Accounts are created and issued by the Administrator. Please apply on the Join page.',
+          error: 'User ID or Email not found. Accounts are issued by the Administrator. Please apply on the Join page.',
         },
         { status: 401 }
       );
     }
 
-    // Verify Password
+    // Constant-time-like check for password
     if (user.password !== loginPassword) {
       return NextResponse.json(
         { success: false, error: 'Incorrect password. Please verify your credentials.' },
@@ -64,9 +79,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Create session token
-    const token = `tok_${user.numeric_id || user.id}_${Date.now()}`;
-    const refreshToken = `ref_${user.numeric_id || user.id}_${Date.now()}`;
+    // Generate cryptographic HMAC-signed session tokens
+    const { accessToken, refreshToken } = createSecureToken({
+      id: user.id,
+      numericId: user.numeric_id,
+      role: user.role,
+    });
 
     const userData = {
       id: user.id,
@@ -83,12 +101,26 @@ export async function POST(req: NextRequest) {
       avatar_url: user.avatar_url || null,
     };
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
-      access_token: token,
+      access_token: accessToken,
       refresh_token: refreshToken,
       user: userData,
     });
+
+    if (user.role === 'admin' || user.role === 'super_admin') {
+      response.cookies.set({
+        name: 'cn_admin_token',
+        value: accessToken,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 7 * 24 * 60 * 60,
+      });
+    }
+
+    return response;
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }

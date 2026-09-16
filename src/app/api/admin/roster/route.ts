@@ -8,6 +8,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { verifyAdminRequest } from '@/lib/security';
 
 const ROSTER_FILE_PATH = path.join(process.cwd(), 'data', 'roster.json');
 
@@ -65,6 +66,9 @@ export async function GET() {
 // ── POST: Add new creator ──────────────────────────────────
 
 export async function POST(req: NextRequest) {
+  const auth = verifyAdminRequest(req);
+  if (!auth.authorized) return auth.errorResponse!;
+
   try {
     const body = await req.json();
     const { name, channelName, niche, niches, category, platform, bio, img,
@@ -139,6 +143,9 @@ export async function POST(req: NextRequest) {
 // ── PUT: Update existing creator by id ────────────────────
 
 export async function PUT(req: NextRequest) {
+  const auth = verifyAdminRequest(req);
+  if (!auth.authorized) return auth.errorResponse!;
+
   try {
     const body = await req.json();
     const { id, ...updates } = body;
@@ -214,6 +221,9 @@ export async function PUT(req: NextRequest) {
 //    or { action: 'toggle', id, field, value }
 
 export async function PATCH(req: NextRequest) {
+  const auth = verifyAdminRequest(req);
+  if (!auth.authorized) return auth.errorResponse!;
+
   try {
     const body = await req.json();
     const { action } = body;
@@ -263,6 +273,9 @@ export async function PATCH(req: NextRequest) {
 // ── DELETE: Remove creator ─────────────────────────────────
 
 export async function DELETE(req: NextRequest) {
+  const auth = verifyAdminRequest(req);
+  if (!auth.authorized) return auth.errorResponse!;
+
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
