@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { saveSubmission } from '@/lib/submissions';
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,27 +18,27 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid email' }, { status: 400 });
     }
 
-    const entry = {
-      id: Date.now(),
-      type: 'creator-onboarding',
-      name,
-      email,
-      platform: platform ?? 'unknown',
-      followers: followers ?? 'unknown',
-      niche: niche ?? 'unknown',
-      goals,
-      submittedAt: new Date().toISOString(),
-    };
+    const savedRecord = saveSubmission({
+      source: 'Creator Onboarding Form',
+      role: 'creator',
+      applicantName: name,
+      applicantEmail: email,
+      subject: `🎬 [Creator Onboarding] ${name} (${platform || 'Creator'})`,
+      isRead: false,
+      status: 'pending',
+      data: {
+        'Full Name': name,
+        'Email': email,
+        'Platform': platform ?? 'unknown',
+        'Followers / Audience Size': followers ?? 'unknown',
+        'Niche / Category': niche ?? 'unknown',
+        'Growth Goals': goals,
+      },
+    });
 
-    console.log('[CREATOR ONBOARDING]', JSON.stringify(entry, null, 2));
+    console.log('[CREATOR ONBOARDING SAVED]', savedRecord.id);
 
-    // TODO: Save to database
-    // await db.insert('creator_applications', entry);
-
-    // TODO: Send confirmation email to creator + internal notification
-    // await sendEmail({ to: email, subject: 'Application Received – Creator Nest', ... });
-
-    return NextResponse.json({ ok: true, id: entry.id });
+    return NextResponse.json({ ok: true, id: savedRecord.id });
   } catch (err) {
     console.error('[ONBOARD API ERROR]', err);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

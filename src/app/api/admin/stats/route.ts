@@ -49,6 +49,7 @@ export async function GET() {
         total_creators: totalRosterCreators,
         total_brands: totalBrands,
         total_applications: totalApplications,
+        total_unread_applications: submissions.filter((s: any) => !s.isRead).length,
         total_calculator_leads: totalCalculations,
         total_users: users.length,
         total_audience_reach: totalAudienceReach,

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { saveSubmission } from '@/lib/submissions';
 
 // Valid role IDs from the /join page
 const VALID_ROLE_IDS = new Set([
@@ -78,18 +79,28 @@ export async function POST(req: NextRequest) {
 
     console.log('[JOB APPLICATION]', JSON.stringify(entry, null, 2));
 
-    // TODO: Upload file to storage (Cloudinary, S3, Supabase Storage)
-    // if (file) {
-    //   const buffer = Buffer.from(await file.arrayBuffer());
-    //   const uploadedUrl = await uploadToStorage(buffer, file.name, file.type);
-    //   entry.fileUrl = uploadedUrl;
-    // }
-
-    // TODO: Save to database
-    // await db.insert('job_applications', entry);
-
-    // TODO: Send notification to HR + confirmation to applicant
-    // await sendEmail({ to: email, subject: `Application Received – ${roleTitle}`, ... });
+    saveSubmission({
+      source: `Careers / Job Application - ${roleTitle}`,
+      role: 'career',
+      applicantName: name,
+      applicantEmail: email,
+      subject: `👥 [Job Application] ${name} — ${roleTitle}`,
+      isRead: false,
+      status: 'pending',
+      data: {
+        'Applied Role': roleTitle,
+        'Full Name': name,
+        'Email': email,
+        'Phone': phone,
+        'City': city,
+        'Experience': experience,
+        'Work Type': workType,
+        'Expected Rate': rate || 'Not specified',
+        'Portfolio Link': portfolio || 'None provided',
+        'Best Work Details': bestWork,
+        'Attached File': file?.name || 'None',
+      },
+    });
 
     return NextResponse.json({ ok: true, id: entry.id });
   } catch (err) {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { 
   CheckCircle2, 
@@ -16,9 +16,14 @@ import {
   Zap 
 } from 'lucide-react';
 import { api } from '@/lib/api';
+import ApplicationSuccessModal from '@/components/ApplicationSuccessModal';
 
 export default function CtaSection() {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [submittedName, setSubmittedName] = useState('');
+  const [submittedRole, setSubmittedRole] = useState('');
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const formCardRef = useRef<HTMLDivElement>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,6 +44,9 @@ export default function CtaSection() {
       followersRange: (form.elements.namedItem('followersRange') as HTMLSelectElement).value,
       message: (form.elements.namedItem('message') as HTMLTextAreaElement).value,
     };
+
+    setSubmittedName(formData.name);
+    setSubmittedRole(role);
 
     const roleLabel: Record<string, string> = {
       creator: 'Creator / Influencer (All Categories)',
@@ -100,6 +108,10 @@ export default function CtaSection() {
       } catch (_) { /* non-critical */ }
 
       setStatus('success');
+      setShowSuccessModal(true);
+      setTimeout(() => {
+        formCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
     } catch (err: any) {
       console.error('CTA submission failed:', err);
       setStatus('error');
@@ -150,6 +162,7 @@ export default function CtaSection() {
 
           {/* Right Column Form Card */}
           <motion.div
+            ref={formCardRef}
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.1 }}
@@ -372,6 +385,15 @@ export default function CtaSection() {
 
         </div>
       </div>
+
+      <ApplicationSuccessModal
+        isOpen={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        name={submittedName}
+        role={submittedRole}
+        title="Application Received!"
+        message="Thank you for sharing your details. Our talent management desk has received your request and will connect with you via WhatsApp & Email shortly."
+      />
     </section>
   );
 }

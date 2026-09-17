@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import fs from 'fs';
-import path from 'path';
 import { verifyAdminRequest, checkRateLimit, getClientIp } from '@/lib/security';
+import { getSubmissions, saveSubmission } from '@/lib/submissions';
 
 const PRIMARY_EMAIL = process.env.CONTACT_EMAIL || 'hellocreatornest@gmail.com';
 
@@ -11,48 +10,13 @@ const supabaseAdmin = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
 );
 
-// Persistent Local File Path
-const DATA_DIR = path.join(process.cwd(), 'data');
-const SUBMISSIONS_FILE = path.join(DATA_DIR, 'submissions.json');
-
-// Ensure data directory exists
-function ensureDataDir() {
-  try {
-    if (!fs.existsSync(DATA_DIR)) {
-      fs.mkdirSync(DATA_DIR, { recursive: true });
-    }
-    if (!fs.existsSync(SUBMISSIONS_FILE)) {
-      fs.writeFileSync(SUBMISSIONS_FILE, JSON.stringify([], null, 2), 'utf-8');
-    }
-  } catch (err) {
-    console.error('[Storage Error] Failed to initialize submissions file:', err);
-  }
-}
-
-// Save submission to local JSON file
-function saveLocalSubmission(submission: Record<string, any>) {
-  try {
-    ensureDataDir();
-    const existingRaw = fs.existsSync(SUBMISSIONS_FILE) ? fs.readFileSync(SUBMISSIONS_FILE, 'utf-8') : '[]';
-    const existing = JSON.parse(existingRaw || '[]');
-    existing.unshift(submission);
-    // Keep last 500 submissions
-    const trimmed = existing.slice(0, 500);
-    fs.writeFileSync(SUBMISSIONS_FILE, JSON.stringify(trimmed, null, 2), 'utf-8');
-  } catch (err) {
-    console.error('[Storage Error] Failed to write local submission:', err);
-  }
-}
-
 // GET endpoint to fetch logged submissions (Protected — Admin Only)
 export async function GET(req: NextRequest) {
   const auth = verifyAdminRequest(req);
   if (!auth.authorized) return auth.errorResponse!;
 
   try {
-    ensureDataDir();
-    const raw = fs.existsSync(SUBMISSIONS_FILE) ? fs.readFileSync(SUBMISSIONS_FILE, 'utf-8') : '[]';
-    const submissions = JSON.parse(raw || '[]');
+    const submissions = getSubmissions();
     return NextResponse.json({
       success: true,
       count: submissions.length,
@@ -151,9 +115,13 @@ export async function POST(req: NextRequest) {
       applicantName: name,
       applicantEmail: email,
       subject: emailSubject,
+      isRead: false,
+      readAt: null,
+      status: 'pending' as const,
+      adminNotes: '',
       data,
     };
-    saveLocalSubmission(submissionRecord);
+    saveSubmission(submissionRecord);
 
     let deliveredVia = 'none';
     const errors: string[] = [];

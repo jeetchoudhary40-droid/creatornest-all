@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { useState, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import ApplicationSuccessModal from '@/components/ApplicationSuccessModal';
 
 const contactChannels = [
   {
@@ -113,7 +114,10 @@ function ContactContent() {
   const creatorParam = searchParams.get('creator') || searchParams.get('c') || '';
 
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [showModal, setShowModal] = useState(false);
+  const [submittedName, setSubmittedName] = useState('');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const formCardRef = useRef<HTMLDivElement>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -161,7 +165,13 @@ function ContactContent() {
         console.warn('Contact form warning:', err);
       }
 
+      setSubmittedName(name);
       setStatus('success');
+      setShowModal(true);
+
+      if (formCardRef.current) {
+        formCardRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     } catch (err) {
       console.error('Contact form error:', err);
       setStatus('error');
@@ -295,7 +305,7 @@ function ContactContent() {
               viewport={{ once: true }}
               className="lg:col-span-7"
             >
-              <div className="relative bg-surface/50 backdrop-blur-2xl border border-white/10 rounded-3xl p-6 sm:p-10 shadow-2xl overflow-hidden">
+              <div ref={formCardRef} className="relative bg-surface/50 backdrop-blur-2xl border border-white/10 rounded-3xl p-6 sm:p-10 shadow-2xl overflow-hidden">
                 {/* Accent edge line */}
                 <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
 
@@ -624,6 +634,15 @@ function ContactContent() {
         </div>
       </section>
 
+      {/* Mobile-First Confirmation Modal */}
+      <ApplicationSuccessModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        name={submittedName}
+        role="Partnership Brief"
+        title="Partnership Brief Received!"
+        message="Thank you for contacting Creator Nest. Our leadership team has received your brief and will review your requirements promptly."
+      />
     </main>
   );
 }

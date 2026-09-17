@@ -1,44 +1,82 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 import { verifyAdminRequest } from '@/lib/security';
+import { 
+  getSubmissions, 
+  updateSubmission, 
+  markAllSubmissionsAsRead, 
+  deleteSubmission 
+} from '@/lib/submissions';
 
-const SUBMISSIONS_FILE_PATH = path.join(process.cwd(), 'data', 'submissions.json');
-
-function getSubmissionsFromFile(): any[] {
-  try {
-    if (!fs.existsSync(SUBMISSIONS_FILE_PATH)) {
-      return [];
-    }
-    const data = fs.readFileSync(SUBMISSIONS_FILE_PATH, 'utf-8');
-    return JSON.parse(data || '[]');
-  } catch (err) {
-    console.error('Error reading data/submissions.json:', err);
-    return [];
-  }
-}
-
-function saveSubmissionsToFile(submissions: any[]) {
-  try {
-    const dir = path.dirname(SUBMISSIONS_FILE_PATH);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-    fs.writeFileSync(SUBMISSIONS_FILE_PATH, JSON.stringify(submissions, null, 2), 'utf-8');
-  } catch (err) {
-    console.error('Error saving submissions:', err);
-    throw new Error('Failed to persist submissions.');
-  }
-}
-
-// GET all applications (Protected)
+// GET all applications with stats & filtering (Protected)
 export async function GET(req: NextRequest) {
   const auth = verifyAdminRequest(req);
   if (!auth.authorized) return auth.errorResponse!;
 
   try {
-    const submissions = getSubmissionsFromFile();
-    return NextResponse.json({ success: true, count: submissions.length, applications: submissions });
+    const { searchParams } = new URL(req.url);
+    const readFilter = searchParams.get('read'); // 'unread' | 'read'
+    const roleFilter = searchParams.get('role'); // 'creator' | 'brand' | 'team' | 'contact'
+    const statusFilter = searchParams.get('status'); // 'pending' | 'contacted' | 'accepted' | 'rejected'
+    const search = (searchParams.get('search') || '').toLowerCase().trim();
+
+    const allSubmissions = getSubmissions();
+
+    // Compute aggregate counts
+    const total = allSubmissions.length;
+    const unread = allSubmissions.filter(s => !s.isRead).length;
+    const read = allSubmissions.filter(s => s.isRead).length;
+    const creators = allSubmissions.filter(s => s.role === 'creator').length;
+    const brands = allSubmissions.filter(s => s.role === 'brand').length;
+    const team = allSubmissions.filter(s => s.role === 'career' || s.role === 'team' || s.role === 'team_member').length;
+    const contact = allSubmissions.filter(s => s.role === 'general' || s.source?.toLowerCase().includes('contact')).length;
+
+    // Apply filters
+    let filtered = allSubmissions;
+
+    if (readFilter === 'unread') {
+      filtered = filtered.filter(s => !s.isRead);
+    } else if (readFilter === 'read') {
+      filtered = filtered.filter(s => s.isRead);
+    }
+
+    if (roleFilter === 'creator') {
+      filtered = filtered.filter(s => s.role === 'creator');
+    } else if (roleFilter === 'brand') {
+      filtered = filtered.filter(s => s.role === 'brand');
+    } else if (roleFilter === 'team') {
+      filtered = filtered.filter(s => s.role === 'career' || s.role === 'team' || s.role === 'team_member');
+    } else if (roleFilter === 'contact') {
+      filtered = filtered.filter(s => s.role === 'general' || s.source?.toLowerCase().includes('contact'));
+    }
+
+    if (statusFilter) {
+      filtered = filtered.filter(s => s.status === statusFilter);
+    }
+
+    if (search) {
+      filtered = filtered.filter(s => 
+        (s.applicantName || '').toLowerCase().includes(search) ||
+        (s.applicantEmail || '').toLowerCase().includes(search) ||
+        (s.source || '').toLowerCase().includes(search) ||
+        (s.subject || '').toLowerCase().includes(search) ||
+        JSON.stringify(s.data || {}).toLowerCase().includes(search)
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      count: filtered.length,
+      stats: {
+        total,
+        unread,
+        read,
+        creators,
+        brands,
+        team,
+        contact,
+      },
+      applications: filtered,
+    });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
@@ -51,32 +89,37 @@ export async function PUT(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { id, status, adminNotes } = body;
+
+    // Batch Action: Mark all as read
+    if (body.action === 'mark_all_read') {
+      const updatedCount = markAllSubmissionsAsRead();
+      return NextResponse.json({
+        success: true,
+        message: `Marked ${updatedCount} inquiries as read.`,
+        updatedCount,
+      });
+    }
+
+    const { id, isRead, status, adminNotes } = body;
 
     if (!id) {
       return NextResponse.json({ success: false, error: 'Application ID is required.' }, { status: 400 });
     }
 
-    const submissions = getSubmissionsFromFile();
-    const index = submissions.findIndex(s => s.id === id);
+    const updated = updateSubmission(id, {
+      isRead,
+      status,
+      adminNotes,
+    });
 
-    if (index === -1) {
+    if (!updated) {
       return NextResponse.json({ success: false, error: 'Application not found.' }, { status: 404 });
     }
 
-    submissions[index] = {
-      ...submissions[index],
-      status: status || submissions[index].status || 'pending',
-      adminNotes: adminNotes !== undefined ? adminNotes : submissions[index].adminNotes,
-      updated_at: new Date().toISOString(),
-    };
-
-    saveSubmissionsToFile(submissions);
-
     return NextResponse.json({
       success: true,
-      message: 'Application updated.',
-      application: submissions[index],
+      message: 'Application updated successfully.',
+      application: updated,
     });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
@@ -96,9 +139,10 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ success: false, error: 'ID is required.' }, { status: 400 });
     }
 
-    let submissions = getSubmissionsFromFile();
-    submissions = submissions.filter(s => s.id !== id);
-    saveSubmissionsToFile(submissions);
+    const deleted = deleteSubmission(id);
+    if (!deleted) {
+      return NextResponse.json({ success: false, error: 'Application not found.' }, { status: 404 });
+    }
 
     return NextResponse.json({ success: true, message: 'Application deleted.' });
   } catch (err: any) {

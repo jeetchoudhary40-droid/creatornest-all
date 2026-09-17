@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { saveSubmission } from '@/lib/submissions';
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, email, role, message, _honey } = body;
+    const { name, email, role, message, phone, company, _honey } = body;
 
     // Anti-spam honeypot check
     if (_honey) {
@@ -20,27 +21,32 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid email' }, { status: 400 });
     }
 
-    // ── Persist to JSON log (replace with DB/email service in production) ──
-    const entry = {
-      id: Date.now(),
-      type: 'contact',
-      name,
-      email,
-      role: role ?? 'unknown',
-      message,
-      submittedAt: new Date().toISOString(),
-    };
+    // Persist to unified submissions database
+    const savedRecord = saveSubmission({
+      source: 'Contact Page Direct',
+      role: role || 'general',
+      applicantName: name,
+      applicantEmail: email,
+      subject: `📬 Contact Desk Inquiry: ${name}`,
+      isRead: false,
+      status: 'pending',
+      data: {
+        'Full Name': name,
+        'Email': email,
+        'Phone': phone || 'Not provided',
+        'Company / Channel': company || 'Not specified',
+        'Role': role || 'general',
+        'Message': message,
+      },
+    });
 
-    // Log to console (visible in Next.js server terminal)
-    console.log('[CONTACT FORM]', JSON.stringify(entry, null, 2));
+    console.log('[CONTACT FORM SAVED]', savedRecord.id);
 
-    // TODO: Replace with your email service (Resend, SendGrid, Nodemailer, etc.)
-    // await sendEmail({ to: 'hello@creatornest.in', subject: `New Contact: ${name}`, body: message });
-
-    // TODO: Replace with your DB (Supabase, Firebase, PlanetScale, etc.)
-    // await db.insert('contacts', entry);
-
-    return NextResponse.json({ ok: true, id: entry.id });
+    return NextResponse.json({ 
+      ok: true, 
+      id: savedRecord.id, 
+      message: 'Inquiry saved successfully.' 
+    });
   } catch (err) {
     console.error('[CONTACT API ERROR]', err);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
