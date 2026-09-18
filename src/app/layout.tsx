@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     default: "Creator Nest | Fueling Creators to Become Brands",
     template: "%s | Creator Nest",
   },
-  description: "India's premier all-category creator ecosystem and talent agency. We empower creators across Education, Tech, Entertainment, Lifestyle & Gaming with high-converting brand deals, production scaling, and digital business building.",
+  description: "India’s premier creator growth ecosystem & creators’ first choice for brand deals. Turning passionate creators into iconic brands with high-trust partnerships.",
   keywords: [
     "creator management agency",
     "creator economy india",
     "fueling creators to become brands",
+    "creators first choice brand deals",
+    "creator growth ecosystem india",
     "influencer marketing agency india",
     "top talent management agency",
     "brand deals for creators",
@@ -46,7 +48,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Creator Nest | Fueling Creators to Become Brands",
-    description: "India's premier all-category creator ecosystem. We turn raw talent into scalable, monetizable brands across Education, Tech, Entertainment, Lifestyle & Gaming.",
+    description: "India’s premier creator growth ecosystem & creators’ first choice for brand deals. We empower digital creators to build sustainable businesses and help visionary brands scale with authentic trust.",
     url: "https://creatornest.in",
     siteName: "Creator Nest",
     images: [
@@ -63,7 +65,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Creator Nest | Fueling Creators to Become Brands",
-    description: "India's premier all-category creator growth ecosystem. 100+ Creators. ₹5Cr+ Brand Deals Closed.",
+    description: "India’s premier creator growth ecosystem & creators’ first choice for brand deals. 100+ Creators. ₹5Cr+ Brand Deals Closed.",
     images: ["/images/og-cover.png"],
     creator: "@creatornest",
   },
@@ -77,6 +79,16 @@ export const metadata: Metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
+  },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.png', type: 'image/png', sizes: '32x32' },
+    ],
+    apple: [
+      { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    shortcut: ['/favicon.ico'],
   },
   category: "technology, marketing, creator economy",
 };
@@ -100,7 +112,7 @@ const organizationJsonLd = {
   alternateName: 'CreatorNest India',
   url: 'https://creatornest.in',
   logo: 'https://creatornest.in/images/og-cover.png',
-  description: "India's premier influencer marketing agency and creator growth ecosystem. Managing 100+ top Indian creators, driving high-ROI brand deals, and scaling creator monetization.",
+  description: "Creator Nest is India’s fastest-growing creator economy ecosystem and the #1 trusted choice for digital creators and brands. Born to fuel creators into iconic household brands, Creator Nest bridges ambitious talent across Tech, Education, Gaming, Lifestyle, and Entertainment with high-ROI brand deals, production scaling, and transparent contracts.",
   sameAs: [
     'https://www.instagram.com/creatornestmedia/',
     'https://www.youtube.com/@CreatorNestMedia',

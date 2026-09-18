@@ -17,7 +17,12 @@
       "Followers / Audience Size": "100K - 500K",
       "Profile / Platform Link": "youtubelink",
       "Message / Growth Goals": "i wnat to collab"
-    }
+    },
+    "isRead": false,
+    "readAt": null,
+    "status": "contacted",
+    "adminNotes": "Verified lead on staging.",
+    "updated_at": "2026-09-17T04:42:35.498Z"
   },
   {
     "id": "sub_1788177686779_43jeh",
@@ -37,7 +42,11 @@
       "Budget / Scale": "N/A (Creator Representation)",
       "Referenced Creator": "Jeet Choudhary",
       "Message Details": "Hi Creator Nest team, we are interested in collaborating with Jeet Choudhary. Here are our campaign goals and timeline:\n\n"
-    }
+    },
+    "isRead": false,
+    "readAt": null,
+    "status": "pending",
+    "adminNotes": ""
   },
   {
     "id": "sub_1788157977671_1z6a9",
@@ -57,7 +66,11 @@
       "Followers / Audience Size": "100K - 500K",
       "Profile / Platform Link": "Test.com",
       "Message / Growth Goals": "56546456 gbhgghg"
-    }
+    },
+    "isRead": false,
+    "readAt": null,
+    "status": "pending",
+    "adminNotes": ""
   },
   {
     "id": "sub_1788157327274_emnr4",
@@ -77,7 +90,11 @@
       "Followers / Audience Size": "50K - 100K",
       "Profile / Platform Link": "Test.com",
       "Message / Growth Goals": "Growth goles about our product"
-    }
+    },
+    "isRead": false,
+    "readAt": null,
+    "status": "pending",
+    "adminNotes": ""
   },
   {
     "id": "sub_1787311186635_q2fxa",
@@ -94,7 +111,11 @@
       "Phone": "+918766077505",
       "Inquiry Type": "💬  General Question",
       "Message": "I want to collab with Jeet choudhary"
-    }
+    },
+    "isRead": false,
+    "readAt": null,
+    "status": "pending",
+    "adminNotes": ""
   },
   {
     "id": "sub_1787121116650_tijni",
@@ -113,7 +134,11 @@
       "Estimated Budget": "₹5L – ₹20L",
       "Campaign Goal": "✨ Creator Roster",
       "Brief / Requirements": "I WANT TO COLLAB WITH THIS TEAM"
-    }
+    },
+    "isRead": false,
+    "readAt": null,
+    "status": "pending",
+    "adminNotes": ""
   },
   {
     "id": "sub_1786697212243_uozsn",
@@ -132,7 +157,10 @@
       "Website": "mywebsite.com"
     },
     "status": "contacted",
-    "updated_at": "2026-08-14T10:55:32.336Z"
+    "updated_at": "2026-08-14T10:55:32.336Z",
+    "isRead": false,
+    "readAt": null,
+    "adminNotes": ""
   },
   {
     "id": "sub_1786695747979_p6k43",
@@ -149,7 +177,11 @@
       "Phone": "+918766077505",
       "Inquiry Type": "💬  General Question",
       "Message": "ok this is contact page"
-    }
+    },
+    "isRead": false,
+    "readAt": null,
+    "status": "pending",
+    "adminNotes": ""
   },
   {
     "id": "sub_1786694606448_kyxax",
@@ -175,7 +207,11 @@
       "Target Creator Tier": "All Tiers Combined",
       "Target Audience / Niches": "All matching niches",
       "Campaign Brief / Details": "i will discus on to one"
-    }
+    },
+    "isRead": false,
+    "readAt": null,
+    "status": "pending",
+    "adminNotes": ""
   },
   {
     "id": "sub_1786691466484_froj0",
@@ -202,7 +238,11 @@
       "Portfolio / Other Link": "None provided",
       "Support / Services Needed": "High-Paying Brand Deals",
       "Creator Vision / Notes": "i want brand deals "
-    }
+    },
+    "isRead": false,
+    "readAt": null,
+    "status": "pending",
+    "adminNotes": ""
   },
   {
     "id": "sub_1786691315294_ebm4e",
@@ -220,7 +260,11 @@
       "Profile / Platform Link": "youtube.com/@testchannel",
       "Followers / Audience Size": "50K - 100K",
       "Message": "Testing live form email delivery"
-    }
+    },
+    "isRead": false,
+    "readAt": null,
+    "status": "pending",
+    "adminNotes": ""
   },
   {
     "id": "sub_1786690958739_0b05x",
@@ -247,7 +291,11 @@
       "Portfolio / Other Link": "None provided",
       "Support / Services Needed": "High-Paying Brand Deals",
       "Creator Vision / Notes": "i want to jion this platform"
-    }
+    },
+    "isRead": false,
+    "readAt": null,
+    "status": "pending",
+    "adminNotes": ""
   },
   {
     "id": "sub_1786690920082_c2rgk",
@@ -265,7 +313,11 @@
       "Profile / Platform Link": "https://www.youtube.com/@nehanagar/featured",
       "Followers / Audience Size": "100K - 500K",
       "Message": "i wont to connect to you"
-    }
+    },
+    "isRead": false,
+    "readAt": null,
+    "status": "pending",
+    "adminNotes": ""
   },
   {
     "id": "sub_1786690766675_emiv2",
@@ -286,7 +338,11 @@
       "Followers / Audience Size": "250K",
       "Content Niche / Category": "Finance & Crypto",
       "YouTube Link": "https://youtube.com/@riyasen"
-    }
+    },
+    "isRead": false,
+    "readAt": null,
+    "status": "pending",
+    "adminNotes": ""
   },
   {
     "id": "sub_1786690751434_d0u0u",
@@ -304,6 +360,10 @@
       "Profile / Platform Link": "youtube.com/@aakashmehra",
       "Followers / Audience Size": "50K - 100K",
       "Message": "Looking for premium brand sponsorships in tech niche."
-    }
+    },
+    "isRead": false,
+    "readAt": null,
+    "status": "pending",
+    "adminNotes": ""
   }
 ]

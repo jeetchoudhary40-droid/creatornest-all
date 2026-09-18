@@ -61,7 +61,8 @@ async function getPublishedPosts(): Promise<BlogPost[]> {
     clearTimeout(timeout);
 
     if (!error && dbPosts && dbPosts.length > 0) {
-      return dbPosts.map((dbPost: any) => {
+      const dbSlugs = new Set(dbPosts.map((p: any) => p.slug));
+      const formattedDbPosts = dbPosts.map((dbPost: any) => {
         const matchingStatic = STATIC_POSTS.find(p => p.slug === dbPost.slug);
         return {
           ...dbPost,
@@ -76,6 +77,8 @@ async function getPublishedPosts(): Promise<BlogPost[]> {
           }
         };
       });
+      const nonDbStaticPosts = STATIC_POSTS.filter(p => !dbSlugs.has(p.slug));
+      return [...formattedDbPosts, ...nonDbStaticPosts];
     }
   } catch {
     // Return static posts instantly

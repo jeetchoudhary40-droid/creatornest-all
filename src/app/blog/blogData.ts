@@ -2,6 +2,10 @@ export interface BlogPost {
   id: string;
   title: string;
   title_hi?: string;
+  meta_title?: string;
+  meta_title_hi?: string;
+  meta_description?: string;
+  meta_description_hi?: string;
   slug: string;
   excerpt: string;
   excerpt_hi?: string;
@@ -35,6 +39,200 @@ export const BLOG_CATEGORIES = [
 
 export const STATIC_POSTS: BlogPost[] = [
   {
+    id: 'creator-economy-bill-india-2026',
+    title: "Creator Economy Bill India 2026: What's Actually True (And What Every Creator & Brand Needs to Know)",
+    title_hi: 'क्रिएटर इकोनॉमी बिल इंडिया 2026: क्या सच है और क्या अफ़वाह? हर क्रिएटर और ब्रांड के लिए फ़ैक्ट-चेक',
+    meta_title: 'Creator Economy Bill India 2026: Fact-Check & What Creators Should Know',
+    meta_title_hi: 'क्रिएटर इकोनॉमी बिल इंडिया 2026: फ़ैक्ट-चेक और क्रिएटर्स के लिए ज़रूरी बातें',
+    meta_description: 'Is the "Creator Economy Bill" real? We checked the official records and break down what\'s actually true about India\'s creator economy in 2026.',
+    meta_description_hi: 'क्या "क्रिएटर इकोनॉमी बिल" सच में पास हुआ है? हमने संसद और आधिकारिक रिकॉर्ड्स की जांच की और जाना 2026 में भारत की क्रिएटर इकोनॉमी की असली सच्चाई।',
+    slug: 'creator-economy-bill-india-2026',
+    category: 'news',
+    readTime: '6 min read',
+    readTime_hi: '6 मिनट पढ़ें',
+    tags: ['Creator Economy India', 'Fact Check', 'National Creator Bill', 'ASCI Guidelines', 'SEBI Finfluencers', 'DPDP Act'],
+    tags_hi: ['क्रिएटर इकोनॉमी भारत', 'फ़ैक्ट चेक', 'क्रिएटर बिल 2026', 'ASCI गाइडलाइन्स', 'सेबी फिनफ्लूएंसर', 'DPDP एक्ट'],
+    featured: true,
+    excerpt: 'Is the "Creator Economy Bill" real? We checked the official records and break down what\'s actually true about India\'s creator economy in 2026.',
+    excerpt_hi: 'क्या "क्रिएटर इकोनॉमी बिल" सच में पास हुआ है? हमने संसद और आधिकारिक रिकॉर्ड्स की जांच की और जाना 2026 में भारत की क्रिएटर इकोनॉमी की असली सच्चाई।',
+    featured_image: '/images/blog/creator-economy-bill-india-2026.jpg',
+    created_at: new Date('2026-09-18T10:00:00Z').toISOString(),
+    status: 'published',
+    author: {
+      full_name: 'Creator Nest Policy Desk',
+      avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80',
+      role: 'Head of Legal & Compliance Research',
+      role_hi: 'हेड ऑफ लीगल एंड कंप्लायंस रिसर्च'
+    },
+    content: `
+      <p>If you've spent any time on Instagram, X, or Threads lately, you've probably seen the claim: <strong>"Rajya Sabha passes National Creator Economy Bill, 2026."</strong> It's been shared by large pages, written up as a "landmark law" by marketing blogs, and repeated so often it now reads as settled fact.</p>
+      
+      <p>There's just one problem — <strong>we can't find it anywhere official.</strong></p>
+      
+      <p>At Creator Nest Media, we build contracts, disclosures, and brand-deal terms for creators every day, so before writing anything about a new law, we went to the source: <em>Parliament's own records</em>, not social media threads. Here's what's actually confirmed about the creator economy in India right now, and what's still just a rumour.</p>
+      
+      <h2>Is There Really a "Creator Economy Bill" in India?</h2>
+      <p><strong>Short answer:</strong> Not that any official record shows.</p>
+      
+      <p>The viral version of the story is detailed enough to sound real. It claims the bill formally recognises YouTubers, Instagram influencers, and digital artists as licensed professionals, introduces a cess on platform ad spend to fund a creator welfare pool, mandates standardised brand contracts, and requires registration above a certain income threshold.</p>
+      
+      <p>But when the claim is checked against Parliament's own bill-tracking sources, it doesn't hold up. A review of official sources — including the Press Information Bureau (<a href="https://pib.gov.in" target="_blank" rel="noopener noreferrer">PIB</a>), <a href="https://prsindia.org" target="_blank" rel="noopener noreferrer">PRS Legislative Research</a>, and <a href="https://sansad.in" target="_blank" rel="noopener noreferrer">Sansad records</a> — found <strong>no evidence</strong> of any such bill. PRS Legislative Research's own real-time log of what actually passed in the 2026 Monsoon Session mentions bills like the <em>Mines and Minerals (Development and Regulation) Amendment Bill</em> — a Creator Economy Bill isn't on that list. [<a href="https://www.pingnetwork.in/knowledge/ai-in-content-creation-why-quality-still-matters-more-than-tools-2/" target="_blank" rel="noopener noreferrer">PingNetwork Reference</a>]</p>
+      
+      <blockquote>
+        <p><strong>What most likely happened:</strong> A detailed, plausible-sounding claim started circulating on social media, and a wave of blogs wrote it up as confirmed fact without tracing it back to an actual bill number — then cited each other, which made it look more verified with every repost.</p>
+      </blockquote>
+      
+      <p><strong>The practical takeaway:</strong> If a claim about a new "creator law" doesn't link to <a href="https://sansad.in" target="_blank" rel="noopener noreferrer">sansad.in</a>, <a href="https://pib.gov.in" target="_blank" rel="noopener noreferrer">pib.gov.in</a>, or <a href="https://prsindia.org" target="_blank" rel="noopener noreferrer">prsindia.org</a>, treat it as unverified until it does — especially before making a registration, tax, or contract decision based on it.</p>
+      
+      <p>That said, the fact that this story spread so easily says something real: India's creator economy has clearly grown large enough that formal regulation now feels inevitable to a lot of people. Here's what's actually true about where things stand.</p>
+      
+      <h2>India's Creator Economy, By the Numbers</h2>
+      <p>The creator economy isn't a niche side conversation anymore — it's a measurable part of India's digital economy:</p>
+      
+      <ul>
+        <li>A 2025 Boston Consulting Group report estimated India has more than <strong>2 to 2.5 million monetised content creators</strong> influencing over <strong>$350–400 billion</strong> in consumer spending, with creator-influenced consumption projected to exceed <strong>$1 trillion by 2030</strong>. [<a href="https://ascendants.in/spotlight/indian-content-creators-earnings-2026/" target="_blank" rel="noopener noreferrer">Ascendants Report</a>]</li>
+        <li>A 2026 report from ISB's Srini Raju Centre and Hashfame found India's creator base expanded from <strong>0.96 million in 2020 to 4.12 million by 2025</strong>, with non-metro creators now making up <strong>66% of that base</strong> — the creator economy in India is no longer a metro-city phenomenon. [<a href="https://prodcd.isb.edu/media/ykmjlwaj/india_creator_economy_interactive_report.html" target="_blank" rel="noopener noreferrer">ISB Report</a>]</li>
+        <li>India's influencer marketing industry specifically is estimated by Kofluence at around <strong>₹3,500 crore in 2026</strong>, a distinct (smaller) number from the broader consumer-spending figure above. [<a href="https://ascendants.in/spotlight/indian-content-creators-earnings-2026/" target="_blank" rel="noopener noreferrer">Ascendants</a>]</li>
+        <li>Globally, the creator economy is valued at roughly <strong>$234–250 billion in 2026</strong> and is projected to reach <strong>$480 billion by 2027</strong>. [<a href="https://fungies.io/?p=39403" target="_blank" rel="noopener noreferrer">Fungies Research</a>]</li>
+      </ul>
+      
+      <p>That growth is exactly why regulation talk keeps swirling around this space — and why it's worth knowing what's already law, regardless of what one viral bill claims.</p>
+      
+      <h2>The Rules That Already Apply — No New Bill Required</h2>
+      <p>You don't need a new "Creator Economy Bill" to have compliance obligations. Several real frameworks already govern how creators and brands in India operate.</p>
+      
+      <h3>1. ASCI's Influencer Advertising Guidelines</h3>
+      <p>The Advertising Standards Council of India's guidelines, in effect since April 2021, require any promotional content to be clearly distinguishable from independent content. In practice, that means: [<a href="https://law.asia/india-issues-guidelines-digital-media-ads-influencers/" target="_blank" rel="noopener noreferrer">Law.asia Guidelines</a>]</p>
+      <ul>
+        <li><strong>Periodic Livestream Disclosures:</strong> Livestreams must show a disclosure label periodically — roughly once a minute, for five-second stretches, and audio-only content must announce the disclosure at both the start and end.</li>
+        <li><strong>Prohibited Beauty Filters:</strong> Filters that alter skin, hair, or teeth in a promotional video are prohibited.</li>
+        <li><strong>Mandatory Due Diligence:</strong> Influencers are required to do due diligence on any performance claim they make, and advertiser–influencer agreements must include clauses covering disclosure, filter use, and due diligence — which is exactly why a documented contract matters, bill or no bill.</li>
+      </ul>
+      <p>This isn't just a voluntary code with no teeth, either: influencer-related complaints have made up close to 30% of the ads ASCI reviews, and regulatory backing has since given these disclosure requirements real legal weight. [<a href="https://techcrunch.com/?p=2473016" target="_blank" rel="noopener noreferrer">TechCrunch</a>]</p>
+      
+      <h3>2. SEBI's Finfluencer Crackdown</h3>
+      <p>If you or your creators touch financial content, this one matters. SEBI has barred regulated entities like brokers and mutual funds from associating with unregistered financial influencers ("finfluencers"), and requires any registered finfluencer to display their registration number and grievance-redressal contact on their posts. These rules, introduced in August 2024 and reinforced by an October 2024 advisory, are now fully in effect. [<a href="https://www.angelone.in/news/market-updates/sebi-bans-regulated-entities-from-associating-with-unregistered-finfluencers" target="_blank" rel="noopener noreferrer">Angel One News</a> | <a href="https://www.angelone.in/news/market-updates/sebi-issues-further-clarifications-on-finfluencer-regulations" target="_blank" rel="noopener noreferrer">SEBI Clarifications</a>]</p>
+      
+      <h3>3. The DPDP Act, 2023</h3>
+      <p>India's Digital Personal Data Protection Act and its Rules were notified in November 2025, establishing the Data Protection Board and bringing administrative provisions into force immediately. Consent Manager registration follows in November 2026, with the full set of substantive obligations — notice and consent standards, breach reporting, and security safeguards — becoming enforceable by May 2027. Any creator agency or brand collecting audience data (email lists, WhatsApp groups, giveaway entries) falls under this. [<a href="https://www.amsshardul.com/wp-content/uploads/2025/11/Regulatory-Alert-Enforcement-of-DPDP-Act-and-Notification-of-DPDP-Rules.pdf" target="_blank" rel="noopener noreferrer">Shardul Amarchand Mangaldas Alert</a>]</p>
+      
+      <h2>What the Government Has Actually Committed To</h2>
+      <p>Separate from the viral bill, the government has made real, documented moves toward supporting the creator economy:</p>
+      <ul>
+        <li><strong>AVGC Content Creator Labs in 15,000+ Schools:</strong> In the Union Budget 2026, presented on February 1, Finance Minister Nirmala Sitharaman announced AVGC (Animation, Visual Effects, Gaming and Comics) Content Creator Labs across 15,000 secondary schools and 500 colleges, run through the Indian Institute of Creative Technologies, Mumbai. The sector is projected to need nearly 2 million professionals by 2030. [<a href="https://www.exchange4media.com/budget-news/budget-2026-pushes-orange-economy-into-classrooms-151532.html" target="_blank" rel="noopener noreferrer">exchange4media</a> | <a href="https://www.netinfluencer.com/india-to-equip-over-15000-schools-colleges-with-animation-labs-to-meet-creator-economy-demand/" target="_blank" rel="noopener noreferrer">NetInfluencer</a>]</li>
+        <li><strong>$1 Billion Creator Support Fund:</strong> Ahead of the WAVES (World Audio Visual and Entertainment Summit) in Mumbai, the Centre announced a $1 billion fund aimed at helping creators access capital, upskill, and scale their production to reach global markets. [<a href="https://www.tribuneindia.com/news/delhi/centre-announces-1-billion-fund-to-boost-creator-economy/amp" target="_blank" rel="noopener noreferrer">The Tribune</a>]</li>
+      </ul>
+      <p>None of this is the "Creator Economy Bill" people are searching for — but it's the real, verifiable direction Indian policy is moving in.</p>
+      
+      <h2>What This Means for Creators and Brands Right Now</h2>
+      <ul>
+        <li><strong>Don't wait for a law to formalise your contracts.</strong> ASCI compliance and clear brand-deal terms are enforceable today, not contingent on any future bill.</li>
+        <li><strong>Track income and GST thresholds like any other professional.</strong> General GST registration rules already apply to creator income above the standard turnover threshold — this isn't something a future bill would newly introduce. Check with a CA for your specific numbers.</li>
+        <li><strong>Check SEBI status for finance content.</strong> If you're in finance content, check your registration status before taking brand deals with SEBI-regulated entities.</li>
+        <li><strong>Verify legal claims at the source.</strong> Check <a href="https://prsindia.org" target="_blank" rel="noopener noreferrer">prsindia.org</a>, <a href="https://sansad.in" target="_blank" rel="noopener noreferrer">sansad.in</a>, and <a href="https://pib.gov.in" target="_blank" rel="noopener noreferrer">pib.gov.in</a> before changing how you run your business based on something you saw shared online.</li>
+      </ul>
+      
+      <h2>Frequently Asked Questions (FAQs)</h2>
+      
+      <h3>Is there a Creator Economy Bill in India in 2026?</h3>
+      <p>No bill by that name has been confirmed passed or introduced in official Parliament, PIB, or PRS records as of this writing, despite widespread claims online.</p>
+      
+      <h3>What is the "National Creator Economy Bill 2026" people are talking about?</h3>
+      <p>It's a detailed claim, widely shared on social media and repeated by several blogs, describing a law that recognises creators as professionals and introduces a welfare cess. It has not been traced to any official bill text or parliamentary record.</p>
+      
+      <h3>What laws currently apply to influencers and content creators in India?</h3>
+      <p>ASCI's influencer advertising guidelines, SEBI's finfluencer rules (for financial content), the DPDP Act (for data handling), and the IT Rules, 2021 (for platforms) already apply.</p>
+      
+      <h3>Do content creators have to pay GST in India?</h3>
+      <p>Creator income is treated like other professional/business income under existing tax law, and standard GST registration thresholds apply. This predates any creator-specific bill — talk to a CA about your specific situation.</p>
+      
+      <blockquote>
+        <p><strong>Disclaimer:</strong> This article is for general information and isn't legal or tax advice — check with a qualified professional for guidance specific to your situation.</p>
+      </blockquote>
+    `,
+    content_hi: `
+      <p>अगर आपने पिछले कुछ दिनों में इंस्टाग्राम, X (ट्विटर) या थ्रेड्स देखा है, तो शायद आपने यह दावा ज़रूर पढ़ा होगा: <strong>"राज्यसभा ने नेशनल क्रिएटर इकोनॉमी बिल, 2026 पास किया।"</strong> इसे बड़े पेजों ने शेयर किया, मार्केटिंग ब्लॉग्स ने इसे "ऐतिहासिक कानून" करार दिया, और इसे इतनी बार दोहराया गया कि अब लोग इसे पक्का सच मानने लगे हैं।</p>
+      
+      <p>बस इसमें एक ही समस्या है — <strong>आधिकारिक सरकारी रिकॉर्ड्स में ऐसा कोई बिल मौजूद ही नहीं है।</strong></p>
+      
+      <p>Creator Nest Media में हम रोज़ाना क्रिएटर्स के लिए कॉन्ट्रैक्ट्स, लीगल डिस्क्लोज़र और ब्रांड-डील की शर्तें तैयार करते हैं। इसलिए किसी भी नए कानून के बारे में कुछ भी लिखने से पहले, हमने सीधे संसद के आधिकारिक रिकॉर्ड्स की पड़ताल की, सोशल मीडिया पोस्ट्स की नहीं। जानिए भारत में क्रिएटर इकोनॉमी को लेकर इस समय क्या सच में आधिकारिक है और क्या केवल अफवाह।</p>
+      
+      <h2>क्या भारत में सचमुच कोई "क्रिएटर इकोनॉमी बिल" आया है?</h2>
+      <p><strong>संक्षिप्त उत्तर:</strong> किसी भी आधिकारिक सरकारी रिकॉर्ड में ऐसा कोई बिल नहीं है।</p>
+      
+      <p>सोशल मीडिया पर वायरल कहानी इतनी विस्तृत है कि वह बिल्कुल सच लगती है। इसमें दावा किया गया है कि बिल यूट्यूबर्स, इंस्टाग्राम इन्फ्लुएंसर्स और डिजिटल आर्टिस्ट्स को लाइसेंस प्राप्त पेशेवर का दर्जा देता है, क्रिएटर वेलफेयर फंड बनाने के लिए प्लेटफॉर्म विज्ञापनों पर सेस लगाता है, मानकीकृत ब्रांड कॉन्ट्रैक्ट्स अनिवार्य करता है, और एक निश्चित आय सीमा से ऊपर रजिस्ट्रेशन ज़रूरी करता है।</p>
+      
+      <p>लेकिन जब इस दावे को संसद के आधिकारिक बिल-ट्रैकिंग सिस्टम से मिलाया गया, तो यह पूरी तरह निराधार निकला। प्रेस इंफॉर्मेशन ब्यूरो (<a href="https://pib.gov.in" target="_blank" rel="noopener noreferrer">PIB</a>), <a href="https://prsindia.org" target="_blank" rel="noopener noreferrer">PRS लेजिस्लेटिव रिसर्च</a>, और <a href="https://sansad.in" target="_blank" rel="noopener noreferrer">संसद रिकॉर्ड्स</a> की जांच में ऐसे किसी भी बिल का कोई सबूत नहीं मिला। 2026 के मानसून सत्र में जो बिल पास हुए, उनमें माइंस एंड मिनरल्स संशोधन बिल जैसे कानून शामिल हैं — क्रिएटर इकोनॉमी बिल उस सूची में कहीं नहीं है।</p>
+      
+      <blockquote>
+        <p><strong>असल में क्या हुआ:</strong> सोशल मीडिया पर एक विस्तृत और सच लगने वाला दावा फैला, और कई ब्लॉग्स ने बिना किसी बिल नंबर की जांच किए इसे सच मानकर लिख दिया। फिर सबने एक-दूसरे का हवाला देना शुरू किया, जिससे हर रीपोस्ट के साथ यह अफवाह और सच दिखने लगी।</p>
+      </blockquote>
+      
+      <p><strong>ज़रूरी सीख:</strong> यदि किसी "क्रिएटर कानून" के दावे में <a href="https://sansad.in" target="_blank" rel="noopener noreferrer">sansad.in</a>, <a href="https://pib.gov.in" target="_blank" rel="noopener noreferrer">pib.gov.in</a>, या <a href="https://prsindia.org" target="_blank" rel="noopener noreferrer">prsindia.org</a> का सीधा लिंक नहीं है, तो उसे तब तक असत्यापित मानें — खासकर टैक्स, रजिस्ट्रेशन या कॉन्ट्रैक्ट का कोई भी बड़ा फैसला लेने से पहले।</p>
+      
+      <p>इसके बावजूद, इस कहानी का इतनी तेजी से फैलना एक बात साबित करता है: भारत की क्रिएटर इकोनॉमी इतनी विशाल हो चुकी है कि अब हर किसी को इसका आधिकारिक नियमन स्वाभाविक लग रहा है। आइए देखें असल स्थिति क्या है।</p>
+      
+      <h2>आंकड़ों की नज़र में भारत की क्रिएटर इकोनॉमी</h2>
+      <p>क्रिएटर इकोनॉमी अब सिर्फ एक चर्चा का विषय नहीं है — यह भारत की डिजिटल अर्थव्यवस्था का एक बड़ा और वास्तविक हिस्सा बन चुकी है:</p>
+      
+      <ul>
+        <li><strong>$350–$400 बिलियन उपभोक्ता खर्च:</strong> बोस्टन कंसल्टिंग ग्रुप (BCG) की 2025 की रिपोर्ट के अनुसार, भारत में 20 से 25 लाख मोनेटाइज्ड कंटेंट क्रिएटर्स हैं जो $350–400 बिलियन के उपभोक्ता खर्च को प्रभावित कर रहे हैं। यह आंकड़ा 2030 तक $1 ट्रिलियन पार करने का अनुमान है। [<a href="https://ascendants.in/spotlight/indian-content-creators-earnings-2026/" target="_blank" rel="noopener noreferrer">Ascendants Report</a>]</li>
+        <li><strong>41.2 लाख क्रिएटर बेस (66% नॉन-मेट्रो शहरों से):</strong> ISB श्रीनि राजू सेंटर और Hashfame की 2026 रिपोर्ट के अनुसार, 2020 में 9.6 लाख से बढ़कर 2025 तक क्रिएटर बेस 41.2 लाख पहुंच गया। इनमें से 66% क्रिएटर्स अब टियर-2 और टियर-3 शहरों से आते हैं। [<a href="https://prodcd.isb.edu/media/ykmjlwaj/india_creator_economy_interactive_report.html" target="_blank" rel="noopener noreferrer">ISB Report</a>]</li>
+        <li><strong>₹3,500 करोड़ का इन्फ्लुएंसर मार्केटिंग उद्योग:</strong> Kofluence के अनुमान अनुसार 2026 में भारत का इन्फ्लुएंसर मार्केटिंग उद्योग लगभग ₹3,500 करोड़ का है। [<a href="https://ascendants.in/spotlight/indian-content-creators-earnings-2026/" target="_blank" rel="noopener noreferrer">Ascendants</a>]</li>
+        <li><strong>वैश्विक स्तर पर $480 बिलियन का अनुमान:</strong> दुनिया भर में क्रिएटर इकोनॉमी 2026 में लगभग $234–250 बिलियन की है, जो 2027 तक $480 बिलियन पहुंचने का अनुमान है। [<a href="https://fungies.io/?p=39403" target="_blank" rel="noopener noreferrer">Fungies Research</a>]</li>
+      </ul>
+      
+      <p>यही अप्रत्याशित ग्रोथ वह वजह है जिससे नए नियमों की चर्चा तेज़ हो रही है — और इसीलिए यह जानना ज़रूरी है कि वर्तमान में कौन से कानून लागू हैं।</p>
+      
+      <h2>वे नियम जो आज भी पूरी तरह लागू हैं — किसी नए बिल की ज़रूरत नहीं</h2>
+      <p>लीगल नियमों का पालन करने के लिए आपको किसी नए "क्रिएटर इकोनॉमी बिल" के आने का इंतज़ार करने की ज़रूरत नहीं है। कई कानून पहले से ही प्रभावी हैं:</p>
+      
+      <h3>1. ASCI की इन्फ्लुएंसर विज्ञापन गाइडलाइंस</h3>
+      <p>भारतीय विज्ञापन मानक परिषद (ASCI) के नियम अप्रैल 2021 से लागू हैं। इनके तहत किसी भी प्रमोशनल कंटेंट को सामान्य कंटेंट से अलग दिखाना अनिवार्य है: [<a href="https://law.asia/india-issues-guidelines-digital-media-ads-influencers/" target="_blank" rel="noopener noreferrer">Law.asia Guidelines</a>]</p>
+      <ul>
+        <li><strong>लाइवस्ट्रीम डिस्क्लोज़र:</strong> लाइवस्ट्रीम में हर एक मिनट में कम से कम 5 सेकंड के लिए डिस्क्लोज़र लेबल दिखना चाहिए। ऑडियो पॉडकास्ट में शुरुआत और अंत दोनों जगह घोषणा होनी चाहिए।</li>
+        <li><strong>ब्यूटी फिल्टर्स पर रोक:</strong> किसी भी स्पॉन्सर्ड ब्यूटी प्रोडक्ट रिव्यू में स्किन, बाल या दांत बदलने वाले फिल्टर्स का इस्तेमाल प्रतिबंधित है।</li>
+        <li><strong>ड्यू डिलिजेंस और औपचारिक कॉन्ट्रैक्ट:</strong> किसी भी प्रोडक्ट के दावे की सच्चाई जांचना क्रिएटर की ज़िम्मेदारी है, और ब्रांड-क्रिएटर एग्रीमेंट में इन नियमों का लिखित उल्लेख होना चाहिए। [<a href="https://techcrunch.com/?p=2473016" target="_blank" rel="noopener noreferrer">TechCrunch</a>]</li>
+      </ul>
+      
+      <h3>2. SEBI की फिनफ्लूएंसर एडवाइजरी</h3>
+      <p>अगर आप वित्तीय या शेयर बाज़ार से जुड़ा कंटेंट बनाते हैं, तो SEBI ने बिना रजिस्ट्रेशन वाले फिनफ्लूएंसर्स के साथ म्यूचुअल फंड्स या ब्रोकर्स के गठजोड़ पर पूरी तरह रोक लगा दी है। रजिस्टर्ड फिनफ्लूएंसर्स के लिए अपना SEBI रजिस्ट्रेशन नंबर और शिकायत निवारण संपर्क दिखाना अनिवार्य है। [<a href="https://www.angelone.in/news/market-updates/sebi-bans-regulated-entities-from-associating-with-unregistered-finfluencers" target="_blank" rel="noopener noreferrer">Angel One News</a> | <a href="https://www.angelone.in/news/market-updates/sebi-issues-further-clarifications-on-finfluencer-regulations" target="_blank" rel="noopener noreferrer">SEBI Clarifications</a>]</p>
+      
+      <h3>3. DPDP एक्ट, 2023 (डेटा प्रोटेक्शन कानून)</h3>
+      <p>डिजिटल पर्सनल डेटा प्रोटेक्शन एक्ट के तहत कोई भी क्रिएटर एजेंसी या ब्रांड जो अपनी ऑडियंस का डेटा (ईमेल लिस्ट, व्हाट्सएप ग्रुप, गिवअवे एंट्रीज) इकट्ठा करता है, उस पर सख्त डेटा सुरक्षा और सहमति मानक लागू होते हैं। [<a href="https://www.amsshardul.com/wp-content/uploads/2025/11/Regulatory-Alert-Enforcement-of-DPDP-Act-and-Notification-of-DPDP-Rules.pdf" target="_blank" rel="noopener noreferrer">Shardul Amarchand Mangaldas Alert</a>]</p>
+      
+      <h2>सरकार ने वास्तव में क्या कदम उठाए हैं?</h2>
+      <p>वायरल बिल के अलावा, सरकार ने क्रिएटर सेक्टर के लिए कई वास्तविक और दस्तावेजी कदम उठाए हैं:</p>
+      <ul>
+        <li><strong>15,000+ स्कूलों और कॉलेजों में AVGC क्रिएटर लैब्स:</strong> केंद्रीय बजट 2026 में वित्त मंत्री निर्मला सीतारमण ने 15,000 माध्यमिक स्कूलों और 500 कॉलेजों में AVGC (एनीमेशन, विजुअल इफेक्ट्स, गेमिंग और कॉमिक्स) लैब्स स्थापित करने की घोषणा की। [<a href="https://www.exchange4media.com/budget-news/budget-2026-pushes-orange-economy-into-classrooms-151532.html" target="_blank" rel="noopener noreferrer">exchange4media</a> | <a href="https://www.netinfluencer.com/india-to-equip-over-15000-schools-colleges-with-animation-labs-to-meet-creator-economy-demand/" target="_blank" rel="noopener noreferrer">NetInfluencer</a>]</li>
+        <li><strong>WAVES समिट के तहत $1 बिलियन का क्रिएटर फंड:</strong> मुंबई में WAVES समिट से पहले केंद्र सरकार ने भारतीय क्रिएटर्स को पूंजी, स्किलिंग और ग्लोबल प्रोडक्शन क्षमता देने के लिए $1 बिलियन के फंड की घोषणा की। [<a href="https://www.tribuneindia.com/news/delhi/centre-announces-1-billion-fund-to-boost-creator-economy/amp" target="_blank" rel="noopener noreferrer">The Tribune</a>]</li>
+      </ul>
+      
+      <h2>क्रिएटर्स और ब्रांड्स को अभी क्या करना चाहिए?</h2>
+      <ul>
+        <li><strong>लिखित कॉन्ट्रैक्ट्स का तुरंत इस्तेमाल शुरू करें:</strong> किसी नए कानून का इंतज़ार न करें। स्पष्ट शर्तें और ASCI नियम आज भी लागू हैं।</li>
+        <li><strong>GST और इनकम टैक्स सीमा पर नज़र रखें:</strong> सेवाओं के लिए मानक टर्नओवर सीमा (ज्यादातर राज्यों में ₹20 लाख) पार होने पर GST रजिस्ट्रेशन अनिवार्य है। अपने CA से सलाह लें।</li>
+        <li><strong>फाइनेंस कंटेंट बनाते हैं तो रजिस्ट्रेशन की जांच करें:</strong> सेबी-रेगुलेटेड कंपनियों के साथ काम करने से पहले अपना अनुपालन सुनिश्चित करें।</li>
+        <li><strong>सरकारी दावों की पुष्टि आधिकारिक स्रोतों से करें:</strong> सोशल मीडिया पर भरोसा करने से पहले <a href="https://prsindia.org" target="_blank" rel="noopener noreferrer">prsindia.org</a> और <a href="https://sansad.in" target="_blank" rel="noopener noreferrer">sansad.in</a> पर जांच करें।</li>
+      </ul>
+      
+      <h2>अक्सर पूछे जाने वाले सवाल (FAQs)</h2>
+      
+      <h3>क्या 2026 में भारत में कोई क्रिएटर इकोनॉमी बिल पास हुआ है?</h3>
+      <p>नहीं। संसद, PIB या PRS रिकॉर्ड्स में इस नाम से कोई भी बिल पेश या पास होने का कोई आधिकारिक रिकॉर्ड नहीं है।</p>
+      
+      <h3>सोशल मीडिया पर जिस "नेशनल क्रिएटर इकोनॉमी बिल" की चर्चा है वह क्या है?</h3>
+      <p>यह सोशल मीडिया पर फैली एक अफवाह है, जिसे कई ब्लॉग्स ने बिना जांचे रीपोस्ट किया। इसका कोई भी आधिकारिक मसौदा या कानून नहीं है।</p>
+      
+      <h3>क्या कंटेंट क्रिएटर्स को भारत में GST देना होता है?</h3>
+      <p>हां, क्रिएटर की आय को पेशेवर/व्यावसायिक आय माना जाता है और सामान्य GST रजिस्ट्रेशन नियम लागू होते हैं।</p>
+      
+      <blockquote>
+        <p><strong>डिस्क्लेमर:</strong> यह लेख केवल सामान्य जानकारी के लिए है और कानूनी या टैक्स सलाह नहीं है — अपनी स्थिति के अनुसार किसी योग्य पेशेवर से सलाह लें।</p>
+      </blockquote>
+    `
+  },
+  {
     id: 'blog-news-trending-1',
     title: 'YouTube Shopping Expands in India: Creators with 500 Subscribers Can Now Tag Flipkart, Myntra & Nykaa Products',
     title_hi: 'यूट्यूब शॉपिंग का भारत में बड़ा विस्तार: 500 सब्सक्राइबर्स वाले क्रिएटर्स भी अब फ्लिपकार्ट, मिंत्रा और नायका प्रोडक्ट्स टैग कर कमा सकेंगे कमीशन',
@@ -44,7 +242,7 @@ export const STATIC_POSTS: BlogPost[] = [
     readTime_hi: '4 मिनट पढ़ें',
     tags: ['YouTube Shopping India', 'Affiliate Monetization', 'Creator Commerce', 'Flipkart Myntra'],
     tags_hi: ['यूट्यूब शॉपिंग', 'एफिलिएट कमाई', 'क्रिएटर कॉमर्स', 'फ्लिपकार्ट मिंत्रा'],
-    featured: true,
+    featured: false,
     excerpt: 'Google and YouTube expand the Shopping affiliate program across India, enabling mid-tier and micro creators to tag e-commerce products in Shorts and long videos for automated sales commissions.',
     excerpt_hi: 'गूगल और यूट्यूब ने भारत में शॉपिंग एफिलिएट प्रोग्राम का दायरा बढ़ाया। अब 500 सब्सक्राइबर्स वाले माइक्रो और मिड-टियर क्रिएटर्स भी शॉर्ट्स और वीडियो में सीधे प्रोडक्ट्स टैग कर आकर्षक सेल्स कमीशन कमा सकेंगे।',
     featured_image: '/images/blog/yt-shopping-india.jpg',

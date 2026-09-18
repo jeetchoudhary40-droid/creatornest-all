@@ -60,16 +60,20 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const post = await getPost(resolvedParams.slug);
   if (!post) return { title: 'Post Not Found | Creator Nest' };
 
+  const pageTitle = post.meta_title ? { absolute: post.meta_title } : `${post.title} | Creator Nest Blog`;
+  const rawTitle = post.meta_title || `${post.title} | Creator Nest Blog`;
+  const metaDescription = post.meta_description || post.excerpt;
+
   return {
-    title: `${post.title} | Creator Nest Blog`,
-    description: post.excerpt,
+    title: pageTitle,
+    description: metaDescription,
     keywords: post.tags || ['creator strategy', 'youtube growth', 'brand deals', 'creator news'],
     alternates: {
       canonical: `https://creatornest.in/blog/${post.slug}`,
     },
     openGraph: {
-      title: `${post.title} | Creator Nest Blog`,
-      description: post.excerpt,
+      title: rawTitle,
+      description: metaDescription,
       url: `https://creatornest.in/blog/${post.slug}`,
       siteName: 'Creator Nest',
       images: post.featured_image ? [
@@ -87,8 +91,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     twitter: {
       card: 'summary_large_image',
-      title: post.title,
-      description: post.excerpt,
+      title: rawTitle,
+      description: metaDescription,
       images: post.featured_image ? [post.featured_image] : [],
       creator: '@creatornest',
     },
