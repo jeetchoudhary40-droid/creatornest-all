@@ -32,6 +32,11 @@ function saveUsersToFile(users: any[]) {
   }
 }
 
+function getPasswordHash(pass: string): string {
+  const crypto = require('crypto');
+  return crypto.createHash('sha256').update(pass + (process.env.AUTH_SECRET || 'cn_salt_2026')).digest('hex');
+}
+
 // GET all users (Protected)
 export async function GET(req: NextRequest) {
   const auth = verifyAdminRequest(req);
@@ -40,10 +45,13 @@ export async function GET(req: NextRequest) {
   try {
     const users = getUsersFromFile();
     // Return users without exposing plaintext password by default (or clean for admin)
-    const sanitized = users.map(u => ({
-      ...u,
-      passwordMasked: u.password ? '••••••••' : '',
-    }));
+    const sanitized = users.map(u => {
+      const { password, ...rest } = u;
+      return {
+        ...rest,
+        passwordMasked: (password || u.password_hash) ? '••••••••' : '',
+      };
+    });
     return NextResponse.json({ success: true, count: users.length, users: sanitized });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
@@ -112,12 +120,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const newUser = {
+    const newUser: any = {
       id: `usr_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
       numeric_id: finalNumericId,
       full_name: fullName.trim(),
       email: email ? email.toLowerCase().trim() : '',
-      password: password || 'nest1234',
+      password_hash: getPasswordHash(password || 'nest1234'),
       role: role.toLowerCase(),
       user_type: role.toLowerCase(),
       plan_tier: planTier || (role === 'admin' ? 'enterprise' : 'free'),
@@ -133,10 +141,12 @@ export async function POST(req: NextRequest) {
     users.push(newUser);
     saveUsersToFile(users);
 
+    const { password_hash, password: _raw, ...safeUser } = newUser;
+
     return NextResponse.json({
       success: true,
       message: `User ${finalNumericId} (${fullName}) created successfully.`,
-      user: newUser,
+      user: safeUser,
     });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
@@ -165,11 +175,11 @@ export async function PUT(req: NextRequest) {
 
     const user = users[index];
 
-    users[index] = {
+    const updatedUser: any = {
       ...user,
       full_name: fullName !== undefined ? fullName : user.full_name,
       email: email !== undefined ? email : user.email,
-      password: password ? password : user.password,
+      password_hash: password ? getPasswordHash(password) : (user.password_hash || (user.password ? getPasswordHash(user.password) : undefined)),
       role: role !== undefined ? role : user.role,
       user_type: role !== undefined ? role : user.user_type,
       status: status !== undefined ? status : user.status,
@@ -181,12 +191,17 @@ export async function PUT(req: NextRequest) {
       updated_at: new Date().toISOString(),
     };
 
+    delete updatedUser.password;
+    users[index] = updatedUser;
+
     saveUsersToFile(users);
+
+    const { password_hash: _hash, password: _raw, ...safeUpdated } = users[index];
 
     return NextResponse.json({
       success: true,
       message: `User ${users[index].numeric_id} updated.`,
-      user: users[index],
+      user: safeUpdated,
     });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });

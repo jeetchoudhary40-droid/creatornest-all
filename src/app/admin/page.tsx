@@ -45,44 +45,9 @@ export default function AdminLoginPage() {
       }
       
       // If server returned error message
-      if (data.error) {
-        throw new Error(data.error);
-      }
-
-      // Dev fallback with secure credentials
-      if (IS_DEV && email.trim() === 'admin@creatornest.in' && password === 'Nest#Admin@2026!Secured') {
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('access_token', 'mock_access_token_admin');
-          localStorage.setItem('refresh_token', 'mock_refresh_token');
-          localStorage.setItem('user', JSON.stringify({
-            id: 'usr_ad_01',
-            numeric_id: 'AD-01',
-            email: 'admin@creatornest.in',
-            full_name: 'Super Admin',
-            role: 'super_admin'
-          }));
-        }
-        router.push('/admin/dashboard');
-      } else {
-        setError('Invalid credentials. Please verify your administrator username and password.');
-      }
+      throw new Error(data.error || 'Invalid credentials. Please verify your administrator username and password.');
     } catch (err: any) {
-      if (IS_DEV && email.trim() === 'admin@creatornest.in' && password === 'Nest#Admin@2026!Secured') {
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('access_token', 'mock_access_token_admin');
-          localStorage.setItem('refresh_token', 'mock_refresh_token');
-          localStorage.setItem('user', JSON.stringify({
-            id: 'usr_ad_01',
-            numeric_id: 'AD-01',
-            email: 'admin@creatornest.in',
-            full_name: 'Super Admin',
-            role: 'super_admin'
-          }));
-        }
-        router.push('/admin/dashboard');
-      } else {
-        setError(err.message || 'Login failed. Please check your credentials.');
-      }
+      setError(err.message || 'Login failed. Please check your credentials.');
     } finally {
       setLoading(false);
     }

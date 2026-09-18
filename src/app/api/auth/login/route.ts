@@ -63,8 +63,22 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Constant-time-like check for password
-    if (user.password !== loginPassword) {
+    // Password verification supporting environment variable for Admin and hashed/plain passwords
+    const envAdminPassword = process.env.ADMIN_PASSWORD;
+    const isSuperAdmin = user.role === 'admin' || user.role === 'super_admin';
+    
+    let isPasswordValid = false;
+    if (isSuperAdmin && envAdminPassword && loginPassword === envAdminPassword) {
+      isPasswordValid = true;
+    } else if (user.password && user.password === loginPassword) {
+      isPasswordValid = true;
+    } else if (user.password_hash) {
+      const crypto = await import('crypto');
+      const hash = crypto.createHash('sha256').update(loginPassword + (process.env.AUTH_SECRET || 'cn_salt_2026')).digest('hex');
+      isPasswordValid = hash === user.password_hash;
+    }
+
+    if (!isPasswordValid) {
       return NextResponse.json(
         { success: false, error: 'Incorrect password. Please verify your credentials.' },
         { status: 401 }

@@ -48,3 +48,6 @@ next-env.d.ts
 
 # local scratch scripts
 scratch/
+
+# user data & credentials
+data/users.json
