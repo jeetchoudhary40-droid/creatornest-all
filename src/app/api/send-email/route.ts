@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import { verifyAdminRequest, checkRateLimit, getClientIp } from '@/lib/security';
 import { getSubmissions, saveSubmission } from '@/lib/submissions';
 
-const PRIMARY_EMAIL = process.env.CONTACT_EMAIL || 'hellocreatornest@gmail.com';
+const PRIMARY_EMAIL = process.env.CONTACT_EMAIL || 'hello@creatornest.in';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://bqesdjhpqdwjowdiinyi.supabase.co',

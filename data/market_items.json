@@ -1,0 +1,355 @@
+[
+  {
+    "id": "tool-media-kit-builder",
+    "item_type": "tool",
+    "title": "Influencer Media Kit & Rate Card Suite",
+    "short_desc": "Build a live, mobile-responsive media kit with dynamic CPM rate cards, built-in brand lead capture, and sponsor agreements.",
+    "long_desc": "Replace outdated PDF/Excel rate cards. Generate a live, interactive creator media kit featuring an algorithmic pricing engine (CPM & CPE by niche), audience demographic showcase, built-in 'Work With Me' brand deal CRM with UTM source tracking, and 1-click legal contract generation.",
+    "category": "AI Tools",
+    "icon": "Sparkles",
+    "accent": "#00F2FE",
+    "plan": "free",
+    "price": 0,
+    "rating": 5.0,
+    "thumbnail_url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop",
+    "file_url": "/uploads/tools/assets/Brand_Deal_Pitch_Kit.zip",
+    "external_url": "/tools/media-kit-builder",
+    "tags": ["Media Kit", "Rate Card", "Brand Deals", "CRM", "Contract"],
+    "features": [
+      "Live Responsive Web Media Kit with Brand Colors",
+      "Dynamic Pricing Engine for Dedicated & Integrated Videos",
+      "Built-in Brand Lead CRM with UTM Attribution",
+      "1-Click Standardized Sponsor Contract Generator"
+    ],
+    "is_published": true,
+    "created_at": "2026-09-22T08:45:00.000Z"
+  },
+  {
+    "id": "tool-youtube-er-calc",
+    "item_type": "tool",
+    "title": "YouTube Engagement Rate Calculator",
+    "short_desc": "Calculate your real engagement rate by average views, benchmark against top creators, and evaluate commercial sponsorship viability.",
+    "long_desc": "Calculate true YouTube engagement rate using active video views, likes, and comments. Includes industry benchmarks (<1.8% to >6% Elite), like/comment ratios, and direct conversion into a live Creator Media Kit with rate card pricing.",
+    "category": "AI Tools",
+    "icon": "Video",
+    "accent": "#EF4444",
+    "plan": "free",
+    "price": 0,
+    "rating": 4.9,
+    "thumbnail_url": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=600&auto=format&fit=crop",
+    "file_url": "/uploads/tools/assets/Brand_Deal_Pricing_Guide_2026.pdf",
+    "external_url": "/tools/youtube-engagement-calculator",
+    "tags": ["Engagement Rate", "YouTube", "Calculator", "Analytics", "Benchmarks"],
+    "features": [
+      "Real-time Views-based ER% Formula ((Likes+Comments)/Views)",
+      "Industry Benchmark Barometer (Low to Elite Loyalty)",
+      "Niche CPM Viability Multiplier",
+      "1-Click Bridge into Live Media Kit & Rate Card"
+    ],
+    "is_published": true,
+    "created_at": "2026-09-22T08:45:00.000Z"
+  },
+  {
+    "id": "t-calc",
+    "item_type": "tool",
+    "title": "Brand Deal Pricing & Capacity Calculator",
+    "short_desc": "Calculate your exact creator rate card in ₹, deliverable pricing, CPM/CPE, and compare rates across 13 niches.",
+    "long_desc": "The Brand Deal Pricing & Capacity Calculator is India's most accurate rate estimation engine for Instagram and YouTube creators. It calculates exact pricing bands for 11+ deliverables based on follower counts, average views/reach, engagement rate (ER%), city audience tier, and content language.\n\nFeaturing real-time Dual Niche Comparison Mode, add-on multipliers (exclusivity, whitelisting, usage rights), and a 1-click negotiation formula trace for brand pitches.",
+    "category": "AI Tools",
+    "icon": "Calculator",
+    "accent": "#10B981",
+    "plan": "free",
+    "price": 0,
+    "rating": 5,
+    "thumbnail_url": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop",
+    "file_url": "/uploads/tools/assets/Brand_Deal_Pricing_Guide_2026.pdf",
+    "external_url": "/tools/brand-deal-calculator",
+    "tags": [
+      "Brand Deals",
+      "Pricing",
+      "Rate Card",
+      "Calculator"
+    ],
+    "features": [
+      "Instagram & YouTube Deliverable Rate Cards",
+      "13 Niche Multipliers (Finance 2.0x to Comedy 0.9x)",
+      "Dual Niche Side-by-Side Comparison & Gap %",
+      "Follower Band & Audience Tier Blending (70/30 Model)",
+      "Effective CPM & CPE Calculations",
+      "Add-ons: Exclusivity, Whitelisting, Usage Rights"
+    ],
+    "is_published": true,
+    "created_at": "2026-09-22T05:20:16.491Z"
+  },
+  {
+    "id": "t1",
+    "item_type": "tool",
+    "title": "AI Script Generator & Hook Frameworks",
+    "short_desc": "Generate viral video scripts with hooks, storytelling arcs & CTAs in seconds using advanced AI.",
+    "long_desc": "The AI Script Generator is Creator Nest's most-used tool. Powered by a fine-tuned large language model trained on thousands of viral creator scripts, it outputs full scripts complete with a punchy hook, structured storytelling arc, and a conversion-focused CTA.\n\nIncludes 100+ proven hook templates, retention formulas, and customizable prompt libraries for YouTube long-form, Reels, Shorts, and podcasts.",
+    "category": "AI Tools",
+    "icon": "Brain",
+    "accent": "#00F2FE",
+    "plan": "free",
+    "price": 0,
+    "rating": 4.9,
+    "thumbnail_url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop",
+    "file_url": "/uploads/tools/assets/AI_Script_Generator_Suite.zip",
+    "external_url": "",
+    "tags": [
+      "Scripts",
+      "YouTube",
+      "Reels",
+      "Hooks"
+    ],
+    "features": [
+      "Hook generator (5 variants per script)",
+      "Full narrative arc with 3-act structure",
+      "Niche-aware tone matching (Educational, Viral, Storytelling)",
+      "High-converting CTA templates",
+      "Instant editable Notion & PDF script workspace"
+    ],
+    "is_published": true,
+    "created_at": "2026-09-22T05:20:16.492Z"
+  },
+  {
+    "id": "t2",
+    "item_type": "tool",
+    "title": "Thumbnail AI Prompt Pack & Design System",
+    "short_desc": "Create scroll-stopping thumbnails with Midjourney-style prompts & A/B test ideas.",
+    "long_desc": "Thumbnail AI combines generative image prompting with CTR-optimised design principles. Input your video title and niche, and get 5 Midjourney-ready prompts alongside reference composition layouts used by top creators in your space.\n\nAlso includes an A/B test idea generator and Photoshop/Canva color grading presets calibrated for YouTube and Instagram CTR.",
+    "category": "AI Tools",
+    "icon": "Palette",
+    "accent": "#8B5CF6",
+    "plan": "silver",
+    "price": 499,
+    "rating": 4.8,
+    "thumbnail_url": "https://images.unsplash.com/photo-1542744094-3a31f103e35f?q=80&w=600&auto=format&fit=crop",
+    "file_url": "/uploads/tools/assets/Thumbnail_AI_System_2026.zip",
+    "external_url": "",
+    "tags": [
+      "Thumbnails",
+      "Design",
+      "CTR",
+      "Midjourney"
+    ],
+    "features": [
+      "50+ High-CTR Midjourney prompt variants per niche",
+      "A/B test concept generator & checklist",
+      "Composition layout templates & color palettes",
+      "Contrast and typography pairing rules"
+    ],
+    "is_published": true,
+    "created_at": "2026-09-22T05:20:16.492Z"
+  },
+  {
+    "id": "t3",
+    "item_type": "tool",
+    "title": "Viral Hook & Caption Engine",
+    "short_desc": "Engineered hooks that boost your video retention past the crucial 3-second mark on Reels, Shorts & TikTok.",
+    "long_desc": "Viewer attention drops by 70% in the first 3 seconds. The Viral Hook & Caption Engine provides 150+ psychology-backed hook formulas categorized by curiosity gap, contrarian statements, story starters, and negative consequences.\n\nIncludes caption generation templates with targeted hashtags calibrated for algorithmic distribution.",
+    "category": "AI Tools",
+    "icon": "FileText",
+    "accent": "#F59E0B",
+    "plan": "silver",
+    "price": 299,
+    "rating": 4.9,
+    "thumbnail_url": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=600&auto=format&fit=crop",
+    "file_url": "/uploads/tools/assets/Viral_Hook_Engine_2026.zip",
+    "external_url": "",
+    "tags": [
+      "Hooks",
+      "Captions",
+      "Retention",
+      "ShortForm"
+    ],
+    "features": [
+      "150+ Tested viral hook opening lines",
+      "Retention loop formulas for Reels & Shorts",
+      "High-converting bio & caption generators",
+      "Hashtag strategy guides for Indian niches"
+    ],
+    "is_published": true,
+    "created_at": "2026-09-22T05:20:16.492Z"
+  },
+  {
+    "id": "t4",
+    "item_type": "tool",
+    "title": "Sponsorship Pitch AI & Brand Deal Deck",
+    "short_desc": "Pitch emails, media kits & negotiation scripts that have secured ₹1L+ brand deals for creators.",
+    "long_desc": "Stop sending generic emails to brand marketing managers. This comprehensive kit provides battle-tested cold pitch email templates, follow-up sequences, media kit formats, and a legally sound Creator Agreement template with Net-15 payment terms.\n\nIncludes dynamic rate calculators, barter-to-paid transition scripts, and brand manager direct contact formats.",
+    "category": "AI Tools",
+    "icon": "Zap",
+    "accent": "#10B981",
+    "plan": "gold",
+    "price": 599,
+    "rating": 5,
+    "thumbnail_url": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=600&auto=format&fit=crop",
+    "file_url": "/uploads/tools/assets/Brand_Deal_Pitch_Kit.zip",
+    "external_url": "",
+    "tags": [
+      "Sponsorship",
+      "Media Kit",
+      "Brand Deals",
+      "Agency"
+    ],
+    "features": [
+      "25+ Cold outreach email templates for D2C & Tech brands",
+      "Negotiation scripts for budget multipliers",
+      "Standard Creator SOW & Non-Disclosure Agreement (NDA)",
+      "Invoice template with GST & TDS 194J guidance"
+    ],
+    "is_published": true,
+    "created_at": "2026-09-22T05:20:16.492Z"
+  },
+  {
+    "id": "t5",
+    "item_type": "tool",
+    "title": "YouTube SEO & Tag Optimizer",
+    "short_desc": "Rank higher in YouTube search with keyword research, optimized descriptions, and tag sets.",
+    "long_desc": "Maximize your search impressions and suggested video traffic with algorithmic SEO optimization. Includes keyword search volume estimators, competitor tag scrapers, click-worthy title formulas, and structured video description templates with chapter markers.",
+    "category": "AI Tools",
+    "icon": "Wrench",
+    "accent": "#00F2FE",
+    "plan": "silver",
+    "price": 399,
+    "rating": 4.8,
+    "thumbnail_url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=600&auto=format&fit=crop",
+    "file_url": "/uploads/tools/assets/YouTube_SEO_Optimizer_2026.zip",
+    "external_url": "",
+    "tags": [
+      "SEO",
+      "YouTube",
+      "Tags",
+      "Search"
+    ],
+    "features": [
+      "High-traffic keyword and tag sets by niche",
+      "Optimized description templates with timestamp chapters",
+      "Click-worthy title variants with power words",
+      "Competitor search ranking strategy guide"
+    ],
+    "is_published": true,
+    "created_at": "2026-09-22T05:20:16.492Z"
+  },
+  {
+    "id": "t6",
+    "item_type": "tool",
+    "title": "Content Calendar & Production AI",
+    "short_desc": "Notion & Sheets workflow system to plan, script, shoot, and schedule 30 days of content in 1 day.",
+    "long_desc": "Eliminate creator burnout with an end-to-end production pipeline. Organize your content calendar, batch-filming checklists, sponsor pipeline, and editor handoff boards in one synchronized Notion and Excel workspace.",
+    "category": "AI Tools",
+    "icon": "Sparkles",
+    "accent": "#A78BFA",
+    "plan": "gold",
+    "price": 449,
+    "rating": 4.9,
+    "thumbnail_url": "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=600&auto=format&fit=crop",
+    "file_url": "/uploads/tools/assets/Content_Calendar_Production_AI.zip",
+    "external_url": "",
+    "tags": [
+      "Notion",
+      "Calendar",
+      "Productivity",
+      "Workflow"
+    ],
+    "features": [
+      "30-Day Batch filming production framework",
+      "Notion content database with Kanban status boards",
+      "Sponsor pipeline and invoice tracker",
+      "Editor brief and feedback handoff template"
+    ],
+    "is_published": true,
+    "created_at": "2026-09-22T05:20:16.492Z"
+  },
+  {
+    "id": "tool-brand-deal-calculator",
+    "item_type": "tool",
+    "title": "Brand Deal Pricing & Capacity Calculator",
+    "short_desc": "Calculate your exact creator rate card in ₹, deliverable pricing, CPM/CPE, and compare rates across 13 niches.",
+    "long_desc": "Comprehensive creator monetization and brand deal pricing calculator for YouTube, Instagram, and podcasts. Includes deliverable rate breakdowns, sponsorship pitch formulas, and dual-niche commercial comparison.",
+    "category": "AI Tools",
+    "icon": "Calculator",
+    "accent": "#10B981",
+    "plan": "free",
+    "price": 0,
+    "rating": 5,
+    "thumbnail_url": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop",
+    "file_url": "/uploads/tools/assets/Brand_Deal_Pricing_Guide_2026.pdf",
+    "external_url": "/tools/brand-deal-calculator",
+    "tags": [
+      "Calculator",
+      "Pricing",
+      "Brand Deals",
+      "Monetization"
+    ],
+    "features": [
+      "India 2026 calibrated deliverable pricing model",
+      "CPM / CPE benchmark comparison across 13 niches",
+      "Dual-niche commercial rate multiplier",
+      "Automated SOW and Net-15/30 payment terms generator"
+    ],
+    "is_published": true,
+    "created_at": "2026-09-22T05:06:08.927Z"
+  },
+  {
+    "id": "tool-viral-script-generator",
+    "item_type": "tool",
+    "title": "YouTube Viral Hook & Retention Script Suite",
+    "short_desc": "100+ proven viral hook frameworks, retention loops, and complete video scripting templates for solo creators.",
+    "long_desc": "Engineered for high-performing creators. This comprehensive scripting pack includes 100+ retention-tested hooks, open-loop story arcs, pattern-interrupt timing guides, and call-to-action scripts tailored for tech, education, finance, and lifestyle niches.",
+    "category": "AI Tools",
+    "icon": "FileText",
+    "accent": "#00F2FE",
+    "plan": "gold",
+    "price": 499,
+    "rating": 4.9,
+    "thumbnail_url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop",
+    "file_url": "/uploads/tools/assets/YouTube_Viral_Script_Suite_2026.zip",
+    "external_url": "",
+    "tags": [
+      "Scripting",
+      "Retention",
+      "Hooks",
+      "YouTube AI"
+    ],
+    "features": [
+      "100+ High-retention hook formulas (AVD 80%+ tested)",
+      "3-Second pattern interrupt visual cues",
+      "Sponsorship integration 60s organic pitch scripts",
+      "Includes editable Notion & PDF script workspace"
+    ],
+    "is_published": true,
+    "created_at": "2026-09-22T05:06:08.927Z"
+  },
+  {
+    "id": "tool-creator-sponsorship-pitch-kit",
+    "item_type": "tool",
+    "title": "Agency Brand Deal Pitch Deck & Email Outreach Kit",
+    "short_desc": "The exact email pitch templates, rate cards, and legal contract agreements used by top management agencies.",
+    "long_desc": "Stop sending ignored emails to brand marketing managers. This kit provides battle-tested cold pitch email templates, follow-up sequences, media kit formats, and a legally sound Creator Agreement template with Net-15 payment terms.",
+    "category": "AI Tools",
+    "icon": "Zap",
+    "accent": "#F59E0B",
+    "plan": "platinum",
+    "price": 999,
+    "rating": 5,
+    "thumbnail_url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=600&auto=format&fit=crop",
+    "file_url": "/uploads/tools/assets/Agency_Brand_Deal_Pitch_Kit.zip",
+    "external_url": "",
+    "tags": [
+      "Sponsorship",
+      "Media Kit",
+      "Outreach",
+      "Agency"
+    ],
+    "features": [
+      "25+ Cold outreach email templates for D2C & Tech brands",
+      "Negotiation scripts for higher budget approvals",
+      "Standard Creator SOW & Non-Disclosure Agreement (NDA)",
+      "Invoice template with GST & TDS 194J guidance"
+    ],
+    "is_published": true,
+    "created_at": "2026-09-22T05:06:08.927Z"
+  }
+]

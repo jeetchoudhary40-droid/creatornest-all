@@ -298,7 +298,7 @@ export default function JoinGatewayPage() {
       </div>
 
       <p className="text-gray-300 text-sm md:text-base leading-relaxed">
-        Thank you for submitting your details. Your application has been logged and sent directly to our creator management desk at <strong className="text-primary font-medium">hellocreatornest@gmail.com</strong>.
+        Thank you for submitting your details. Your application has been logged and sent directly to our creator management desk at <strong className="text-primary font-medium">hello@creatornest.in</strong>.
       </p>
 
       <div className="bg-background/60 p-4 rounded-2xl border border-white/5 text-left text-xs text-gray-400 space-y-2">
@@ -1138,7 +1138,7 @@ export default function JoinGatewayPage() {
                   </button>
 
                   <p className="text-center text-[11px] text-gray-500">
-                    🔒 All submissions are securely forwarded to <span className="text-gray-400 font-medium">hellocreatornest@gmail.com</span>. We never share your data with third parties.
+                    🔒 All submissions are securely forwarded to <span className="text-gray-400 font-medium">hello@creatornest.in</span>. We never share your data with third parties.
                   </p>
                 </form>
 

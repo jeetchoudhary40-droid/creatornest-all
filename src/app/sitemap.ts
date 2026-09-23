@@ -8,6 +8,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Base static routes
   const routes = [
     { path: '', priority: 1.0, changeFrequency: 'daily' as const },
+    { path: '/marketplace', priority: 0.9, changeFrequency: 'daily' as const },
+    { path: '/tools/media-kit-builder', priority: 0.9, changeFrequency: 'daily' as const },
+    { path: '/tools/youtube-engagement-calculator', priority: 0.9, changeFrequency: 'daily' as const },
+    { path: '/tools/brand-deal-calculator', priority: 0.9, changeFrequency: 'weekly' as const },
     { path: '/creators/roster', priority: 0.9, changeFrequency: 'daily' as const },
     { path: '/join', priority: 0.9, changeFrequency: 'weekly' as const },
     { path: '/about', priority: 0.8, changeFrequency: 'monthly' as const },
@@ -17,7 +21,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/blog', priority: 0.8, changeFrequency: 'weekly' as const },
     { path: '/pricing', priority: 0.7, changeFrequency: 'monthly' as const },
     { path: '/services', priority: 0.7, changeFrequency: 'monthly' as const },
-    { path: '/tools', priority: 0.7, changeFrequency: 'monthly' as const },
     { path: '/login', priority: 0.5, changeFrequency: 'monthly' as const },
   ];
 
@@ -38,10 +41,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Dynamic tool detail pages
   const dynamicTools = ITEMS.filter(item => item.type === 'tool').map((tool) => ({
-    url: `${siteUrl}/marketplace/tool/${tool.id}`,
+    url: `${siteUrl}/marketplace/item/${tool.id}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
-    priority: 0.6,
+    priority: 0.7,
   }));
 
   // Dynamic blog detail pages

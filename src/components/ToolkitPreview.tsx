@@ -48,10 +48,10 @@ export default function ToolkitPreview() {
             </p>
           </div>
           <Link
-            href="/tools"
+            href="/marketplace?tab=tools"
             className="flex items-center space-x-2 text-primary font-bold hover:text-white transition-colors group whitespace-nowrap"
           >
-            <span>Explore All 6 Tools</span>
+            <span>Explore All AI Tools</span>
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </Link>
         </motion.div>

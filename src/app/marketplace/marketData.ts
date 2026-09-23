@@ -1,7 +1,7 @@
 import {
   Brain, Palette, Zap, Target, TrendingUp, BarChart3,
   BookOpen, Video, Scissors, Mic, FileText, Shield, Megaphone,
-  Globe, Users, Rocket, GraduationCap, Coins, Calculator, Wrench
+  Globe, Users, Rocket, GraduationCap, Coins, Calculator, Wrench, Sparkles
 } from 'lucide-react';
 
 export interface PricingPackage {
@@ -54,6 +54,40 @@ export interface MarketItem {
 export const ITEMS: MarketItem[] = [
 
   // ─── AI Tools ────────────────────────────────────────────────────────────────
+  {
+    id: 'tool-media-kit-builder',
+    type: 'tool',
+    title: 'Influencer Media Kit & Rate Card Suite',
+    desc: 'Build a live, mobile-responsive media kit with dynamic CPM rate cards, built-in brand lead capture, and sponsor agreements.',
+    category: 'AI Tools',
+    icon: Sparkles,
+    accent: '#00F2FE',
+    plan: 'free',
+    rating: 5.0,
+    meta: 'Free Live Web Tool',
+    cta: 'Open Media Kit Studio',
+    href: '/tools/media-kit-builder',
+    featured: true,
+    tags: ['Media Kit', 'Rate Card', 'Brand Deals', 'CRM', 'Contract'],
+    badge: '⭐ Flagship Suite'
+  },
+  {
+    id: 'tool-youtube-er-calc',
+    type: 'tool',
+    title: 'YouTube Engagement Rate Calculator',
+    desc: 'Calculate your real engagement rate by average views, benchmark against top creators, and evaluate commercial sponsorship viability.',
+    category: 'AI Tools',
+    icon: Video,
+    accent: '#EF4444',
+    plan: 'free',
+    rating: 4.9,
+    meta: 'Free by Views',
+    cta: 'Check Engagement Rate',
+    href: '/tools/youtube-engagement-calculator',
+    featured: true,
+    tags: ['Engagement Rate', 'YouTube', 'Calculator', 'Benchmarks'],
+    badge: '🔥 High Intent'
+  },
   {
     id: 't-calc', type: 'tool', title: 'Brand Deal Pricing & Capacity Calculator',
     desc: 'Calculate your exact creator rate card in ₹, deliverable pricing, CPM/CPE, and compare rates across 13 niches.',

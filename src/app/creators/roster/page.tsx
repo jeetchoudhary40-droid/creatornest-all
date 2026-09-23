@@ -542,7 +542,7 @@ export default function RosterPage() {
                     <Crown className="w-6 h-6 text-yellow-400" />
                   </div>
                   <div>
-                    <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-white">Top 10 <span className="text-primary">Featured</span></h2>
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-white">{leaderboard.length >= 10 ? 'Top 10' : 'Featured'} <span className="text-primary">Creators</span></h2>
                     <p className="text-sm text-gray-400">Ranked by total reach</p>
                   </div>
                 </div>

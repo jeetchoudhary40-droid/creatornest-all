@@ -156,6 +156,45 @@ export default function MarketCategoryPage({ categoryType, pageTitle, pageSubtit
     }
 
     try {
+      // 0. Fetch from server API first for tools
+      if (categoryType === 'tool') {
+        try {
+          const apiRes = await fetch('/api/tools');
+          const apiData = await apiRes.json();
+          if (apiData.success && apiData.tools && apiData.tools.length > 0) {
+            const mapped = apiData.tools.map((item: any) => ({
+              id: item.id,
+              type: item.item_type || 'tool',
+              title: item.title,
+              desc: item.short_desc,
+              short_desc: item.short_desc,
+              long_desc: item.long_desc,
+              category: item.category || 'AI Tools',
+              icon: getLucideIcon(item.icon),
+              accent: item.accent || '#00F2FE',
+              plan: item.plan || 'free',
+              price: item.price || 0,
+              rating: item.rating || 5.0,
+              thumbnail_url: item.thumbnail_url,
+              file_url: item.file_url,
+              external_url: item.external_url,
+              tags: item.tags || [],
+              details: {
+                features: Array.isArray(item.features) ? item.features : (item.features?.features || []),
+                packages: item.features?.packages || [],
+                faqs: item.features?.faqs || []
+              }
+            }));
+            setItems(mapped);
+            const uniqueCats = Array.from(new Set(mapped.map((t: any) => t.category).filter(Boolean))) as string[];
+            setCategories(['All', ...uniqueCats]);
+            return;
+          }
+        } catch (apiErr) {
+          console.warn('Could not fetch from /api/tools, trying fallback', apiErr);
+        }
+      }
+
       // 1. Fetch from database first
       const { data: dbItems, error } = await supabase
         .from('market_items')

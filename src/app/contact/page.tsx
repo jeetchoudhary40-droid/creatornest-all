@@ -27,9 +27,9 @@ import ApplicationSuccessModal from '@/components/ApplicationSuccessModal';
 const contactChannels = [
   {
     icon: Mail,
-    label: 'General & Talent Desk',
-    value: 'hellocreatornest@gmail.com',
-    href: 'mailto:hellocreatornest@gmail.com',
+    label: 'Official & Talent Desk',
+    value: 'hello@creatornest.in',
+    href: 'mailto:hello@creatornest.in',
     color: 'from-primary/15 via-cyan-950/20 to-surface/40',
     border: 'border-primary/25',
     iconBg: 'bg-primary/15',
@@ -39,13 +39,13 @@ const contactChannels = [
   {
     icon: Briefcase,
     label: 'Brand & Sponsorships',
-    value: 'collabs@creatornest.in',
-    href: 'mailto:collabs@creatornest.in',
+    value: 'hello@creatornest.in',
+    href: 'mailto:hello@creatornest.in',
     color: 'from-secondary/15 via-orange-950/20 to-surface/40',
     border: 'border-secondary/25',
     iconBg: 'bg-secondary/15',
     iconColor: 'text-secondary',
-    desc: 'Custom rate cards, briefs & SaaS campaigns',
+    desc: 'Custom rate cards, creator briefs & brand campaigns',
   },
   {
     icon: Building2,
@@ -68,7 +68,7 @@ const socialLinks = [
 ];
 
 const inquiryTypes = [
-  { value: 'brand', label: '🏢  Brand / Agency — Sponsor or Hire Tech Creators' },
+  { value: 'brand', label: '🏢  Brand / Agency — Sponsor or Hire Leading Creators' },
   { value: 'creator', label: '🎬  Creator — Apply for Exclusive Talent Representation' },
   { value: 'production', label: '⚡  Production & Scaling — Video Editing, Thumbnails & Scripts' },
   { value: 'lms', label: '🎓  Digital Products — Launch Courses & Toolkits' },
@@ -86,14 +86,14 @@ const budgetRanges = [
 
 const executiveStats = [
   { icon: Clock, label: 'Response Protocol', value: 'Prompt SLA' },
-  { icon: Users, label: 'Managed Network Reach', value: '10M+ Tech Audience' },
+  { icon: Users, label: 'Managed Network Reach', value: '15M+ Total Audience' },
   { icon: Zap, label: 'Campaign Value Facilitated', value: '₹5Cr+ Closed' },
 ];
 
 const faqs = [
   {
     q: 'How does Creator Nest evaluate creators for representation?',
-    a: 'We evaluate technical authority, audience retention metrics (AVD 75%+), upload consistency, and engagement authenticity across Tech, AI, Coding, and SaaS niches.'
+    a: 'We evaluate content authority, audience retention metrics (AVD 70%+), upload consistency, and authentic engagement across Education, Entertainment, Music, Tech, Finance, and Lifestyle categories.'
   },
   {
     q: 'How quickly will our brand receive custom proposals and rate cards?',
@@ -105,13 +105,14 @@ const faqs = [
   },
   {
     q: 'What brand categories do you specialize in?',
-    a: 'We specialize in B2B SaaS, Developer Toolkits, AI Applications, Consumer Electronics, Mobile Apps, Cloud Infrastructure, and EdTech platforms.'
+    a: 'We partner across D2C Brands, Consumer Apps, Fintech, EdTech, Music Labels, Gaming, Mobile Hardware, B2B SaaS, and Digital Services.'
   },
 ];
 
 function ContactContent() {
   const searchParams = useSearchParams();
-  const creatorParam = searchParams.get('creator') || searchParams.get('c') || '';
+  const rawCreatorParam = searchParams.get('creator') || searchParams.get('c') || '';
+  const creatorParam = rawCreatorParam.toLowerCase().includes('shradha') ? 'Jeet Choudhary' : rawCreatorParam;
 
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [showModal, setShowModal] = useState(false);
@@ -204,12 +205,12 @@ function ContactContent() {
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-[1.15] mb-5">
               Let&apos;s Build High-Impact <br className="hidden sm:block" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-cyan-300 to-white">
-                Tech Partnerships.
+                Creator & Brand Partnerships.
               </span>
             </h1>
 
             <p className="text-sm sm:text-lg text-gray-400 leading-relaxed max-w-2xl mx-auto">
-              Direct access to CreatorNest&apos;s talent management team and brand partnership directors. Whether you represent a B2B SaaS brand or lead an established tech channel, we look forward to collaborating.
+              Direct access to CreatorNest&apos;s talent management team and brand partnership directors. Whether you represent a high-growth brand, direct-to-consumer label, or lead an established creator channel across any niche, we look forward to collaborating.
             </p>
 
             {/* Targeted Creator Inbound Banner */}
@@ -388,7 +389,7 @@ function ContactContent() {
                             id="contact-org"
                             name="organization"
                             defaultValue={creatorParam ? `Inquiring for ${creatorParam}` : ''}
-                            placeholder="e.g. Acme SaaS / @TechChannel"
+                            placeholder="e.g. Acme Brands / @YourChannel"
                             className="w-full bg-background/80 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-gray-600 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30 transition-all"
                           />
                         </div>
@@ -466,7 +467,7 @@ function ContactContent() {
 
                       {status === 'error' && (
                         <p className="text-red-400 text-xs font-medium text-center">
-                          Failed to send message. Please reach out directly to collabs@creatornest.in
+                          Failed to send message. Please reach out directly to hello@creatornest.in
                         </p>
                       )}
 
@@ -513,9 +514,9 @@ function ContactContent() {
 
                 <div className="space-y-3.5 text-xs text-gray-300">
                   <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/5">
-                    <p className="font-bold text-white mb-0.5">High-Intent Tech Audiences</p>
+                    <p className="font-bold text-white mb-0.5">High-Intent, Verified Audiences</p>
                     <p className="text-gray-400 leading-relaxed">
-                      Zero lifestyle spam. We place products before developers, AI practitioners, CTOs, and digital builders.
+                      Zero bot inflation. We place campaigns before authentic, engaged communities across education, entertainment, music, finance, tech, and lifestyle.
                     </p>
                   </div>
                   <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/5">
@@ -570,10 +571,10 @@ function ContactContent() {
                     For agency tenders, custom creator roster matchmaking, or immediate brand briefs:
                   </p>
                   <a
-                    href="mailto:collabs@creatornest.in"
+                    href="mailto:hello@creatornest.in"
                     className="inline-flex items-center space-x-2 text-xs sm:text-sm font-extrabold text-primary hover:underline"
                   >
-                    <span>collabs@creatornest.in</span>
+                    <span>hello@creatornest.in</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </a>
                 </div>

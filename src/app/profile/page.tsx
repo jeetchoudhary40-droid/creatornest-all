@@ -553,7 +553,7 @@ function ProfileContent() {
                 <div className="bg-[#0C121B] border border-white/10 rounded-3xl p-6 shadow-xl">
                   <div className="flex items-center justify-between mb-5">
                     <h2 className="text-lg font-bold text-white">Tools & Resources Downloaded</h2>
-                    <Link href="/tools" className="text-xs font-bold text-cyan-400 hover:underline flex items-center gap-1">
+                    <Link href="/marketplace?tab=tools" className="text-xs font-bold text-cyan-400 hover:underline flex items-center gap-1">
                       Browse All <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>

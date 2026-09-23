@@ -35,28 +35,64 @@ export const allCreators: Creator[] = [
     niche: "EdTech & App Reviews",
     niches: [
       "EdTech & App Reviews",
-      "Cybersecurity & Data",
-      "AI & Automation"
+      "Education & Upskilling",
+      "Civic Guides & Digital Governance"
     ],
     platform: "Both",
-    youtube: "110K",
+    youtube: "110K+",
     youtubeNum: 110000,
     instagram: "45K",
     instaNum: 45000,
-    location: "Delhi",
+    location: "Delhi, India",
     avd: "82%",
-    avgViewsLast10: 40000,
+    avgViewsLast10: 16328,
     topGrowing: true,
     featured: true,
     rank: 1,
     img: "/images/creators/jeet-choudhary.png",
-    bio: "Founder of @ElectionGuide (110K+ Subscribers). Leading EdTech & App Review creator specializing in digital governance apps, educational workflows, tech tutorials, and software walkthroughs.",
-    youtubeUrl: "https://www.youtube.com/@ElectionGuide",
-    youtubeHandle: "@ElectionGuide",
-    instaUrl: "https://instagram.com/electionguide",
-    instaHandle: "@electionguide",
-    businessEmail: "collabs@creatornest.in"
+    bio: "Creator of Election Guide (110,000+ subscribers). Empowering citizens across India with simplified guides on Voter IDs, public government schemes, digital citizen services, and democratic participation.",
+    youtubeUrl: "https://www.youtube.com/@electionguide",
+    youtubeHandle: "@electionguide",
+    instaUrl: "https://www.instagram.com/creatornestmedia/",
+    instaHandle: "@creatornestmedia",
+    linkedinUrl: "https://linkedin.com/company/creatornest",
+    websiteUrl: "https://creatornest.in",
+    businessEmail: "jeetchoudhary40@gmail.com"
   },
+  {
+    id: 7,
+    name: "Praveen Janawa",
+    channelName: "Dear Kisan",
+    niche: "Agriculture & Farming",
+    niches: [
+      "Agriculture & Farming",
+      "Education & Upskilling",
+      "Rural Tech & Innovation"
+    ],
+    platform: "Both",
+    youtube: "745K",
+    youtubeNum: 745000,
+    instagram: "142K",
+    instaNum: 142000,
+    location: "Haryana, India",
+    avd: "76%",
+    avgViewsLast10: 85000,
+    topGrowing: true,
+    featured: true,
+    rank: 2,
+    img: "/images/creators/1788848769115-creator-profile.jpg",
+    bio: "Founder of Dear Kisan (745K+ subscribers, 120M+ views). India's leading agriculture & farming YouTuber from Haryana — covering crop management, farming tips, pesticide research, modern machinery reviews, and kisan welfare. Empowering Indian farmers with practical field knowledge since 2019.",
+    youtubeUrl: "https://www.youtube.com/@dear_kisan",
+    youtubeHandle: "@dear_kisan",
+    instaUrl: "https://www.instagram.com/dear_kisan/",
+    instaHandle: "@dear_kisan",
+    websiteUrl: "https://dearkisan.com",
+    businessEmail: "collabs@creatornest.in"
+  }
+];
+
+// Temporarily hidden creators (available for reactivation anytime)
+export const hiddenCreators: Creator[] = [
   {
     id: 2,
     name: "Damini Tripathi",
@@ -77,7 +113,7 @@ export const allCreators: Creator[] = [
     avgViewsLast10: 54000,
     topGrowing: true,
     featured: true,
-    rank: 2,
+    rank: 5,
     img: "/images/creators/damini-tripathi.jpg",
     bio: "Digital marketing educator & agency founder (1.15M+ community). Teaching real & raw Meta Ads, Google AI Studio automations, WhatsApp marketing, and e-commerce growth.",
     youtubeUrl: "https://www.youtube.com/@daminitripathia",
@@ -107,7 +143,7 @@ export const allCreators: Creator[] = [
     avgViewsLast10: 120000,
     topGrowing: true,
     featured: true,
-    rank: 3,
+    rank: 4,
     img: "/images/creators/hitesh-choudhary.jpg",
     bio: "Founder of Chai aur Code (927K+ subscribers). Teaching coding & DSA in Hindi over a cup of chai. Full-stack dev, educator, and tech entrepreneur. Stepped into 45+ countries.",
     youtubeUrl: "https://www.youtube.com/@chaiaurcode",
@@ -116,37 +152,6 @@ export const allCreators: Creator[] = [
     instaHandle: "@hiteshchoudharyofficial",
     websiteUrl: "https://chaicode.com",
     businessEmail: "team@hiteshchoudhary.com"
-  },
-  {
-    id: 4,
-    name: "Shradha Khapra",
-    channelName: "Apna College",
-    niche: "Coding & Tech Education",
-    niches: [
-      "Coding & Tech Education",
-      "Full-Stack & DevOps",
-      "AI & Automation"
-    ],
-    platform: "Both",
-    youtube: "7.87M",
-    youtubeNum: 7870000,
-    instagram: "873K",
-    instaNum: 873000,
-    location: "Delhi, India",
-    avd: "86%",
-    avgViewsLast10: 450000,
-    topGrowing: true,
-    featured: true,
-    rank: 4,
-    img: "/images/creators/shradha-khapra.jpg",
-    bio: "Founder of Apna College (7.87M+ subscribers, 10M+ community). Ex-Microsoft Software Engineer, Google SPS & DRDO. Leading tech educator teaching DSA, AI Full-Stack Web Development, and placement preparation.",
-    youtubeUrl: "https://www.youtube.com/@ApnaCollegeOfficial",
-    youtubeHandle: "@ApnaCollegeOfficial",
-    instaUrl: "https://www.instagram.com/shradhakhapra/",
-    instaHandle: "@shradhakhapra",
-    linkedinUrl: "https://linkedin.com/in/shradha-khapra",
-    websiteUrl: "https://apnacollege.in",
-    businessEmail: "partnerships@apnacollege.in"
   },
   {
     id: 5,
@@ -168,7 +173,7 @@ export const allCreators: Creator[] = [
     avgViewsLast10: 14000,
     topGrowing: true,
     featured: true,
-    rank: 5,
+    rank: 6,
     img: "/images/creators/abhijeet-kalamkar.jpg",
     bio: "Founder of AI Learners India (172K+ subscribers). AI Engineer & educator specializing in AI Agents, n8n automations, LLM workflows, Claude Code, and practical business automation.",
     youtubeUrl: "https://www.youtube.com/@AILearnersbyabhijeet",
@@ -200,7 +205,7 @@ export const allCreators: Creator[] = [
     avgViewsLast10: 45000,
     topGrowing: true,
     featured: true,
-    rank: 6,
+    rank: 3,
     img: "/images/creators/saumya-singh.jpg",
     bio: "Software Engineer (5+ yrs), 4x TEDx Speaker, LinkedIn Top Voice & Tech Educator (1M+ community). Ex-upGrad, Scaler, Newton School mentor. GSoC mentor & SIH winner teaching Coding, CS fundamentals & AI workflows.",
     youtubeUrl: "https://www.youtube.com/@saumya1singh",
@@ -211,55 +216,15 @@ export const allCreators: Creator[] = [
     twitterUrl: "https://twitter.com/saumya1singh",
     websiteUrl: "https://topmate.io/saumya1singh",
     businessEmail: "collabs@creatornest.in"
-  },
-  {
-    id: 7,
-    name: "Praveen Janawa",
-    channelName: "Dear Kisan",
-    niche: "Agriculture & Farming",
-    niches: [
-      "Agriculture & Farming",
-      "Education & Upskilling",
-      "Rural Tech & Innovation"
-    ],
-    platform: "Both",
-    youtube: "745K",
-    youtubeNum: 745000,
-    instagram: "142K",
-    instaNum: 142000,
-    location: "Haryana, India",
-    avd: "76%",
-    avgViewsLast10: 85000,
-    topGrowing: true,
-    featured: true,
-    rank: 7,
-    img: "/images/creators/praveen-janawa.jpg",
-    bio: "Founder of Dear Kisan (745K+ subscribers, 120M+ views). India's leading agriculture & farming YouTuber from Haryana — covering crop management, farming tips, pesticide research, modern machinery reviews, and kisan welfare. Empowering Indian farmers with practical field knowledge since 2019.",
-    youtubeUrl: "https://www.youtube.com/@dear_kisan",
-    youtubeHandle: "@dear_kisan",
-    instaUrl: "https://www.instagram.com/dear_kisan/",
-    instaHandle: "@dear_kisan",
-    websiteUrl: "https://dearkisan.com",
-    businessEmail: "collabs@creatornest.in"
   }
 ];
 
 export const niches = [
   "All",
+  "Agriculture & Farming",
   "Education & Upskilling",
   "EdTech & App Reviews",
-  "Entertainment & Comedy",
-  "Lifestyle & Fashion",
-  "Gaming & Esports",
-  "Finance & Business",
-  "Tech & Gadgets",
-  "AI & Automation",
-  "Coding & Tech Education",
-  "Web Development",
-  "Mobile Apps Review",
-  "Podcasting & Storytelling",
-  "Cybersecurity & Data",
-  "Agriculture & Farming"
+  "Rural Tech & Innovation"
 ];
 
 export const platforms = ["All", "Youtube", "Instagram"];

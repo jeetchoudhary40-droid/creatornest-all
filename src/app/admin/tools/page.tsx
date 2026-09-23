@@ -1,48 +1,23 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Edit, Trash2, X, Save, ShoppingCart, Loader2, Upload, Image as ImageIcon, Wrench } from 'lucide-react';
-import { ITEMS as staticItems } from '@/app/marketplace/marketData';
-import { getUUIDFromStaticId } from '@/lib/uuidHelper';
-
-const STATIC_TOOLS = staticItems
-  .filter(item => item.type !== 'service')
-  .map(item => {
-    let priceVal = 0;
-    if (item.meta && item.meta.includes('₹')) {
-      const numStr = item.meta.replace(/[^0-9]/g, '');
-      if (numStr) priceVal = parseInt(numStr, 10);
-    }
-    return {
-      id: getUUIDFromStaticId(String(item.id)),
-      item_type: item.type,
-      title: item.title,
-      short_desc: item.desc,
-      long_desc: item.details?.longDesc || item.desc,
-      category: item.category,
-      icon: item.icon?.name || item.icon?.displayName || 'Wrench',
-      accent: item.accent || '#00F2FE',
-      plan: item.plan || 'free',
-      price: priceVal,
-      rating: item.rating || 5.0,
-      thumbnail_url: item.thumbnailUrl || '',
-      file_url: '',
-      external_url: item.href || '',
-      tags: item.tags || [],
-      features: item.details?.features || []
-    };
-  });
+import { 
+  Plus, Edit, Trash2, X, Save, ShoppingCart, Loader2, 
+  Upload, Image as ImageIcon, Wrench, CheckCircle2, IndianRupee,
+  Download, ExternalLink, RefreshCw
+} from 'lucide-react';
+import { auth } from '@/lib/auth';
 
 export default function AdminToolsPage() {
-  const [items, setItems] = useState<any[]>(() => STATIC_TOOLS);
-  const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<any>(null);
   const [uploading, setUploading] = useState(false);
-  const [activeTab, setActiveTab] = useState<'tools' | 'leads'>('tools');
+  const [activeTab, setActiveTab] = useState<'tools' | 'leads' | 'orders'>('tools');
   const [calculatorLeads, setCalculatorLeads] = useState<any[]>([]);
+  const [orders, setOrders] = useState<any[]>([]);
   
   const [formData, setFormData] = useState({
     item_type: 'tool',
@@ -68,61 +43,47 @@ export default function AdminToolsPage() {
   const fetchItems = async () => {
     setLoading(true);
 
-    if (typeof window !== 'undefined') {
-      const cached = localStorage.getItem('cn_market_items');
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        const toolsOnly = parsed.filter((i: any) => i.item_type !== 'service');
-        if (toolsOnly.length > 0) {
-          setItems(toolsOnly);
+    // 1. Fetch persistent server tools
+    try {
+      const token = auth.getToken();
+      const res = await fetch('/api/admin/tools', {
+        headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+      });
+      const data = await res.json();
+      if (data.success && data.tools) {
+        setItems(data.tools);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('cn_market_items', JSON.stringify(data.tools));
         }
       }
+    } catch (e) {
+      console.warn("Failed to fetch tools from /api/admin/tools, trying localStorage", e);
+      if (typeof window !== 'undefined') {
+        const cached = localStorage.getItem('cn_market_items');
+        if (cached) setItems(JSON.parse(cached));
+      }
+    }
 
+    // 2. Fetch leads
+    if (typeof window !== 'undefined') {
       const cachedLeads = localStorage.getItem('cn_calculator_leads');
       if (cachedLeads) {
         setCalculatorLeads(JSON.parse(cachedLeads));
       }
     }
 
+    // 3. Fetch Orders
     try {
-      const { data, error } = await supabase
-        .from('market_items')
-        .select('*')
-        .neq('item_type', 'service')
-        .order('created_at', { ascending: false });
-        
-      if (!error && data && data.length > 0) {
-        setItems(data);
-        if (typeof window !== 'undefined') {
-          const cached = localStorage.getItem('cn_market_items');
-          let allItems = cached ? JSON.parse(cached) : [];
-          allItems = allItems.filter((i: any) => i.item_type === 'service');
-          allItems = [...allItems, ...data];
-          localStorage.setItem('cn_market_items', JSON.stringify(allItems));
-        }
-      } else {
-        if (items.length === 0) {
-          setItems(STATIC_TOOLS);
-        }
+      const token = auth.getToken();
+      const resOrders = await fetch('/api/admin/orders', {
+        headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+      });
+      const ordersData = await resOrders.json();
+      if (ordersData.success && ordersData.orders) {
+        setOrders(ordersData.orders);
       }
     } catch (e) {
-      console.warn("Failed to fetch tools, keeping static fallback", e);
-      if (items.length === 0) {
-        setItems(STATIC_TOOLS);
-      }
-    }
-
-    try {
-      const { data: leadData } = await supabase
-        .from('calculator_leads')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(50);
-      if (leadData && leadData.length > 0) {
-        setCalculatorLeads(leadData);
-      }
-    } catch (e) {
-      console.warn("Failed to fetch leads from supabase", e);
+      console.warn("Failed to fetch orders", e);
     }
 
     setLoading(false);
@@ -146,7 +107,7 @@ export default function AdminToolsPage() {
         title: item.title || '',
         short_desc: item.short_desc || '',
         long_desc: item.long_desc || '',
-        category: item.category || '',
+        category: item.category || 'AI Tools',
         icon: item.icon || 'Brain',
         accent: item.accent || '#00F2FE',
         plan: item.plan || 'free',
@@ -174,42 +135,60 @@ export default function AdminToolsPage() {
     try {
       let finalThumb = formData.thumbnail_url;
       let finalFile = formData.file_url;
+      const token = auth.getToken();
 
-      // Handle Image Upload
+      // Handle Image Upload via Server API
       if (imageFile) {
         try {
-          const ext = imageFile.name.split('.').pop();
-          const name = `${Date.now()}-thumb.${ext}`;
-          const { error } = await supabase.storage.from('tools-assets').upload(`images/${name}`, imageFile);
-          if (!error) {
-            const { data: { publicUrl } } = supabase.storage.from('tools-assets').getPublicUrl(`images/${name}`);
-            finalThumb = publicUrl;
+          const imgData = new FormData();
+          imgData.append('file', imageFile);
+          imgData.append('category', 'thumbnail');
+
+          const uploadRes = await fetch('/api/admin/tools/upload', {
+            method: 'POST',
+            headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+            body: imgData
+          });
+          const uploadJson = await uploadRes.json();
+          if (uploadJson.success && uploadJson.url) {
+            finalThumb = uploadJson.url;
+          } else {
+            console.warn('Image upload error:', uploadJson.error);
           }
         } catch (uploadErr) {
-          console.warn("Storage upload failed, keeping original thumbnail", uploadErr);
+          console.warn("Server thumbnail upload failed", uploadErr);
         }
       }
 
-      // Handle File Upload
+      // Handle Digital Asset File Upload via Server API
       if (assetFile) {
         try {
-          const ext = assetFile.name.split('.').pop();
-          const name = `${Date.now()}-asset.${ext}`;
-          const { error } = await supabase.storage.from('tools-assets').upload(`files/${name}`, assetFile);
-          if (!error) {
-            const { data: { publicUrl } } = supabase.storage.from('tools-assets').getPublicUrl(`files/${name}`);
-            finalFile = publicUrl;
+          const fileData = new FormData();
+          fileData.append('file', assetFile);
+          fileData.append('category', 'asset');
+
+          const uploadRes = await fetch('/api/admin/tools/upload', {
+            method: 'POST',
+            headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+            body: fileData
+          });
+          const uploadJson = await uploadRes.json();
+          if (uploadJson.success && uploadJson.url) {
+            finalFile = uploadJson.url;
+          } else {
+            console.warn('Asset upload error:', uploadJson.error);
           }
         } catch (uploadErr) {
-          console.warn("Storage upload failed, keeping original file", uploadErr);
+          console.warn("Server asset upload failed", uploadErr);
         }
       }
 
       const payload = { 
+        id: editingItem ? editingItem.id : undefined,
         item_type: formData.item_type,
         title: formData.title,
         short_desc: formData.short_desc,
-        long_desc: formData.long_desc,
+        long_desc: formData.long_desc || formData.short_desc,
         category: formData.category,
         icon: formData.icon,
         accent: formData.accent,
@@ -220,41 +199,43 @@ export default function AdminToolsPage() {
         file_url: finalFile,
         external_url: formData.external_url,
         tags: formData.tags.split(',').map(t => t.trim()).filter(Boolean),
-        features: formData.features.split('\n').map(f => f.trim()).filter(Boolean)
+        features: formData.features.split('\n').map(f => f.trim()).filter(Boolean),
+        is_published: true
       };
 
-      let updatedList = [];
+      // Save to server database
+      const saveRes = await fetch('/api/admin/tools', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const saveJson = await saveRes.json();
+
+      if (!saveRes.ok || !saveJson.success) {
+        throw new Error(saveJson.error || 'Failed to save tool on server');
+      }
+
+      const savedTool = saveJson.tool;
+
+      // Update local state
+      let updatedList: any[] = [];
       if (editingItem) {
-        try {
-          await supabase.from('market_items').update(payload).eq('id', editingItem.id);
-        } catch (dbErr) {
-          console.warn("Offline: Updating tool locally", dbErr);
-        }
-        updatedList = items.map(item => item.id === editingItem.id ? { ...item, ...payload } : item);
+        updatedList = items.map(item => item.id === editingItem.id ? savedTool : item);
       } else {
-        const newItem = {
-          id: `item-${Date.now()}`,
-          ...payload
-        };
-        try {
-          await supabase.from('market_items').insert([payload]);
-        } catch (dbErr) {
-          console.warn("Offline: Inserting tool locally", dbErr);
-        }
-        updatedList = [newItem, ...items];
+        updatedList = [savedTool, ...items];
       }
 
       setItems(updatedList);
-
       if (typeof window !== 'undefined') {
-        const cached = localStorage.getItem('cn_market_items');
-        let allItems = cached ? JSON.parse(cached) : [];
-        allItems = allItems.filter((i: any) => i.item_type === 'service'); // Keep only services
-        allItems = [...allItems, ...updatedList];
-        localStorage.setItem('cn_market_items', JSON.stringify(allItems));
+        localStorage.setItem('cn_market_items', JSON.stringify(updatedList));
       }
 
       setIsModalOpen(false);
+      alert('Tool successfully published to live website!');
     } catch (err: any) {
       alert("Error saving tool: " + err.message);
     } finally {
@@ -263,45 +244,45 @@ export default function AdminToolsPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm('Are you sure you want to delete this tool?')) {
+    if (confirm('Are you sure you want to delete this tool? It will be removed from the public website.')) {
       try {
-        await supabase.from('market_items').delete().eq('id', id);
-      } catch (dbErr) {
-        console.warn("Offline: Deleting tool locally", dbErr);
-      }
-      const updatedList = items.filter(item => item.id !== id);
-      setItems(updatedList);
+        const token = auth.getToken();
+        await fetch(`/api/admin/tools?id=${encodeURIComponent(id)}`, {
+          method: 'DELETE',
+          headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+        });
 
-      if (typeof window !== 'undefined') {
-        const cached = localStorage.getItem('cn_market_items');
-        if (cached) {
-          let allItems = JSON.parse(cached);
-          allItems = allItems.filter((i: any) => String(i.id) !== String(id));
-          localStorage.setItem('cn_market_items', JSON.stringify(allItems));
+        const updatedList = items.filter(item => String(item.id) !== String(id));
+        setItems(updatedList);
+
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('cn_market_items', JSON.stringify(updatedList));
         }
+      } catch (err: any) {
+        alert("Failed to delete tool: " + err.message);
       }
     }
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center bg-surface border border-white/5 p-6 rounded-2xl">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-surface border border-white/5 p-6 rounded-2xl">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center">
             <Wrench className="w-6 h-6 text-primary" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-white">AI Tools & Intelligence Management</h1>
-            <p className="text-sm text-gray-400">Manage Tools, Templates, Assets & Creator Pricing Calculator Inquiries</p>
+            <h1 className="text-2xl font-bold text-white">AI Tools & Digital Store Management</h1>
+            <p className="text-sm text-gray-400">Sell AI tools, scripts & templates with automated Cashfree payments & downloads</p>
           </div>
         </div>
         
         {activeTab === 'tools' && (
           <button 
             onClick={() => handleOpenModal()}
-            className="bg-primary text-background px-4 py-2 rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-primary/90 transition-colors cursor-pointer"
+            className="bg-primary text-background px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-primary/90 transition-colors cursor-pointer shadow-lg"
           >
-            <Plus className="w-4 h-4" /> Add Tool
+            <Plus className="w-4 h-4" /> Add AI Tool
           </button>
         )}
       </div>
@@ -316,7 +297,24 @@ export default function AdminToolsPage() {
               : 'text-gray-400 hover:text-white'
           }`}
         >
-          Tools & Assets ({items.length})
+          Published Tools ({items.length})
+        </button>
+
+        <button
+          onClick={() => setActiveTab('orders')}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
+            activeTab === 'orders'
+              ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
+              : 'text-gray-400 hover:text-white'
+          }`}
+        >
+          <IndianRupee className="w-3.5 h-3.5" />
+          <span>Orders & Sales</span>
+          {orders.length > 0 && (
+            <span className="px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-400 text-[10px] font-mono">
+              {orders.length}
+            </span>
+          )}
         </button>
 
         <button
@@ -336,40 +334,53 @@ export default function AdminToolsPage() {
         </button>
       </div>
 
-      {activeTab === 'tools' ? (
+      {/* Tab 1: Tools & Assets */}
+      {activeTab === 'tools' && (
         <div className="bg-surface border border-white/5 rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
                 <tr className="border-b border-white/5 text-xs text-gray-400 uppercase tracking-wider bg-white/5">
-                  <th className="px-6 py-4 font-semibold">Tool Title</th>
-                  <th className="px-6 py-4 font-semibold">Type</th>
+                  <th className="px-6 py-4 font-semibold">Tool Title & Asset</th>
+                  <th className="px-6 py-4 font-semibold">Category</th>
                   <th className="px-6 py-4 font-semibold">Plan</th>
                   <th className="px-6 py-4 font-semibold">Price</th>
+                  <th className="px-6 py-4 font-semibold">Downloadable File</th>
                   <th className="px-6 py-4 font-semibold text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
                 {loading ? (
                   <tr>
-                    <td colSpan={5} className="px-6 py-8 text-center text-gray-400">
-                      <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2" /> Loading tools...
+                    <td colSpan={6} className="px-6 py-8 text-center text-gray-400">
+                      <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2 text-primary" /> Loading tools from server...
                     </td>
                   </tr>
                 ) : items.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="px-6 py-8 text-center text-gray-400">No tools found. Create one above!</td>
+                    <td colSpan={6} className="px-6 py-8 text-center text-gray-400">No tools published yet. Click Add Tool to upload your first product!</td>
                   </tr>
                 ) : (
                   items.map(item => (
                     <tr key={item.id} className="hover:bg-white/[0.02] transition-colors">
                       <td className="px-6 py-4">
-                        <p className="font-semibold text-white">{item.title}</p>
-                        <p className="text-xs text-gray-500 truncate max-w-xs">{item.short_desc}</p>
+                        <div className="flex items-center gap-3">
+                          {item.thumbnail_url ? (
+                            <img src={item.thumbnail_url} alt="" className="w-10 h-10 rounded-lg object-cover border border-white/10 shrink-0" />
+                          ) : (
+                            <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+                              <Wrench className="w-5 h-5" />
+                            </div>
+                          )}
+                          <div className="min-w-0">
+                            <p className="font-semibold text-white truncate max-w-xs">{item.title}</p>
+                            <p className="text-xs text-gray-500 truncate max-w-xs">{item.short_desc}</p>
+                          </div>
+                        </div>
                       </td>
                       <td className="px-6 py-4 text-sm">
                         <span className="px-2.5 py-1 rounded border border-white/10 bg-white/5 capitalize text-gray-300 font-medium text-xs">
-                          {item.item_type}
+                          {item.category || 'AI Tools'}
                         </span>
                       </td>
                       <td className="px-6 py-4">
@@ -377,19 +388,38 @@ export default function AdminToolsPage() {
                           item.plan === 'free' ? 'bg-green-500/10 text-green-400 border border-green-500/20' :
                           item.plan === 'silver' ? 'bg-gray-400/10 text-gray-300 border border-gray-400/20' :
                           item.plan === 'gold' ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20' :
-                          'bg-blue-500/10 text-blue-400 border border-blue-500/20'
+                          'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20'
                         }`}>
                           {item.plan}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-sm font-semibold text-white">
-                        {item.price > 0 ? `₹${item.price}` : 'Free'}
+                      <td className="px-6 py-4 text-sm font-semibold text-white font-mono">
+                        {item.price > 0 ? (
+                          <span className="text-emerald-400 font-bold">₹{item.price}</span>
+                        ) : (
+                          <span className="text-green-400 font-bold">Free</span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 text-xs font-mono">
+                        {item.file_url ? (
+                          <a 
+                            href={`/api/tools/download?tool_id=${item.id}`} 
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 hover:underline bg-cyan-500/10 px-2.5 py-1 rounded border border-cyan-500/20"
+                          >
+                            <Download className="w-3.5 h-3.5" />
+                            <span>Download Asset</span>
+                          </a>
+                        ) : (
+                          <span className="text-gray-500 italic">No asset attached</span>
+                        )}
                       </td>
                       <td className="px-6 py-4 text-right">
-                        <button onClick={() => handleOpenModal(item)} className="p-2 text-gray-400 hover:text-white transition-colors cursor-pointer">
+                        <button onClick={() => handleOpenModal(item)} className="p-2 text-gray-400 hover:text-white transition-colors cursor-pointer" title="Edit Tool">
                           <Edit className="w-4 h-4" />
                         </button>
-                        <button onClick={() => handleDelete(item.id)} className="p-2 text-gray-400 hover:text-red-400 transition-colors ml-2 cursor-pointer">
+                        <button onClick={() => handleDelete(item.id)} className="p-2 text-gray-400 hover:text-red-400 transition-colors ml-2 cursor-pointer" title="Delete Tool">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </td>
@@ -400,7 +430,85 @@ export default function AdminToolsPage() {
             </table>
           </div>
         </div>
-      ) : (
+      )}
+
+      {/* Tab 2: Orders & Sales */}
+      {activeTab === 'orders' && (
+        <div className="bg-surface border border-white/5 rounded-2xl overflow-hidden space-y-4 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <IndianRupee className="w-5 h-5 text-emerald-400" />
+                <span>Cashfree Payment Orders & Deliveries</span>
+              </h3>
+              <p className="text-xs text-gray-400">Real-time log of customer tool purchases and automated downloads</p>
+            </div>
+            <button
+              onClick={() => fetchItems()}
+              className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer"
+            >
+              <RefreshCw className="w-3.5 h-3.5" /> Refresh Orders
+            </button>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="border-b border-white/5 text-xs text-gray-400 uppercase tracking-wider bg-white/5">
+                  <th className="px-4 py-3 font-semibold">Order ID</th>
+                  <th className="px-4 py-3 font-semibold">Tool Purchased</th>
+                  <th className="px-4 py-3 font-semibold">Customer</th>
+                  <th className="px-4 py-3 font-semibold">Amount</th>
+                  <th className="px-4 py-3 font-semibold">Payment Status</th>
+                  <th className="px-4 py-3 font-semibold">Date</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5 text-xs">
+                {orders.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="px-4 py-8 text-center text-gray-400">
+                      No customer orders recorded yet. Make a purchase on the public site to test!
+                    </td>
+                  </tr>
+                ) : (
+                  orders.map((order: any, i: number) => (
+                    <tr key={i} className="hover:bg-white/[0.02] transition-colors">
+                      <td className="px-4 py-3.5 font-mono text-cyan-300 font-bold">
+                        {order.orderId}
+                      </td>
+                      <td className="px-4 py-3.5 font-bold text-white">
+                        {order.toolTitle}
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <span className="text-white font-medium block">{order.customerName || 'Customer'}</span>
+                        <span className="text-gray-400 text-[10px] block font-mono">{order.customerEmail || order.customerPhone || '-'}</span>
+                      </td>
+                      <td className="px-4 py-3.5 font-mono font-bold text-emerald-400">
+                        {order.amount > 0 ? `₹${order.amount}` : 'Free'}
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                          order.status === 'PAID'
+                            ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                            : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                        }`}>
+                          {order.status || 'PENDING'}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3.5 text-gray-500 text-[10px] font-mono">
+                        {order.createdAt ? new Date(order.createdAt).toLocaleString('en-IN') : 'Recent'}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Tab 3: Leads */}
+      {activeTab === 'leads' && (
         <div className="bg-surface border border-white/5 rounded-2xl overflow-hidden space-y-4 p-6">
           <div className="flex items-center justify-between">
             <div>
@@ -409,7 +517,7 @@ export default function AdminToolsPage() {
             </div>
             <button
               onClick={() => fetchItems()}
-              className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold text-gray-300 border border-white/10"
+              className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold text-gray-300 border border-white/10 cursor-pointer"
             >
               Refresh Inquiries
             </button>
@@ -463,19 +571,22 @@ export default function AdminToolsPage() {
         </div>
       )}
 
-      {/* Modal */}
+      {/* Add/Edit Tool Modal */}
       <AnimatePresence>
         {isModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-surface border border-white/10 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto custom-scrollbar"
+              className="bg-[#0B1017] border border-white/10 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl"
             >
-              <div className="flex items-center justify-between p-6 border-b border-white/5 sticky top-0 bg-surface z-20">
-                <h2 className="text-xl font-bold text-white">{editingItem ? 'Edit Tool' : 'Add New Tool'}</h2>
-                <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-white"><X className="w-5 h-5" /></button>
+              <div className="flex items-center justify-between p-6 border-b border-white/5 sticky top-0 bg-[#0B1017] z-20">
+                <div>
+                  <h2 className="text-xl font-bold text-white">{editingItem ? 'Edit AI Tool' : 'Add New AI Tool'}</h2>
+                  <p className="text-xs text-gray-400">Configure product details, pricing in ₹, and upload downloadable asset</p>
+                </div>
+                <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-white cursor-pointer"><X className="w-5 h-5" /></button>
               </div>
               
               <div className="p-6 space-y-6">
@@ -483,37 +594,38 @@ export default function AdminToolsPage() {
                 {/* Basic Info */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Item Type</label>
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Product Type</label>
                     <select 
                       value={formData.item_type} 
                       onChange={e => setFormData({...formData, item_type: e.target.value})}
-                      className="w-full bg-background border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none"
+                      className="w-full bg-[#141C28] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none"
                     >
-                      <option value="tool">AI Tool</option>
-                      <option value="template">Template</option>
-                      <option value="prompt">Prompt</option>
+                      <option value="tool">AI Tool / Software</option>
+                      <option value="template">Prompt & Script Template</option>
+                      <option value="prompt">Agency Pitch & Contract Kit</option>
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Plan Required</label>
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Plan Tier</label>
                     <select 
                       value={formData.plan} 
                       onChange={e => setFormData({...formData, plan: e.target.value})}
-                      className="w-full bg-background border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none"
+                      className="w-full bg-[#141C28] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none"
                     >
-                      <option value="free">Free</option>
-                      <option value="silver">Silver</option>
-                      <option value="gold">Gold</option>
-                      <option value="platinum">Platinum</option>
+                      <option value="free">Free Access</option>
+                      <option value="silver">Silver Tier</option>
+                      <option value="gold">Gold Tier</option>
+                      <option value="platinum">Platinum Tier</option>
                     </select>
                   </div>
                   <div className="md:col-span-2">
-                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Title</label>
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Product Title</label>
                     <input 
                       type="text" 
                       value={formData.title} 
                       onChange={e => setFormData({...formData, title: e.target.value})}
-                      className="w-full bg-background border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:border-primary/50 outline-none" 
+                      placeholder="e.g. YouTube Viral Script & Hook Suite 2026"
+                      className="w-full bg-[#141C28] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:border-primary/50 outline-none" 
                     />
                   </div>
                   <div className="md:col-span-2">
@@ -522,16 +634,18 @@ export default function AdminToolsPage() {
                       value={formData.short_desc} 
                       onChange={e => setFormData({...formData, short_desc: e.target.value})}
                       rows={2}
-                      className="w-full bg-background border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:border-primary/50 outline-none" 
+                      placeholder="Brief punchy summary shown on tool directory card"
+                      className="w-full bg-[#141C28] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:border-primary/50 outline-none" 
                     />
                   </div>
                   <div className="md:col-span-2">
-                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Long Description</label>
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Full Long Description & Guide</label>
                     <textarea 
                       value={formData.long_desc} 
                       onChange={e => setFormData({...formData, long_desc: e.target.value})}
                       rows={4}
-                      className="w-full bg-background border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:border-primary/50 outline-none" 
+                      placeholder="Detailed overview explaining what the buyer receives and how to use it"
+                      className="w-full bg-[#141C28] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:border-primary/50 outline-none" 
                     />
                   </div>
                 </div>
@@ -544,17 +658,18 @@ export default function AdminToolsPage() {
                       type="text" 
                       value={formData.category} 
                       onChange={e => setFormData({...formData, category: e.target.value})}
-                      placeholder="e.g. Scripting, Design, Pack"
-                      className="w-full bg-background border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:border-primary/50 outline-none" 
+                      placeholder="e.g. AI Tools, Scripting, Design"
+                      className="w-full bg-[#141C28] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:border-primary/50 outline-none" 
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Price (₹)</label>
+                    <label className="block text-xs font-bold text-emerald-400 uppercase tracking-wider mb-1">Price (₹ INR)</label>
                     <input 
                       type="number" 
                       value={formData.price} 
                       onChange={e => setFormData({...formData, price: e.target.value})}
-                      className="w-full bg-background border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:border-primary/50 outline-none" 
+                      placeholder="0 for Free, or 499, 999 etc."
+                      className="w-full bg-[#141C28] border border-emerald-500/30 rounded-lg px-4 py-2.5 text-emerald-400 font-bold text-sm focus:border-emerald-400 outline-none" 
                     />
                   </div>
                   <div>
@@ -563,8 +678,8 @@ export default function AdminToolsPage() {
                       type="text" 
                       value={formData.icon} 
                       onChange={e => setFormData({...formData, icon: e.target.value})}
-                      placeholder="e.g. Brain, Scissors, Palette"
-                      className="w-full bg-background border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:border-primary/50 outline-none" 
+                      placeholder="e.g. Brain, Zap, FileText, Wrench"
+                      className="w-full bg-[#141C28] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:border-primary/50 outline-none" 
                     />
                   </div>
                   <div className="md:col-span-3">
@@ -573,27 +688,28 @@ export default function AdminToolsPage() {
                       type="text" 
                       value={formData.tags} 
                       onChange={e => setFormData({...formData, tags: e.target.value})}
-                      placeholder="e.g. Growth, AI, ChatGPT"
-                      className="w-full bg-background border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:border-primary/50 outline-none" 
+                      placeholder="e.g. YouTube, Hooks, Retention, AI Tools"
+                      className="w-full bg-[#141C28] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:border-primary/50 outline-none" 
                     />
                   </div>
                   <div className="md:col-span-3">
-                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Features / Bullet points (One per line)</label>
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Key Features / Deliverables (One per line)</label>
                     <textarea 
                       value={formData.features} 
                       onChange={e => setFormData({...formData, features: e.target.value})}
                       rows={4}
-                      placeholder="Fully customisable Notion Template&#10;Access to 10+ prompt libraries"
-                      className="w-full bg-background border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:border-primary/50 outline-none leading-relaxed" 
+                      placeholder="100+ High retention hooks&#10;Editable Notion workspace&#10;Commercial agency license included"
+                      className="w-full bg-[#141C28] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:border-primary/50 outline-none leading-relaxed" 
                     />
                   </div>
                 </div>
 
-                {/* Media & Links */}
+                {/* Media & Files */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-3">
-                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider">Thumbnail Image</label>
-                    <div className="relative border-2 border-dashed border-white/10 rounded-xl p-4 hover:border-primary/30 transition-colors cursor-pointer group">
+                  {/* Thumbnail Image */}
+                  <div className="space-y-2">
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider">Product Thumbnail Image</label>
+                    <div className="relative border-2 border-dashed border-white/10 rounded-xl p-4 hover:border-primary/40 transition-colors cursor-pointer group bg-[#141C28]">
                       <input 
                         type="file" 
                         accept="image/*"
@@ -601,60 +717,62 @@ export default function AdminToolsPage() {
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                       />
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+                        <div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center group-hover:bg-primary/20 group-hover:text-primary transition-colors text-gray-400">
                           <ImageIcon className="w-5 h-5" />
                         </div>
                         <div className="flex-1 overflow-hidden">
-                          <p className="text-sm font-bold truncate">{imageFile ? imageFile.name : (formData.thumbnail_url ? 'Replace Image' : 'Upload Image')}</p>
-                          <p className="text-xs text-gray-500">PNG, JPG, WebP</p>
+                          <p className="text-sm font-bold truncate text-white">
+                            {imageFile ? imageFile.name : (formData.thumbnail_url ? 'Replace Image' : 'Upload Image')}
+                          </p>
+                          <p className="text-xs text-gray-500 truncate">
+                            {formData.thumbnail_url || 'PNG, JPG, WebP'}
+                          </p>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="space-y-3">
-                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider">Downloadable Asset</label>
-                    <div className="relative border-2 border-dashed border-white/10 rounded-xl p-4 hover:border-secondary/30 transition-colors cursor-pointer group">
+                  {/* Digital Asset */}
+                  <div className="space-y-2">
+                    <label className="block text-xs font-bold text-emerald-400 uppercase tracking-wider">
+                      Downloadable Product Asset (Delivered upon Payment)
+                    </label>
+                    <div className="relative border-2 border-dashed border-emerald-500/30 rounded-xl p-4 hover:border-emerald-400 transition-colors cursor-pointer group bg-[#141C28]">
                       <input 
                         type="file" 
                         onChange={e => setAssetFile(e.target.files?.[0] || null)}
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                       />
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center group-hover:bg-secondary/10 group-hover:text-secondary transition-colors">
+                        <div className="w-10 h-10 bg-emerald-500/10 rounded-lg flex items-center justify-center group-hover:bg-emerald-500/20 text-emerald-400 transition-colors">
                           <Upload className="w-5 h-5" />
                         </div>
                         <div className="flex-1 overflow-hidden">
-                          <p className="text-sm font-bold truncate">{assetFile ? assetFile.name : (formData.file_url ? 'Replace File' : 'Upload File')}</p>
-                          <p className="text-xs text-gray-500">ZIP, PDF, DOCX</p>
+                          <p className="text-sm font-bold truncate text-white">
+                            {assetFile ? assetFile.name : (formData.file_url ? 'Replace Downloadable File' : 'Upload Product File')}
+                          </p>
+                          <p className="text-xs text-gray-500 truncate">
+                            {formData.file_url || 'ZIP, PDF, DOCX, TXT, JSON'}
+                          </p>
                         </div>
                       </div>
                     </div>
-                  </div>
-
-                  <div className="md:col-span-2 mt-2">
-                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">External Link</label>
-                    <input 
-                      type="url" 
-                      value={formData.external_url} 
-                      onChange={e => setFormData({...formData, external_url: e.target.value})}
-                      placeholder="https://google.com"
-                      className="w-full bg-background border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:border-primary/50 outline-none" 
-                    />
                   </div>
                 </div>
 
               </div>
               
-              <div className="p-6 border-t border-white/5 flex justify-end gap-3 sticky bottom-0 bg-surface z-20">
-                <button onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 rounded-xl text-sm font-bold text-gray-300 hover:text-white transition-colors">Cancel</button>
+              <div className="p-6 border-t border-white/5 flex justify-end gap-3 sticky bottom-0 bg-[#0B1017] z-20">
+                <button onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 rounded-xl text-sm font-bold text-gray-300 hover:text-white transition-colors cursor-pointer">
+                  Cancel
+                </button>
                 <button 
                   onClick={handleSave} 
                   disabled={!formData.title || uploading}
-                  className="px-5 py-2.5 rounded-xl text-sm font-bold bg-primary text-background hover:bg-primary/90 transition-colors flex items-center gap-2 disabled:opacity-50"
+                  className="px-6 py-2.5 rounded-xl text-sm font-bold bg-primary text-background hover:bg-primary/90 transition-colors flex items-center gap-2 disabled:opacity-50 cursor-pointer shadow-lg"
                 >
                   {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} 
-                  {uploading ? 'Saving...' : 'Save Tool'}
+                  {uploading ? 'Saving & Uploading...' : 'Save & Publish Tool'}
                 </button>
               </div>
             </motion.div>

@@ -420,14 +420,23 @@ export default function ToolDetailPage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-3 self-stretch sm:self-auto justify-end">
+            <div className="flex items-center gap-3 self-stretch sm:self-auto justify-end flex-wrap">
+              {tool.price > 0 && (
+                <Link
+                  href={`/marketplace/item/${tool.id}`}
+                  className="px-5 py-3 rounded-xl font-black text-xs sm:text-sm bg-emerald-400 text-black hover:bg-emerald-300 transition-all shadow-lg flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  <span>Buy Asset Pack (₹{tool.price})</span>
+                </Link>
+              )}
               <a
                 href="#live-workspace"
                 className="px-6 py-3 rounded-xl font-black text-xs sm:text-sm text-[#05080E] transition-all shadow-lg flex items-center justify-center gap-2"
                 style={{ background: `linear-gradient(135deg, ${tool.accent}, #00c8d8)` }}
               >
                 <Wand2 className="w-4 h-4" />
-                <span>{isCalculatorTool ? 'Open Calculator' : 'Use Tool Now'}</span>
+                <span>{isCalculatorTool ? 'Open Calculator' : 'Use Live Playground'}</span>
               </a>
             </div>
           </div>

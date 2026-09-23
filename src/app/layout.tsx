@@ -123,7 +123,7 @@ const organizationJsonLd = {
     '@type': 'ContactPoint',
     telephone: '+91-9876543210',
     contactType: 'customer service',
-    email: 'hellocreatornest@gmail.com',
+    email: 'hello@creatornest.in',
     areaServed: 'IN',
     availableLanguage: ['en', 'hi']
   },

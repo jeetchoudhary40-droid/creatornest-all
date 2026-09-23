@@ -120,7 +120,7 @@ export default function UserDashboard() {
                   <p className="text-sm text-gray-400 mb-6 flex-1">
                     Access our suite of basic tools to help you manage your content and workflow.
                   </p>
-                  <Link href="/tools" className="inline-flex items-center gap-2 text-sm font-semibold text-blue-400 hover:text-blue-300 transition-colors">
+                  <Link href="/marketplace?tab=tools" className="inline-flex items-center gap-2 text-sm font-semibold text-blue-400 hover:text-blue-300 transition-colors">
                     Explore Tools <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>

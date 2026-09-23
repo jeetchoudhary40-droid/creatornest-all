@@ -33,8 +33,14 @@ const PLAN_LABELS: Record<string, string> = { free: 'Free', silver: 'Silver', go
 // ── Spacious, High-Impact Resource Card ──────────────────────────────────────
 function ResourceCard({ item, userTier, isHindi }: { item: any; userTier: string; isHindi: boolean }) {
   const Icon = getLucideIcon(item.icon);
-  const locked = PLAN_ORDER[item.plan] > PLAN_ORDER[(userTier as keyof typeof PLAN_ORDER) ?? 'free'];
+  const isTool = item.type === 'tool';
+  // Tools are individually purchasable digital products or free assets, so they are never locked behind membership tiers!
+  const locked = isTool ? false : (PLAN_ORDER[item.plan] > PLAN_ORDER[(userTier as keyof typeof PLAN_ORDER) ?? 'free']);
   const accentColor = item.accent || '#00F2FE';
+
+  const targetHref = isTool
+    ? (item.id === 't-calc' || item.id === 'brand-deal-calculator' ? '/tools/brand-deal-calculator' : `/marketplace/item/${item.id}`)
+    : (item.href || `/marketplace/item/${item.id}`);
 
   const getTypeBadge = (type: string) => {
     switch (type) {
@@ -73,8 +79,9 @@ function ResourceCard({ item, userTier, isHindi }: { item: any; userTier: string
       <div>
         {/* Card Header: Icon + Badges */}
         <div className="flex items-start justify-between gap-3 mb-4">
-          <div
-            className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border transition-all duration-300 group-hover:scale-105 shadow-inner"
+          <Link
+            href={targetHref}
+            className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border transition-all duration-300 group-hover:scale-105 shadow-inner cursor-pointer"
             style={{
               background: `${accentColor}20`,
               borderColor: `${accentColor}40`,
@@ -82,7 +89,7 @@ function ResourceCard({ item, userTier, isHindi }: { item: any; userTier: string
             }}
           >
             <Icon className="w-6 h-6 drop-shadow-[0_0_8px_currentColor]" />
-          </div>
+          </Link>
 
           <div className="flex items-center gap-2 flex-wrap justify-end">
             {item.badge ? (
@@ -103,10 +110,12 @@ function ResourceCard({ item, userTier, isHindi }: { item: any; userTier: string
           </div>
         </div>
 
-        {/* Title & Description */}
-        <h3 className="font-extrabold text-white text-base sm:text-lg mb-2 leading-snug group-hover:text-primary transition-colors line-clamp-1">
-          {item.title}
-        </h3>
+        {/* Title & Description (Clickable to Description & Buy Page) */}
+        <Link href={targetHref} className="block group/title">
+          <h3 className="font-extrabold text-white text-base sm:text-lg mb-2 leading-snug group-hover/title:text-primary transition-colors line-clamp-1">
+            {item.title}
+          </h3>
+        </Link>
         
         <p className="text-gray-300 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-2 min-h-[40px] font-normal">
           {item.desc}
@@ -128,10 +137,15 @@ function ResourceCard({ item, userTier, isHindi }: { item: any; userTier: string
             )}
           </div>
 
-          {item.price > 0 ? (
-            <span className="font-black text-white">
-              ₹{item.price.toLocaleString('en-IN')}
-            </span>
+          {Number(item.price) > 0 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="font-black text-white text-sm sm:text-base font-mono">
+                ₹{Number(item.price).toLocaleString('en-IN')}
+              </span>
+              <span className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+                {isHindi ? 'एकमुश्त' : 'BUY'}
+              </span>
+            </div>
           ) : (
             <span className="font-bold text-emerald-400 uppercase tracking-wider text-xs">
               {isHindi ? 'मुफ्त एक्सेस' : 'Free Access'}
@@ -150,14 +164,20 @@ function ResourceCard({ item, userTier, isHindi }: { item: any; userTier: string
           </Link>
         ) : (
           <Link
-            href={item.href || `/marketplace/item/${item.id}`}
+            href={targetHref}
             className="w-full py-2.5 sm:py-3 px-4 rounded-xl text-[#05080E] text-xs sm:text-sm font-black flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-[0.98] group/btn cursor-pointer"
             style={{
               background: `linear-gradient(135deg, ${accentColor}, #00c8d8)`,
               boxShadow: `0 0 20px ${accentColor}30`
             }}
           >
-            <span>{item.cta || (isHindi ? 'रिसोर्स खोलें' : 'Open Resource')}</span>
+            <span>
+              {item.cta || (isTool 
+                ? (Number(item.price) > 0 
+                  ? (isHindi ? `अभी खरीदें • ₹${item.price}` : `Buy Now • ₹${item.price}`) 
+                  : (isHindi ? 'मुफ्त एक्सेस' : 'Try Free'))
+                : (isHindi ? 'रिसोर्स खोलें' : 'Open Resource'))}
+            </span>
             <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
           </Link>
         )}
@@ -235,7 +255,7 @@ function TrendingSpotlight({ items, isHindi }: { items: any[]; isHindi: boolean 
                 </p>
               </div>
               <Link 
-                href={it.href || (it.type === 'tool' ? `/marketplace/tool/${it.id}` : `/marketplace/item/${it.id}`)}
+                href={it.href || (it.type === 'tool' ? (it.id === 't-calc' || it.id === 'brand-deal-calculator' ? '/tools/brand-deal-calculator' : `/marketplace/item/${it.id}`) : `/marketplace/item/${it.id}`)}
                 className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white shrink-0"
               >
                 <ArrowUpRight className="w-4 h-4" />
@@ -256,6 +276,17 @@ export default function MarketplacePage() {
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState<string>('featured');
 
+  // Support direct URL navigation, e.g. /marketplace?tab=tools
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab');
+      if (tabParam && ['all', 'tools', 'courses', 'services', 'templates'].includes(tabParam)) {
+        setActiveTab(tabParam as TabId);
+      }
+    }
+  }, []);
+
   const TABS: { id: TabId; label: string; icon: any; color: string; activeBg: string; activeBorder: string }[] = useMemo(() => [
     { id: 'all',       label: isHindi ? 'सभी रिसोर्सेज' : 'All Resources', icon: Grid3X3,  color: '#00F2FE', activeBg: 'linear-gradient(135deg, rgba(0,242,254,0.25), rgba(0,242,254,0.08))', activeBorder: '#00F2FE' },
     { id: 'tools',     label: isHindi ? 'एआई टूल्स' : 'AI Tools',      icon: Brain,    color: '#00F2FE', activeBg: 'linear-gradient(135deg, rgba(0,242,254,0.25), rgba(0,242,254,0.08))', activeBorder: '#00F2FE' },
@@ -274,125 +305,118 @@ export default function MarketplacePage() {
       icon: item.icon,
       accent: item.accent,
       plan: item.plan,
-      price: 0,
+      price: item.type === 'tool' ? (item.id === 't2' ? 499 : item.id === 't3' ? 299 : item.id === 't4' ? 599 : item.id === 't5' ? 399 : item.id === 't6' ? 449 : 0) : 0,
       rating: item.rating || 5.0,
       thumbnail_url: item.thumbnailUrl || '',
-      href: item.href || (item.type === 'tool' ? `/marketplace/tool/${item.id}` : item.type === 'service' ? `/marketplace/services/${item.id}` : item.type === 'course' ? `/nschool/course/${item.id}` : `/marketplace/item/${item.id}`),
+      href: item.type === 'tool'
+        ? (item.id === 't-calc' || item.id === 'brand-deal-calculator' ? '/tools/brand-deal-calculator' : `/marketplace/item/${item.id}`)
+        : item.type === 'service' ? `/marketplace/services/${item.id}` : item.type === 'course' ? `/nschool/course/${item.id}` : `/marketplace/item/${item.id}`,
       tags: item.tags || [],
       badge: item.badge || '',
-      cta: item.cta || 'Open'
+      cta: item.type === 'tool'
+        ? (item.id === 't-calc' || item.id === 'brand-deal-calculator' ? 'Calculate Rates' : (item.id === 't1' ? 'Try Free' : 'Buy Now'))
+        : (item.cta || 'Open')
     }));
   });
 
   const userTier = user?.plan_tier ?? 'free';
 
-  // Load from LocalStorage and Supabase
+  // Load from /api/tools (persisted Admin upload store) and local storage
   useEffect(() => {
     const loadAll = async () => {
-      let cachedMarket = [];
-      let cachedCourses = [];
-      
-      if (typeof window !== 'undefined') {
-        const m = localStorage.getItem('cn_market_items');
-        if (m) cachedMarket = JSON.parse(m);
-        const c = localStorage.getItem('cn_courses');
-        if (c) cachedCourses = JSON.parse(c);
-      }
-
-      const localCombined = [
-        ...cachedMarket.map((item: any) => ({
-          id: item.id,
-          type: item.item_type,
-          title: item.title,
-          desc: item.short_desc,
-          category: item.category,
-          icon: getLucideIcon(item.icon),
-          accent: item.accent || '#00F2FE',
-          plan: item.plan || 'free',
-          price: item.price || 0,
-          rating: item.rating || 4.9,
-          thumbnail_url: item.thumbnail_url,
-          href: item.item_type === 'service' ? `/marketplace/services/${item.id}` : `/marketplace/item/${item.id}`,
-          tags: item.tags || [],
-          badge: item.features?.badge || item.tags?.[0] || '',
-          cta: item.item_type === 'service' ? 'Book Service' : 'Open Tool'
-        })),
-        ...cachedCourses.map((item: any) => ({
-          id: item.id,
-          type: 'course',
-          title: item.title,
-          desc: item.short_desc,
-          category: item.category,
-          icon: Lucide.BookOpen,
-          accent: item.accent || '#A78BFA',
-          plan: item.plan || 'free',
-          price: item.price || 0,
-          rating: parseFloat(item.rating) || 4.9,
-          thumbnail_url: item.thumbnail_url,
-          href: `/nschool/course/${item.id}`,
-          tags: item.tags || [],
-          badge: item.level || 'Masterclass',
-          cta: 'Enroll Free'
-        }))
-      ];
-
-      if (localCombined.length > 0) {
-        setItems(localCombined);
-      }
-
+      // 1. Fetch live AI tools directly from /api/tools (reads data/market_items.json populated by admin)
+      let liveTools: any[] = [];
       try {
-        const { data: dbItems } = await supabase
-          .from('market_items')
-          .select('*')
-          .eq('is_published', true);
-
-        const { data: dbCourses } = await supabase
-          .from('courses')
-          .select('*')
-          .eq('is_published', true);
-
-        const mergedItems = [
-          ...(dbItems || []).map(item => ({
-            id: item.id,
-            type: item.item_type,
-            title: item.title,
-            desc: item.short_desc,
-            category: item.category,
-            icon: getLucideIcon(item.icon),
-            accent: item.accent || '#00F2FE',
-            plan: item.plan || 'free',
-            price: item.price || 0,
-            rating: item.rating || 4.9,
-            thumbnail_url: item.thumbnail_url,
-            href: item.item_type === 'service' ? `/marketplace/services/${item.id}` : `/marketplace/item/${item.id}`,
-            tags: item.tags || [],
-            badge: item.features?.badge || item.tags?.[0] || '',
-            cta: item.item_type === 'service' ? 'Book Service' : 'Open Tool'
-          })),
-          ...(dbCourses || []).map(item => ({
-            id: item.id,
-            type: 'course',
-            title: item.title,
-            desc: item.short_desc,
-            category: item.category,
-            icon: Lucide.BookOpen,
-            accent: item.accent || '#A78BFA',
-            plan: item.plan || 'free',
-            price: item.price || 0,
-            rating: parseFloat(item.rating) || 4.9,
-            thumbnail_url: item.thumbnail_url,
-            href: `/nschool/course/${item.id}`,
-            tags: item.tags || [],
-            badge: item.level || 'Masterclass',
-            cta: 'Enroll Free'
-          }))
-        ];
-
-        if (mergedItems.length > 0) {
-          setItems(mergedItems);
+        const toolsRes = await fetch('/api/tools');
+        if (toolsRes.ok) {
+          const toolsJson = await toolsRes.json();
+          if (toolsJson.success && Array.isArray(toolsJson.tools) && toolsJson.tools.length > 0) {
+            liveTools = toolsJson.tools.map((item: any) => ({
+              id: item.id,
+              type: 'tool',
+              title: item.title,
+              desc: item.short_desc || item.desc || '',
+              long_desc: item.long_desc,
+              category: item.category || 'AI Tools',
+              icon: item.icon,
+              accent: item.accent || '#00F2FE',
+              plan: item.plan || 'free',
+              price: item.price !== undefined ? Number(item.price) : 0,
+              rating: item.rating || 4.9,
+              thumbnail_url: item.thumbnail_url,
+              file_url: item.file_url,
+              external_url: item.external_url,
+              href: (item.id === 't-calc' || item.id === 'brand-deal-calculator') 
+                ? '/tools/brand-deal-calculator' 
+                : `/marketplace/item/${item.id}`,
+              tags: item.tags || [],
+              badge: item.badge || (Number(item.price) === 0 ? 'FREE ACCESS' : 'BUY ONCE'),
+              cta: (item.id === 't-calc' || item.id === 'brand-deal-calculator')
+                ? 'Calculate Rates'
+                : Number(item.price) > 0
+                ? `Buy Now • ₹${item.price}`
+                : 'Download Free'
+            }));
+          }
         }
       } catch (err) {
-        console.warn("Offline loading database items, keeping cache", err);
+        console.warn('Could not load /api/tools', err);
+      }
+
+      // 2. Base static non-tool resources (courses, services, templates)
+      const baseNonTools = ITEMS.filter(i => i.type !== 'tool').map(item => ({
+        id: item.id,
+        type: item.type,
+        title: item.title,
+        desc: item.desc,
+        category: item.category,
+        icon: item.icon,
+        accent: item.accent,
+        plan: item.plan,
+        price: 0,
+        rating: item.rating || 5.0,
+        thumbnail_url: item.thumbnailUrl || '',
+        href: item.type === 'service' ? `/marketplace/services/${item.id}` : item.type === 'course' ? `/nschool/course/${item.id}` : `/marketplace/item/${item.id}`,
+        tags: item.tags || [],
+        badge: item.badge || '',
+        cta: item.cta || 'Open'
+      }));
+
+      // Combine liveTools with non-tools
+      if (liveTools.length > 0) {
+        setItems([...liveTools, ...baseNonTools]);
+      }
+
+      // Also try localStorage cache for admin created services/courses if any
+      if (typeof window !== 'undefined') {
+        const m = localStorage.getItem('cn_market_items');
+        if (m) {
+          try {
+            const cachedMarket = JSON.parse(m);
+            if (Array.isArray(cachedMarket) && cachedMarket.length > 0) {
+              const nonToolCached = cachedMarket.filter((c: any) => c.item_type !== 'tool').map((item: any) => ({
+                id: item.id,
+                type: item.item_type,
+                title: item.title,
+                desc: item.short_desc,
+                category: item.category,
+                icon: getLucideIcon(item.icon),
+                accent: item.accent || '#00F2FE',
+                plan: item.plan || 'free',
+                price: item.price || 0,
+                rating: item.rating || 4.9,
+                thumbnail_url: item.thumbnail_url,
+                href: item.item_type === 'service' ? `/marketplace/services/${item.id}` : `/marketplace/item/${item.id}`,
+                tags: item.tags || [],
+                badge: item.features?.badge || item.tags?.[0] || '',
+                cta: item.item_type === 'service' ? 'Book Service' : 'Open Resource'
+              }));
+              if (nonToolCached.length > 0) {
+                setItems(prev => [...(liveTools.length > 0 ? liveTools : prev.filter(p => p.type === 'tool')), ...nonToolCached]);
+              }
+            }
+          } catch (e) {}
+        }
       }
     };
     loadAll();

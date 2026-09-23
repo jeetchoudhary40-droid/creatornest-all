@@ -89,10 +89,10 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <a 
-                  href="mailto:hellocreatornest@gmail.com" 
+                  href="mailto:hello@creatornest.in" 
                   className="text-primary hover:text-white transition-colors text-sm sm:text-base font-semibold break-all"
                 >
-                  hellocreatornest@gmail.com
+                  hello@creatornest.in
                 </a>
               </li>
               <li>

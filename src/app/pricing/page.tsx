@@ -138,7 +138,7 @@ const FAQS = [
   { q: 'What payment methods are accepted?', a: 'We accept UPI, debit/credit cards, net banking and wallets via Razorpay. Fully secure and India-first.' },
   { q: 'What counts as a "service booking"?', a: 'Services include video editing, thumbnail design, script writing, channel audits and social media management. Gold includes 1 booking/month, Platinum is unlimited.' },
   { q: 'Can I upgrade mid-cycle?', a: 'Yes! You can upgrade at any time. You will be charged a prorated amount for the remaining days in your billing cycle.' },
-  { q: 'Is there a student discount?', a: 'Yes! Students with a valid ID get 30% off any plan. Reach out to us at hellocreatornest@gmail.com.' },
+  { q: 'Is there a student discount?', a: 'Yes! Students with a valid ID get 30% off any plan. Reach out to us at hello@creatornest.in.' },
 ];
 
 // ── FAQ Item ──────────────────────────────────────────────────────────────────
@@ -365,7 +365,7 @@ export default function PricingPage() {
               <MessageCircle className="w-10 h-10 mx-auto mb-3 text-primary" />
               <h2 className="text-xl font-bold text-white mb-2">Not Sure Which Plan?</h2>
               <p className="text-gray-400 text-sm mb-5">Start with Free and upgrade anytime. Or chat with us — we'll recommend the right plan for your goals.</p>
-              <a href="mailto:hellocreatornest@gmail.com" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all" style={{ background: 'rgba(0,242,254,0.15)', color: '#00F2FE', border: '1px solid rgba(0,242,254,0.3)' }}>
+              <a href="mailto:hello@creatornest.in" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all" style={{ background: 'rgba(0,242,254,0.15)', color: '#00F2FE', border: '1px solid rgba(0,242,254,0.3)' }}>
                 <MessageCircle className="w-4 h-4" />
                 Chat with our Team
               </a>

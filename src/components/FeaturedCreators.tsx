@@ -42,7 +42,7 @@ export default function FeaturedCreators() {
           const json = await res.json();
           if (json.success && Array.isArray(json.creators) && json.creators.length > 0) {
             const featuredList = json.creators
-              .filter((c: any) => c.show_on_home || c.featured)
+              .filter((c: any) => c.show_on_roster !== false && (c.show_on_home || c.featured))
               .sort((a: any, b: any) => (Number(a.rank) || 999) - (Number(b.rank) || 999))
               .slice(0, 8)
               .map((c: any) => ({
