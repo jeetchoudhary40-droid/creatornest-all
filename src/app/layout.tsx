@@ -8,8 +8,12 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL && !process.env.NEXT_PUBLIC_SITE_URL.includes('localhost')
+  ? process.env.NEXT_PUBLIC_SITE_URL
+  : 'https://creatornest.in';
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://creatornest.in'),
+  metadataBase: new URL(siteUrl),
   title: {
     default: "Creator Nest | Fueling Creators to Become Brands",
     template: "%s | Creator Nest",
@@ -89,6 +93,9 @@ export const metadata: Metadata = {
       { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
     ],
     shortcut: ['/favicon.ico'],
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
   },
   category: "technology, marketing, creator economy",
 };
