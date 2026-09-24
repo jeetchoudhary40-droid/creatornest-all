@@ -87,7 +87,7 @@ export const allCreators: Creator[] = [
     instaUrl: "https://www.instagram.com/dear_kisan/",
     instaHandle: "@dear_kisan",
     websiteUrl: "https://dearkisan.com",
-    businessEmail: "collabs@creatornest.in"
+    businessEmail: "hello@creatornest.in"
   }
 ];
 
@@ -121,7 +121,7 @@ export const hiddenCreators: Creator[] = [
     instaUrl: "https://www.instagram.com/damini.creator/",
     instaHandle: "@damini.creator",
     websiteUrl: "https://marketian.io",
-    businessEmail: "collabs@creatornest.in"
+    businessEmail: "hello@creatornest.in"
   },
   {
     id: 3,
@@ -183,7 +183,7 @@ export const hiddenCreators: Creator[] = [
     linkedinUrl: "https://linkedin.com/in/ailearnersindia",
     twitterUrl: "https://x.com/AILearnersIndia",
     websiteUrl: "https://www.youtube.com/channel/UCjFCA87HP52yFjKyRW4-8Hw/join",
-    businessEmail: "collabs@creatornest.in"
+    businessEmail: "hello@creatornest.in"
   },
   {
     id: 6,
@@ -215,7 +215,7 @@ export const hiddenCreators: Creator[] = [
     linkedinUrl: "https://linkedin.com/in/saumya1singh",
     twitterUrl: "https://twitter.com/saumya1singh",
     websiteUrl: "https://topmate.io/saumya1singh",
-    businessEmail: "collabs@creatornest.in"
+    businessEmail: "hello@creatornest.in"
   }
 ];
 

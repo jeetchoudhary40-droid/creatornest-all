@@ -344,7 +344,7 @@ export default function CreatorDashboard() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Agency Contact:</span>
-                      <span className="text-cyan-300 font-mono font-bold">collabs@creatornest.in</span>
+                      <span className="text-cyan-300 font-mono font-bold">hello@creatornest.in</span>
                     </div>
                   </div>
                 </div>

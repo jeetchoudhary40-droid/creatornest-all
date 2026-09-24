@@ -394,7 +394,7 @@ function ProfileContent() {
                         </div>
                         <div className="flex items-center justify-between text-xs">
                           <span className="text-slate-400 font-medium">Commercial Inquiries:</span>
-                          <span className="text-cyan-300 font-mono font-bold">collabs@creatornest.in</span>
+                          <span className="text-cyan-300 font-mono font-bold">hello@creatornest.in</span>
                         </div>
                       </div>
                     </div>
@@ -605,7 +605,7 @@ function ProfileContent() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Inquiry Email:</span>
-                    <span className="text-cyan-300 font-mono font-bold">collabs@creatornest.in</span>
+                    <span className="text-cyan-300 font-mono font-bold">hello@creatornest.in</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Payment Protection:</span>
