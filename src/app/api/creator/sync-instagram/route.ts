@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
           ? Number(((ig_follower_growth_30d / prevFollowers) * 100).toFixed(2))
           : 0;
 
-        const updatePayload = {
+        const updatePayload: any = {
           ...profile,
           ...insights,
           ...mediaStats,
@@ -94,6 +94,17 @@ export async function POST(req: NextRequest) {
           data_source:       'Instagram API' as const,
           sync_error_log:    '',
         };
+
+        // PRESERVE ADMIN UPDATED IMAGE:
+        // Never overwrite admin-uploaded portraits with Instagram profile picture
+        if (
+          (creator as any).admin_updated_img ||
+          ((creator as any).profile_photo_url && String((creator as any).profile_photo_url).startsWith('/images/creators/')) ||
+          ((creator as any).img && String((creator as any).img).startsWith('/images/creators/'))
+        ) {
+          delete updatePayload.profile_photo_url;
+          delete updatePayload.img;
+        }
 
         // 7. Recalculate scores
         const { creator_score, creator_tier, total_reach, growth_velocity } =

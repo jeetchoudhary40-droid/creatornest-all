@@ -17,6 +17,7 @@ const VALID_ROSTER_COLUMNS = new Set([
   // Core identity
   'id', 'profile_id', 'name', 'full_name', 'display_name', 'tagline', 'bio',
   'profile_photo_url', 'img', 'cover_photo_url', 'creator_since', 'gender',
+  'admin_updated_img', 'admin_img_updated_at',
   // Location
   'location', 'location_city', 'location_state', 'location_country', 'target_country',
   'primary_language', 'content_language', 'timezone',
@@ -187,6 +188,32 @@ export async function POST(req: NextRequest) {
       );
 
       const f = fields as any;
+
+      // Preserve and prioritize admin's last updated image:
+      const existingCreator = foundIdx !== -1 ? localCreators[foundIdx] : null;
+      const hasAdminImage = Boolean(
+        existingCreator?.admin_updated_img ||
+        (existingCreator?.img && existingCreator.img.startsWith('/images/creators/'))
+      );
+
+      let resolvedImg = existingCreator?.img || 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80';
+      let adminUpdatedImg = hasAdminImage;
+      let adminImgUpdatedAt = existingCreator?.admin_img_updated_at;
+
+      const incomingImg = f.profile_photo_url || f.img;
+      if (incomingImg) {
+        // If an explicit admin uploaded image is supplied (/images/creators/)
+        if (incomingImg.startsWith('/images/creators/')) {
+          resolvedImg = incomingImg;
+          adminUpdatedImg = true;
+          adminImgUpdatedAt = new Date().toISOString();
+        } else if (!hasAdminImage) {
+          // If no admin image is set yet, accept the initial/onboarded image
+          resolvedImg = incomingImg;
+        }
+        // If hasAdminImage is true and incomingImg is an external URL, PRESERVE resolvedImg (the admin's image)!
+      }
+
       const creatorRecord = {
         id: foundIdx !== -1 ? localCreators[foundIdx].id : targetId,
         name: f.full_name || f.name || (foundIdx !== -1 ? localCreators[foundIdx].name : 'Creator'),
@@ -202,7 +229,9 @@ export async function POST(req: NextRequest) {
         topGrowing: f.top_growing !== undefined ? Boolean(f.top_growing) : (foundIdx !== -1 ? localCreators[foundIdx].topGrowing : true),
         featured: f.is_featured !== undefined ? Boolean(f.is_featured) : (foundIdx !== -1 ? localCreators[foundIdx].featured : true),
         rank: Number(f.home_sequence) || (foundIdx !== -1 ? localCreators[foundIdx].rank : 999),
-        img: f.profile_photo_url || f.img || (foundIdx !== -1 ? localCreators[foundIdx].img : 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80'),
+        img: resolvedImg,
+        admin_updated_img: adminUpdatedImg,
+        admin_img_updated_at: adminImgUpdatedAt,
         bio: f.bio || (foundIdx !== -1 ? localCreators[foundIdx].bio : ''),
         show_on_home: f.show_on_home !== undefined ? Boolean(f.show_on_home) : true,
         show_on_roster: f.show_on_roster !== undefined ? Boolean(f.show_on_roster) : true,

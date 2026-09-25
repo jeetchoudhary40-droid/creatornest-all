@@ -47,6 +47,8 @@ export type CreatorType = {
   linkedinUrl?: string;
   twitterUrl?: string;
   websiteUrl?: string;
+  admin_updated_img?: boolean;
+  admin_img_updated_at?: string;
 };
 
 /* ───────── Leaderboard Card ───────── */
@@ -386,6 +388,8 @@ export default function RosterPage() {
                 rank: Number(c.rank) || 999,
                 show_on_home: Boolean(c.show_on_home),
                 show_on_roster: c.show_on_roster !== false,
+                admin_updated_img: Boolean(c.admin_updated_img ?? (c.img && String(c.img).startsWith('/images/creators/'))),
+                admin_img_updated_at: c.admin_img_updated_at || '',
                 contactPhone: c.contactPhone || '',
                 whatsappNumber: c.whatsappNumber || '',
                 businessEmail: c.businessEmail || '',

@@ -136,7 +136,7 @@ export async function POST(req: NextRequest) {
         }
 
         // 5. Build update payload
-        const update = {
+        const update: any = {
           ...channelStats,
           ...analyticsData,
           yt_avg_views_per_video,
@@ -147,6 +147,17 @@ export async function POST(req: NextRequest) {
           data_source:       'YouTube API' as const,
           sync_error_log:    '',
         };
+
+        // PRESERVE ADMIN UPDATED IMAGE:
+        // Never overwrite admin-uploaded portraits with YouTube profile thumbnail
+        if (
+          (creator as any).admin_updated_img ||
+          ((creator as any).profile_photo_url && String((creator as any).profile_photo_url).startsWith('/images/creators/')) ||
+          ((creator as any).img && String((creator as any).img).startsWith('/images/creators/'))
+        ) {
+          delete update.profile_photo_url;
+          delete update.img;
+        }
 
         // 6. Recalculate scores
         const { creator_score, creator_tier, total_reach, growth_velocity } =

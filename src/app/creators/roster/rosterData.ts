@@ -25,6 +25,8 @@ export interface Creator {
   twitterUrl?: string;
   websiteUrl?: string;
   businessEmail?: string;
+  admin_updated_img?: boolean;
+  admin_img_updated_at?: string;
 }
 
 export const allCreators: Creator[] = [
@@ -49,7 +51,9 @@ export const allCreators: Creator[] = [
     topGrowing: true,
     featured: true,
     rank: 1,
-    img: "/images/creators/jeet-choudhary.png",
+    img: "/images/creators/1787833535582-creator-profile.jpg",
+    admin_updated_img: true,
+    admin_img_updated_at: "2026-08-27T17:55:35.582Z",
     bio: "Creator of Election Guide (110,000+ subscribers). Empowering citizens across India with simplified guides on Voter IDs, public government schemes, digital citizen services, and democratic participation.",
     youtubeUrl: "https://www.youtube.com/@electionguide",
     youtubeHandle: "@electionguide",
@@ -81,6 +85,8 @@ export const allCreators: Creator[] = [
     featured: true,
     rank: 2,
     img: "/images/creators/1788848769115-creator-profile.jpg",
+    admin_updated_img: true,
+    admin_img_updated_at: "2026-09-08T11:56:09.115Z",
     bio: "Founder of Dear Kisan (745K+ subscribers, 120M+ views). India's leading agriculture & farming YouTuber from Haryana — covering crop management, farming tips, pesticide research, modern machinery reviews, and kisan welfare. Empowering Indian farmers with practical field knowledge since 2019.",
     youtubeUrl: "https://www.youtube.com/@dear_kisan",
     youtubeHandle: "@dear_kisan",

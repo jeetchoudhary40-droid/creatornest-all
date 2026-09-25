@@ -121,6 +121,8 @@ export interface IntelligentCreator {
   bio:               string;
   profile_photo_url: string;   // was: img
   cover_photo_url:   string;
+  admin_updated_img?: boolean;
+  admin_img_updated_at?: string;
   creator_since?:    string;
   gender?:           string;
 
@@ -466,6 +468,8 @@ export function mapDbRowToCreator(row: Record<string, unknown>): Partial<Intelli
     tagline:               String(row.tagline ?? ''),
     bio:                   String(row.bio ?? ''),
     profile_photo_url:     String(row.img ?? row.profile_photo_url ?? ''),
+    admin_updated_img:     Boolean(row.admin_updated_img ?? (row.img && String(row.img).startsWith('/images/creators/'))),
+    admin_img_updated_at:  String(row.admin_img_updated_at ?? ''),
     cover_photo_url:       String(row.cover_photo_url ?? ''),
     location:              String(row.location ?? ''),
     location_city:         String(row.location ?? row.location_city ?? ''),
