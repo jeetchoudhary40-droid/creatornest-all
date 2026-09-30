@@ -22,7 +22,7 @@ export default function ApplicationSuccessModal({
   title = 'Application Received!',
   message = 'Thank you for sharing your details. Our talent management desk has received your submission and will review your profile shortly.',
 }: ApplicationSuccessModalProps) {
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '918766077505';
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919460990011';
 
   // Haptic feedback on mobile when confirmation appears
   useEffect(() => {

@@ -97,7 +97,7 @@ export default function Footer() {
               </li>
               <li>
                 <a 
-                  href="https://api.whatsapp.com/send?phone=918766077505&text=Hi%20Creator%20Nest%2C%20I%20would%20like%20to%20connect%20with%20your%20team." 
+                  href="https://api.whatsapp.com/send?phone=919460990011&text=Hi%20Creator%20Nest%2C%20I%20would%20like%20to%20connect%20with%20your%20team." 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="text-emerald-400 hover:text-emerald-300 transition-colors text-sm sm:text-base flex items-center space-x-2 font-semibold"

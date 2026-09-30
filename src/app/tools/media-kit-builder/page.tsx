@@ -7,7 +7,8 @@ import {
   Share2, Download, Printer, Eye, Palette, BarChart3, Users,
   Mail, Phone, MapPin, Globe, Award, DollarSign, FileText,
   Clock, Shield, Send, ExternalLink, RefreshCw, Layers, Sliders,
-  HelpCircle, ChevronRight, Zap, Target, MessageSquare, Flame, Play
+  HelpCircle, ChevronRight, Zap, Target, MessageSquare, Flame, Play,
+  RotateCcw, FilePlus
 } from 'lucide-react';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
@@ -114,6 +115,34 @@ export default function MediaKitBuilderPage() {
   const [contractCopied, setContractCopied] = useState(false);
   const [copiedShareLink, setCopiedShareLink] = useState(false);
   const [copiedMarkdown, setCopiedMarkdown] = useState(false);
+
+  // Start New Kit Logic
+  const handleStartNewKit = () => {
+    if (confirm('Start a new kit? This will reset your profile and stats to a fresh blank canvas.')) {
+      setName('');
+      setHandle('@');
+      setNiche('tech');
+      setBio('');
+      setLocation('India');
+      setContactEmail(user?.email || '');
+      setContactPhone('+91 9460990011');
+      setYtSubs('');
+      setIgFollowers('');
+      setAvgViews(0);
+      setEr(0);
+      setAvd('');
+      setTotalVideos(null);
+      setTopCity('');
+      setGenderRatio('');
+      setTopAge('');
+      setBrandTags('');
+      setHasExclusivity(false);
+      setHasWhitelisting(false);
+      setHasUsageRights(false);
+      setActiveTab('editor');
+      setImportedNotice('✨ Started a new blank kit! All fields reset for fresh entry.');
+    }
+  };
 
   // YouTube Auto-Import State
   const [ytImportQuery, setYtImportQuery] = useState('');
@@ -461,6 +490,15 @@ Date: ${new Date().toLocaleDateString()}
               >
                 <FileText className="w-3.5 h-3.5" />
                 <span>Sponsor Contract</span>
+              </button>
+
+              <button
+                onClick={handleStartNewKit}
+                className="px-3.5 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 hover:scale-[1.02] active:scale-[0.98]"
+                title="Start a new kit from scratch"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Start New Kit</span>
               </button>
             </div>
 

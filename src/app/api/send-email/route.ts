@@ -208,7 +208,7 @@ export async function POST(req: NextRequest) {
       .map(([k, v]) => `• *${k}:* ${v}`)
       .join('\n');
     const waText = `🔔 *New ${roleType} Application on Creator Nest*\n\n${summaryLines}\n\n🕒 _${istTime}_`;
-    const whatsappNotificationUrl = `https://wa.me/919876543210?text=${encodeURIComponent(waText)}`;
+    const whatsappNotificationUrl = `https://wa.me/919460990011?text=${encodeURIComponent(waText)}`;
 
     return NextResponse.json({
       success: true,

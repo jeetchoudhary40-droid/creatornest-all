@@ -18,6 +18,7 @@ import Link from 'next/link';
 
 // ── Strict Tech Niches & Categories ───────────────────────────
 export const TECH_NICHES = [
+  'News & Media',
   'EdTech & App Reviews',
   'AI & Automation',
   'Mobile Apps Review',

@@ -1,29 +1,27 @@
 [
   {
     "id": 1,
-    "name": "Jeet Choudhary",
+    "name": "Election Guide",
     "channelName": "Election Guide",
-    "niche": "EdTech & App Reviews",
+    "niche": "AI & Automation",
     "niches": [
-      "EdTech & App Reviews",
-      "Education & Upskilling",
-      "Civic Guides & Digital Governance"
+      "AI & Automation"
     ],
     "platform": "Both",
-    "youtube": "110K+",
+    "youtube": "110K",
     "youtubeNum": 110000,
     "instagram": "45K",
     "instaNum": 45000,
-    "location": "Delhi, India",
-    "avd": "82%",
-    "avgViewsLast10": 16328,
+    "location": "India",
+    "avd": "65%",
+    "avgViewsLast10": 17104,
     "topGrowing": true,
     "featured": true,
     "rank": 1,
     "img": "/images/creators/1787833535582-creator-profile.jpg",
     "admin_updated_img": true,
-    "admin_img_updated_at": "2026-08-27T17:55:35.582Z",
-    "bio": "Creator of Election Guide (110,000+ subscribers). Empowering citizens across India with simplified guides on Voter IDs, public government schemes, digital citizen services, and democratic participation.",
+    "admin_img_updated_at": "2026-09-30T04:00:17.556Z",
+    "bio": "Election Guide | भारत का #1 सरकारी प्रक्रिया Tutorial चैनल\n\nनमस्कार दोस्तों, मैं Jeet Choudhary हूँ — Election Guide पर आपका स्वागत है।\n\nयहाँ आपको मिलेगा:\n🗳️ Census 2027 | जनगणना 2027 — HLO App, Self Enumeration, Praganak Guide\n📋 BLO App Tutorial — SIR Form, Enumeration Form, Voter Verification\n🗂️ Voter List | Voter ID — Download, Search, Mobile Link, EPIC Number\n🏛️ Government Portal Tutorials — iGot Karmayogi, Voter Portal, se.census.gov.in\n📱 हर सरकारी प्रक्रिया का Step-by-Step हिंदी Tutorial\n\nCensus 2027 से जुड़े हर सवाल का जवाब, BLO App की हर समस्या का हल — सबसे पहले, सबसे आसान भाषा में।\n\n🔔 Subscribe करें और Bell दबाएं!\n📧 Contact: jeetchoudhary40@gmail.com\n\n#Census2027 #जनगणना2027 #HLOApp #BLOApp #SIR #VoterList #ElectionGuide\n",
     "show_on_home": true,
     "show_on_roster": true,
     "businessEmail": "jeetchoudhary40@gmail.com",
@@ -31,7 +29,7 @@
     "contactPhone": "+91 8766077505",
     "youtubeUrl": "https://www.youtube.com/@electionguide",
     "youtubeHandle": "@electionguide",
-    "instaUrl": "https://www.instagram.com/creatornestmedia/",
+    "instaUrl": "https://www.instagram.com/",
     "instaHandle": "@creatornestmedia",
     "linkedinUrl": "https://linkedin.com/company/creatornest",
     "twitterUrl": "",
@@ -50,7 +48,88 @@
     "private_discord_handle": "",
     "private_contact_notes": "Official contact: jeetchoudhary40@gmail.com. Channel: Election Guide",
     "created_at": "2026-08-21T10:00:00.000Z",
-    "updated_at": "2026-09-23T10:00:00.000Z"
+    "updated_at": "2026-09-30T04:00:17.556Z",
+    "audience_india_pct": 86,
+    "deal_rate_dedicated_min": 3500,
+    "deal_rate_dedicated_max": 7500,
+    "deal_rate_integration_min": 2000,
+    "deal_rate_integration_max": 4000,
+    "engagementRate": 0.96,
+    "totalViews": 13494293,
+    "videoCount": 218,
+    "audience_tier1_city_pct": 52,
+    "audience_top_countries": [
+      {
+        "country": "India",
+        "pct": 86
+      },
+      {
+        "country": "United States",
+        "pct": 5
+      },
+      {
+        "country": "United Arab Emirates",
+        "pct": 3
+      },
+      {
+        "country": "United Kingdom",
+        "pct": 2
+      },
+      {
+        "country": "Other",
+        "pct": 4
+      }
+    ],
+    "audience_top_cities": [
+      {
+        "city": "Delhi NCR",
+        "pct": 24
+      },
+      {
+        "city": "Mumbai",
+        "pct": 19
+      },
+      {
+        "city": "Bengaluru",
+        "pct": 16
+      },
+      {
+        "city": "Pune",
+        "pct": 9
+      },
+      {
+        "city": "Hyderabad",
+        "pct": 8
+      }
+    ],
+    "audience_age_13_17": 12,
+    "audience_age_18_24": 46,
+    "audience_age_25_34": 28,
+    "audience_age_35_44": 7,
+    "audience_age_45_plus": 3,
+    "audience_gender_male": 65,
+    "audience_gender_female": 35,
+    "audience_income_segment": "Middle",
+    "audience_interests": [
+      "Smartphones & Gadgets",
+      "AI Tools & Automation",
+      "Productivity & Software",
+      "EdTech & Upskilling",
+      "Consumer Electronics"
+    ],
+    "deal_rate_short_min": 1500,
+    "deal_rate_short_max": 3500,
+    "brand_categories": [
+      "Consumer Tech",
+      "SaaS & Cloud Tools",
+      "EdTech & Upskilling",
+      "FinTech & Growth",
+      "Mobile Apps"
+    ],
+    "ai_brand_fit_summary": "Reaches an engaged audience of 110K subscribers with 17,104 avg views. Strong high-intent AI & Automation demographics ideal for product integrations and high-ROI conversions.",
+    "ai_growth_insight": "Consistent audience engagement of 0.96% with strong subscriber loyalty across mid creator tier.",
+    "creator_score": 78,
+    "creator_tier": "mid"
   },
   {
     "id": 2,
@@ -101,7 +180,10 @@
     "private_discord_handle": "",
     "private_contact_notes": "",
     "created_at": "2026-08-27T16:28:00.000Z",
-    "updated_at": "2026-09-23T10:00:00.000Z"
+    "updated_at": "2026-09-23T10:00:00.000Z",
+    "user_id": "usr_cr_2",
+    "user_numeric_id": "CR-103",
+    "account_email": "damini.tripathi@creatornest.in"
   },
   {
     "id": 3,
@@ -152,7 +234,11 @@
     "private_discord_handle": "",
     "private_contact_notes": "",
     "created_at": "2026-08-27T17:14:00.000Z",
-    "updated_at": "2026-09-23T10:00:00.000Z"
+    "updated_at": "2026-09-23T10:00:00.000Z",
+    "user_id": "usr_cr_3",
+    "user_numeric_id": "CR-104",
+    "account_email": "team@hiteshchoudhary.com",
+    "default_password": "Creator@123"
   },
   {
     "id": 4,
@@ -205,7 +291,11 @@
     "private_discord_handle": "",
     "private_contact_notes": "Official partnerships contact: partnerships@apnacollege.in / apnacollege.ak@gmail.com. Linktree: https://linktr.ee/apnacollege.in",
     "created_at": "2026-08-31T08:00:00.000Z",
-    "updated_at": "2026-09-23T10:00:00.000Z"
+    "updated_at": "2026-09-23T10:00:00.000Z",
+    "user_id": "usr_cr_4",
+    "user_numeric_id": "CR-105",
+    "account_email": "partnerships@apnacollege.in",
+    "default_password": "Creator@123"
   },
   {
     "id": 5,
@@ -256,31 +346,33 @@
     "private_discord_handle": "",
     "private_contact_notes": "WhatsApp Channel: https://whatsapp.com/channel/0029Vb9zFy8Likg2gNDcvh1Z",
     "created_at": "2026-08-31T08:50:00.000Z",
-    "updated_at": "2026-09-23T10:00:00.000Z"
+    "updated_at": "2026-09-23T10:00:00.000Z",
+    "user_id": "usr_cr_5",
+    "user_numeric_id": "CR-106",
+    "account_email": "abhijeet.kalamkar@creatornest.in",
+    "default_password": "Creator@123"
   },
   {
     "id": 6,
     "name": "Saumya Singh",
     "channelName": "Saumya Singh",
-    "niche": "Coding & Tech Education",
+    "niche": "Tech & Gadgets",
     "niches": [
-      "Coding & Tech Education",
-      "AI & Automation",
-      "EdTech & App Reviews"
+      "Tech & Gadgets"
     ],
     "platform": "Both",
-    "youtube": "283K",
-    "youtubeNum": 283000,
+    "youtube": "317K",
+    "youtubeNum": 317000,
     "instagram": "622K",
     "instaNum": 622000,
-    "location": "Delhi, India",
-    "avd": "80%",
-    "avgViewsLast10": 45000,
-    "topGrowing": true,
+    "location": "India",
+    "avd": "78%",
+    "avgViewsLast10": 90957,
+    "topGrowing": false,
     "featured": false,
     "rank": 3,
-    "img": "/images/creators/1788167156273-creator-profile.jpg",
-    "bio": "Software Engineer (5+ yrs), 4x TEDx Speaker, LinkedIn Top Voice & Tech Educator (1M+ community). Ex-upGrad, Scaler, Newton School mentor. GSoC mentor & SIH winner teaching Coding, CS fundamentals & AI workflows.",
+    "img": "https://yt3.ggpht.com/dSPDh8DJsZ-e-QsntLAI8FPJfBX3ei1HuNqrRgnktkeQV-30t_iOlHmRmLJ-3afdgAHO03B0PNM=s800-c-k-c0x00ffffff-no-rj",
+    "bio": "Saumya Singh , the Engineer Who Codes, Creates, & Conquers! Influencing and educating over 1 Million people across internet. \n\n🔹 Software Engineer | Influencer | Educator\n🔹 LinkedIn Top Voice| 1 Million+ followers Across Platforms\n\n🪴 For collabs, speaker invitations & AI training/workshops, contact : saumyasingh.global@gmail.com\n\nMeet Saumya, a powerhouse who seamlessly bridges the worlds of software engineering, content creation, business, & education. With an impressive journey that spans working with India’s top EdTech giants like upGrad, Scaler, and Newton School, she has guided thousands of learners toward successful careers.  She served as a mentor for global initiatives like Google Code In & GSoC. She also led a project at IIT Kharagpur Initiative. She has won SIH 2019 (India’s b",
     "show_on_home": false,
     "show_on_roster": false,
     "businessEmail": "collabs@creatornest.in",
@@ -307,7 +399,94 @@
     "private_discord_handle": "",
     "private_contact_notes": "WhatsApp Channel: https://whatsapp.com/channel/0029VbAnnzw6hENPAcNEPcq03. 4x TEDx speaker, GSoC & Google Code-in mentor, SIH 2019 Winner.",
     "created_at": "2026-08-31T09:00:00.000Z",
-    "updated_at": "2026-09-23T10:00:00.000Z"
+    "updated_at": "2026-09-30T04:01:28.739Z",
+    "engagementRate": 3.18,
+    "totalViews": 22292623,
+    "videoCount": 398,
+    "audience_india_pct": 86,
+    "audience_tier1_city_pct": 64,
+    "audience_top_countries": [
+      {
+        "country": "India",
+        "pct": 86
+      },
+      {
+        "country": "United States",
+        "pct": 5
+      },
+      {
+        "country": "United Arab Emirates",
+        "pct": 3
+      },
+      {
+        "country": "United Kingdom",
+        "pct": 2
+      },
+      {
+        "country": "Other",
+        "pct": 4
+      }
+    ],
+    "audience_top_cities": [
+      {
+        "city": "Delhi NCR",
+        "pct": 24
+      },
+      {
+        "city": "Mumbai",
+        "pct": 19
+      },
+      {
+        "city": "Bengaluru",
+        "pct": 16
+      },
+      {
+        "city": "Pune",
+        "pct": 9
+      },
+      {
+        "city": "Hyderabad",
+        "pct": 8
+      }
+    ],
+    "audience_age_13_17": 8,
+    "audience_age_18_24": 52,
+    "audience_age_25_34": 30,
+    "audience_age_35_44": 7,
+    "audience_age_45_plus": 3,
+    "audience_gender_male": 78,
+    "audience_gender_female": 22,
+    "audience_income_segment": "Upper-Middle",
+    "audience_interests": [
+      "Smartphones & Gadgets",
+      "AI Tools & Automation",
+      "Productivity & Software",
+      "EdTech & Upskilling",
+      "Consumer Electronics"
+    ],
+    "deal_rate_dedicated_min": 64398,
+    "deal_rate_dedicated_max": 154554,
+    "deal_rate_integration_min": 30052,
+    "deal_rate_integration_max": 77277,
+    "deal_rate_short_min": 21466,
+    "deal_rate_short_max": 51518,
+    "brand_categories": [
+      "Consumer Tech",
+      "SaaS & Cloud Tools",
+      "EdTech & Upskilling",
+      "FinTech & Growth",
+      "Mobile Apps"
+    ],
+    "ai_brand_fit_summary": "Reaches an engaged audience of 317K subscribers with 90,957 avg views. Strong high-intent Tech & Gadgets demographics ideal for product integrations and high-ROI conversions.",
+    "ai_growth_insight": "Consistent audience engagement of 3.18% with strong subscriber loyalty across mid creator tier.",
+    "creator_score": 91,
+    "creator_tier": "mid",
+    "admin_updated_img": true,
+    "admin_img_updated_at": "2026-09-30T04:01:28.739Z",
+    "user_id": "usr_cr_6",
+    "user_numeric_id": "CR-107",
+    "account_email": "saumya.singh@creatornest.in",
+    "default_password": "Creator@123"
   },
   {
     "id": 7,
@@ -360,6 +539,10 @@
     "private_discord_handle": "",
     "private_contact_notes": "Website: dearkisan.com. WhatsApp: chat.whatsapp.com/I7Hel5TdeYsAGJAYyCGJhp. Joined YouTube Jul 2019. 120M+ total views, ~6 uploads/week, avg video length 4.9 min.",
     "created_at": "2026-09-08T06:22:00.000Z",
-    "updated_at": "2026-09-23T10:00:00.000Z"
+    "updated_at": "2026-09-23T10:00:00.000Z",
+    "user_id": "usr_cr_7",
+    "user_numeric_id": "CR-108",
+    "account_email": "praveen.janawa@creatornest.in",
+    "default_password": "Creator@123"
   }
 ]

@@ -287,6 +287,14 @@ function ProfileContent() {
                 {/* Actions */}
                 <div className="flex flex-wrap gap-2.5 flex-shrink-0">
                   <Link 
+                    href="/dashboard/creator" 
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl font-black text-xs text-black shadow-lg transition-transform hover:scale-105"
+                    style={{ background: 'linear-gradient(135deg, #00F2FE, #4FACFE)' }}
+                  >
+                    <Briefcase className="w-3.5 h-3.5" />
+                    Creator Portal & Deals
+                  </Link>
+                  <Link 
                     href="/tools/brand-deal-calculator" 
                     className="flex items-center gap-1.5 px-4 py-2 rounded-xl font-black text-xs text-black shadow-lg transition-transform hover:scale-105"
                     style={{ background: 'linear-gradient(135deg, #10B981, #00F2FE)' }}

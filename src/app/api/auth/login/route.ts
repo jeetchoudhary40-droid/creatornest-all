@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import { checkRateLimit, createSecureToken, getClientIp } from '@/lib/security';
+import { checkRateLimit, createSecureToken, getClientIp, comparePassword, hashPassword } from '@/lib/security';
 
 const USERS_FILE_PATH = path.join(process.cwd(), 'data', 'users.json');
 
@@ -63,19 +63,19 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Password verification supporting environment variable for Admin and hashed/plain passwords
+    // Password verification supporting environment variable for Admin and bcrypt/legacy hashes
     const envAdminPassword = process.env.ADMIN_PASSWORD;
     const isSuperAdmin = user.role === 'admin' || user.role === 'super_admin';
     
     let isPasswordValid = false;
+    let needsUpgrade = false;
+
     if (isSuperAdmin && envAdminPassword && loginPassword === envAdminPassword) {
       isPasswordValid = true;
-    } else if (user.password && user.password === loginPassword) {
-      isPasswordValid = true;
-    } else if (user.password_hash) {
-      const crypto = await import('crypto');
-      const hash = crypto.createHash('sha256').update(loginPassword + (process.env.AUTH_SECRET || 'cn_salt_2026')).digest('hex');
-      isPasswordValid = hash === user.password_hash;
+    } else {
+      const verification = await comparePassword(loginPassword, user.password_hash || user.password);
+      isPasswordValid = verification.valid;
+      needsUpgrade = verification.needsUpgrade;
     }
 
     if (!isPasswordValid) {
@@ -83,6 +83,22 @@ export async function POST(req: NextRequest) {
         { success: false, error: 'Incorrect password. Please verify your credentials.' },
         { status: 401 }
       );
+    }
+
+    // Seamlessly upgrade legacy SHA-256 or plaintext password to bcrypt (12 rounds)
+    if (needsUpgrade) {
+      try {
+        const upgradedHash = await hashPassword(loginPassword);
+        const userIndex = users.findIndex(u => u.id === user.id);
+        if (userIndex !== -1) {
+          delete users[userIndex].password;
+          users[userIndex].password_hash = upgradedHash;
+          users[userIndex].updated_at = new Date().toISOString();
+          fs.writeFileSync(USERS_FILE_PATH, JSON.stringify(users, null, 2), 'utf-8');
+        }
+      } catch (upgradeErr) {
+        console.error('Failed to auto-upgrade password to bcrypt:', upgradeErr);
+      }
     }
 
     // Check if account is suspended
@@ -113,6 +129,7 @@ export async function POST(req: NextRequest) {
       phone: user.phone || '',
       whatsapp: user.whatsapp || '',
       avatar_url: user.avatar_url || null,
+      must_change_password: Boolean(user.must_change_password),
     };
 
     const response = NextResponse.json({

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import { verifyAdminRequest } from '@/lib/security';
+import { verifyAdminRequest, hashPasswordSync } from '@/lib/security';
 
 const USERS_FILE_PATH = path.join(process.cwd(), 'data', 'users.json');
 
@@ -33,8 +33,7 @@ function saveUsersToFile(users: any[]) {
 }
 
 function getPasswordHash(pass: string): string {
-  const crypto = require('crypto');
-  return crypto.createHash('sha256').update(pass + (process.env.AUTH_SECRET || 'cn_salt_2026')).digest('hex');
+  return hashPasswordSync(pass);
 }
 
 // GET all users (Protected)

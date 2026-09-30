@@ -117,7 +117,7 @@ export async function GET(req: NextRequest) {
         `SUPPORT & COMMUNITY:`,
         `Website: https://creatornest.in`,
         `Email: hello@creatornest.in`,
-        `WhatsApp Desk: +91 8766077505`,
+        `WhatsApp Desk: +91 9460990011`,
         `=============================================================`
       ].join('\n');
       fileBuffer = Buffer.from(content, 'utf-8');

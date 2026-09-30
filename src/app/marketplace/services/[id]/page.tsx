@@ -435,7 +435,7 @@ export default function ServiceDetailPage() {
                       Book This Service
                     </button>
 
-                    <a href="https://wa.me/919999999999" target="_blank" rel="noopener noreferrer"
+                    <a href="https://wa.me/919460990011" target="_blank" rel="noopener noreferrer"
                       className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm transition-all hover:bg-white/10 border border-white/10 text-gray-300">
                       <MessageCircle className="w-4 h-4" />
                       Chat on WhatsApp
@@ -522,7 +522,7 @@ export default function ServiceDetailPage() {
 
                   <div className="pt-4 flex flex-col sm:flex-row gap-3">
                     <a
-                      href="https://wa.me/919999999999"
+                      href="https://wa.me/919460990011"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex-1 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-[#05080E] font-black text-xs sm:text-sm flex items-center justify-center gap-2"

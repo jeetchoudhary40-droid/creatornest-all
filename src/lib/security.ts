@@ -2,10 +2,106 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
+import bcrypt from 'bcryptjs';
 
 // Server-side auth secret for HMAC token signing (falls back to stable internal seed if env unset)
 const AUTH_SECRET = process.env.AUTH_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY || 'creatornest_sec_hmac_2026_top_tier_secret';
 const USERS_FILE_PATH = path.join(process.cwd(), 'data', 'users.json');
+
+// ── Bcrypt Password Hashing & Verification (Industry Gold Standard) ──
+const BCRYPT_SALT_ROUNDS = 12;
+
+/**
+ * Hashes a plain password using bcrypt with 12 salt rounds
+ */
+export async function hashPassword(plainPassword: string): Promise<string> {
+  const salt = await bcrypt.genSalt(BCRYPT_SALT_ROUNDS);
+  return bcrypt.hash(plainPassword, salt);
+}
+
+/**
+ * Synchronous bcrypt hash for sync operations
+ */
+export function hashPasswordSync(plainPassword: string): string {
+  const salt = bcrypt.genSaltSync(BCRYPT_SALT_ROUNDS);
+  return bcrypt.hashSync(plainPassword, salt);
+}
+
+/**
+ * Compares candidate password against stored hash.
+ * Supports:
+ * 1. Modern bcrypt hashes ($2a$, $2b$, $2y$)
+ * 2. Legacy salted SHA-256 hashes (auto-flags for upgrade)
+ * 3. Plaintext legacy passwords (auto-flags for upgrade)
+ */
+export async function comparePassword(
+  candidate: string,
+  storedHash: string
+): Promise<{ valid: boolean; needsUpgrade: boolean }> {
+  if (!candidate || !storedHash) return { valid: false, needsUpgrade: false };
+
+  // 1. Bcrypt hash format check
+  if (/^\$2[aby]\$\d{2}\$[./A-Za-z0-9]{53}$/.test(storedHash)) {
+    const isValid = await bcrypt.compare(candidate, storedHash);
+    return { valid: isValid, needsUpgrade: false };
+  }
+
+  // 2. Legacy SHA-256 (64 hex characters)
+  if (/^[a-f0-9]{64}$/i.test(storedHash)) {
+    const legacySalt = process.env.AUTH_SECRET || 'cn_salt_2026';
+    const computed = crypto.createHash('sha256').update(candidate + legacySalt).digest('hex');
+    const isValid = crypto.timingSafeEqual(
+      Buffer.from(computed.toLowerCase()),
+      Buffer.from(storedHash.toLowerCase())
+    );
+    return { valid: isValid, needsUpgrade: isValid };
+  }
+
+  // 3. Fallback plaintext comparison (for legacy dev seeds)
+  const isValid = candidate === storedHash;
+  return { valid: isValid, needsUpgrade: isValid };
+}
+
+// ── Database Table Allowlist & Sanitization ─────────────────────
+export const ALLOWED_DATABASE_TABLES = new Set([
+  'creators',
+  'creator_roster',
+  'creator_media_kit',
+  'campaigns',
+  'deals',
+  'audit_logs',
+  'payouts',
+  'submissions',
+  'subscriptions',
+  'contact_submissions',
+  'social_accounts',
+  'brand_shortlists',
+  'campaign_creators',
+]);
+
+export function isAllowedTable(tableName: string): boolean {
+  if (!tableName || typeof tableName !== 'string') return false;
+  return ALLOWED_DATABASE_TABLES.has(tableName.trim().toLowerCase());
+}
+
+/**
+ * Sanitizes input string to prevent SQL injection and script injection
+ */
+export function sanitizeString(input: string): string {
+  if (!input || typeof input !== 'string') return '';
+  return input
+    .replace(/[<>'";\\]/g, '')
+    .trim();
+}
+
+/**
+ * Validates alphanumeric identifier format
+ */
+export function isValidIdentifier(id: string): boolean {
+  if (!id || typeof id !== 'string') return false;
+  return /^[a-zA-Z0-9_-]+$/.test(id.trim());
+}
+
 
 // ── In-Memory Sliding Window Rate Limiter ──────────────────────
 interface RateLimitEntry {

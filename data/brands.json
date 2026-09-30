@@ -1,0 +1,450 @@
+[
+  {
+    "id": "br_1790748897969_50xu",
+    "numeric_id": "BR-106",
+    "brand_name": "Noise Wearables",
+    "company_legal_name": "Nexxbase Marketing Pvt. Ltd.",
+    "logo_url": "",
+    "website_url": "",
+    "industry": "Consumer Tech & Audio",
+    "tier": "High-Growth D2C",
+    "status": "Active Client",
+    "account_manager": "Super Admin",
+    "primary_contact": {
+      "name": "Gaurav Khatri",
+      "designation": "Co-Founder & CMO",
+      "email": "partnerships@gonoise.com",
+      "phone": "+91 99999 11223",
+      "whatsapp": "+91 99999 11223",
+      "city": "Gurugram",
+      "address": ""
+    },
+    "gstin": "06AAACN1234K1Z5",
+    "total_spend": 0,
+    "active_campaigns_count": 1,
+    "total_campaigns_count": 1,
+    "notes": "Smartwatch launch campaign",
+    "created_at": "2026-09-30T06:14:57.969Z",
+    "updated_at": "2026-09-30T06:24:06.042Z",
+    "campaigns": [
+      {
+        "id": "cmp_1790748897969_r8lq",
+        "campaign_name": "ColorFit Pro 5 Smartwatch Launch",
+        "objective": "Product Launch",
+        "promotion_type": "Dedicated Video",
+        "budget": 400000,
+        "creator_payout_budget": 340000,
+        "status": "Script Review",
+        "script_provided": true,
+        "script_status": "Under Brand Review",
+        "script_content": "Intro: Lifestyle morning routine. Creator gets workout notification on ColorFit Pro 5 with AMOLED display. Highlights Bluetooth calling and heart-rate tracking. Outro CTA with code NOISEPRO for ₹500 off.",
+        "talking_points": [
+          "1.85 inch AMOLED always-on display",
+          "TruSync Bluetooth calling",
+          "7-day battery life"
+        ],
+        "dos_and_donts": "Do show display under bright sunlight. Do not compare with Apple Watch.",
+        "mandatory_hashtags": "#NoiseColorFit #ListenToTheNoise #Sponsored",
+        "cta_link": "https://gonoise.com/products/colorfit-pro-5",
+        "coupon_code": "NOISEPRO",
+        "brand_assets_url": "",
+        "target_creators_count": 1,
+        "selected_creators": [],
+        "start_date": "2026-09-30",
+        "end_date": "",
+        "created_at": "2026-09-30T06:14:57.969Z"
+      }
+    ],
+    "sub_industry": "Smartwatches & TWS",
+    "secondary_contact": null,
+    "pan_number": "AAACN1234F",
+    "billing_address": "Gurugram, Haryana, India",
+    "payment_terms": "50% Advance, 50% on Live",
+    "target_audience_pref": "Gen Z, Fitness enthusiasts, 18-35",
+    "social_profiles": {}
+  },
+  {
+    "id": "br_boat_101",
+    "numeric_id": "BR-101",
+    "brand_name": "boAt Lifestyle",
+    "company_legal_name": "Imagine Marketing Limited",
+    "logo_url": "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=200&auto=format&fit=crop&q=80",
+    "website_url": "https://boat-lifestyle.com",
+    "industry": "Consumer Tech & Audio",
+    "tier": "High-Growth D2C",
+    "status": "Active Client",
+    "account_manager": "Super Admin",
+    "primary_contact": {
+      "name": "Sameer Mehta",
+      "designation": "Head of Creator Partnerships",
+      "email": "partnerships@boat-lifestyle.com",
+      "phone": "+91 98201 12345",
+      "whatsapp": "+91 98201 12345",
+      "city": "Mumbai",
+      "address": "B Wing, Supreme Business Park, Hiranandani Gardens, Powai, Mumbai"
+    },
+    "gstin": "27AAACI1234F1Z8",
+    "total_spend": 850000,
+    "active_campaigns_count": 1,
+    "total_campaigns_count": 2,
+    "notes": "Premium repeat brand client. Prefers high-energy tech and lifestyle creators with strong Gen-Z audience engagement.",
+    "created_at": "2026-06-10T10:00:00.000Z",
+    "updated_at": "2026-09-30T06:15:03.337Z",
+    "campaigns": [
+      {
+        "id": "cmp_boat_festive_2026",
+        "campaign_name": "Nirvana ANC Festive Launch",
+        "objective": "Product Launch",
+        "promotion_type": "Dedicated Video",
+        "budget": 500000,
+        "creator_payout_budget": 420000,
+        "status": "In Production",
+        "script_provided": true,
+        "script_status": "Approved",
+        "script_content": "Hook: Creator showcases extreme noise background (traffic/commute), toggles ANC on boAt Nirvana. Show clarity in audio. Mid-section: Highlight 50hr battery, Spatial Audio, dual device pairing. CTA: Exclusive discount code NESTBOAT for 15% off on website.",
+        "talking_points": [
+          "Demonstrate Hybrid Active Noise Cancellation in noisy environment",
+          "Showcase premium titanium acoustic drivers and battery life",
+          "Highlight 1-year doorstep warranty and Made in India pride"
+        ],
+        "dos_and_donts": "Do: Wear the earphones on camera. Don't: Mention direct competitors (Sony/Noise). Don't compare price directly with wired buds.",
+        "mandatory_hashtags": "#boAtAudio #NirvanaANC #SoundOfTheTribe #PaidPromotion",
+        "cta_link": "https://boat-lifestyle.com/products/nirvana-anc?utm_source=creatornest&utm_medium=influencer",
+        "coupon_code": "NESTBOAT15",
+        "brand_assets_url": "https://drive.google.com/drive/folders/boat-nirvana-assets-2026",
+        "target_creators_count": 3,
+        "selected_creators": [
+          {
+            "creator_id": "usr_cr_102",
+            "creator_name": "Jeet Choudhary",
+            "handle": "@techcreator",
+            "platform": "youtube",
+            "deliverable": "1 Dedicated YouTube Review (8-10 mins)",
+            "payout": 180000,
+            "status": "Script Approved"
+          },
+          {
+            "creator_id": "usr_cr_105",
+            "creator_name": "Aarav Sharma",
+            "handle": "@aaravtech",
+            "platform": "youtube",
+            "deliverable": "1 Dedicated Video + 1 Short",
+            "payout": 240000,
+            "status": "Contracted"
+          }
+        ],
+        "start_date": "2026-09-15",
+        "end_date": "2026-10-10",
+        "created_at": "2026-09-10T12:00:00.000Z"
+      },
+      {
+        "id": "cmp_boat_summer_2026",
+        "campaign_name": "boAt Airdopes 141 ANC Surge",
+        "objective": "Performance & Installs",
+        "promotion_type": "Integrated Shoutout (60-90s)",
+        "budget": 350000,
+        "creator_payout_budget": 300000,
+        "status": "Completed",
+        "script_provided": false,
+        "script_status": "Approved",
+        "script_content": "Creator-led integration. 75-second seamless transition from main video topic to everyday study/commute audio needs.",
+        "talking_points": [
+          "Budget friendly ANC under ₹1,999",
+          "Clear voice calls with quad mics",
+          "Available on Amazon Great Freedom Festival"
+        ],
+        "dos_and_donts": "Mandatory disclosure tag. Custom affiliate link in top pinned comment.",
+        "mandatory_hashtags": "#boAtAirdopes #AudioUpgrade #Collab",
+        "cta_link": "https://amazon.in/dp/B0BOAT141?tag=creatornest-21",
+        "coupon_code": "FREEDOM10",
+        "target_creators_count": 2,
+        "selected_creators": [
+          {
+            "creator_id": "usr_cr_102",
+            "creator_name": "Jeet Choudhary",
+            "handle": "@techcreator",
+            "platform": "youtube",
+            "deliverable": "60s Integrated Mid-roll",
+            "payout": 150000,
+            "deliverable_link": "https://youtube.com/watch?v=demo_boat_live",
+            "status": "Published"
+          }
+        ],
+        "start_date": "2026-07-01",
+        "end_date": "2026-07-25",
+        "created_at": "2026-06-25T10:00:00.000Z",
+        "executed_metrics": {
+          "total_views": 485000,
+          "total_impressions": 1240000,
+          "total_clicks": 18200,
+          "engagement_rate": "6.8%",
+          "roas": "3.4x",
+          "execution_notes": "Exceeded view estimates by 28%. Top 3 tier-1 Indian cities accounted for 64% of coupon redemptions."
+        }
+      }
+    ]
+  },
+  {
+    "id": "br_samsung_102",
+    "numeric_id": "BR-102",
+    "brand_name": "Samsung India",
+    "company_legal_name": "Samsung India Electronics Pvt. Ltd.",
+    "logo_url": "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=200&auto=format&fit=crop&q=80",
+    "website_url": "https://samsung.com/in",
+    "industry": "Smartphones & Consumer Electronics",
+    "tier": "Enterprise",
+    "status": "Active Client",
+    "account_manager": "Super Admin",
+    "primary_contact": {
+      "name": "Rohan Sharma",
+      "designation": "Director - Digital Media & Influencer Marketing",
+      "email": "rohan.sharma@partner.samsung.com",
+      "phone": "+91 99100 98765",
+      "whatsapp": "+91 99100 98765",
+      "city": "Gurugram",
+      "address": "Two Horizon Center, Golf Course Road, DLF Phase 5, Gurugram, Haryana"
+    },
+    "gstin": "06AABCS1234D1Z2",
+    "total_spend": 1200000,
+    "active_campaigns_count": 1,
+    "total_campaigns_count": 1,
+    "notes": "Strict legal review requirements. All scripts must undergo brand brand-safety compliance before shooting.",
+    "created_at": "2026-08-01T09:00:00.000Z",
+    "updated_at": "2026-09-28T16:00:00.000Z",
+    "campaigns": [
+      {
+        "id": "cmp_samsung_galaxy_m55",
+        "campaign_name": "Galaxy M-Series Festive Showcase",
+        "objective": "Brand Awareness",
+        "promotion_type": "Dedicated Video",
+        "budget": 1200000,
+        "creator_payout_budget": 1050000,
+        "status": "Script Review",
+        "script_provided": true,
+        "script_status": "Under Brand Review",
+        "script_content": "Comprehensive camera shootout in low-light and daylight conditions. Highlight Monster battery (6000mAh) and Super AMOLED Plus 120Hz display. Include cinematic b-rolls in city night lights. Script submitted on 24th Sept for legal approval.",
+        "talking_points": [
+          "50MP OIS No-Shake Camera sample shots",
+          "Knox Security & 4 generations of Android OS updates",
+          "Special Amazon Great Indian Festival pricing"
+        ],
+        "dos_and_donts": "Do: Adhere strictly to display specifications. Don't: Show cracked screens or water submersion. ASCI disclaimer required on screen for 5 seconds.",
+        "mandatory_hashtags": "#GalaxyMSeries #MonsterLikeNoOther #SamsungIndia #Sponsored",
+        "cta_link": "https://samsung.com/in/smartphones/galaxy-m/?cid=in_creatornest",
+        "coupon_code": "SAMSUNGNEST",
+        "brand_assets_url": "https://samsung-portal.app.box.com/v/galaxy-m-brief-2026",
+        "target_creators_count": 4,
+        "selected_creators": [
+          {
+            "creator_id": "usr_cr_102",
+            "creator_name": "Jeet Choudhary",
+            "handle": "@techcreator",
+            "platform": "youtube",
+            "deliverable": "1 Dedicated In-Depth Review + 2 YouTube Shorts",
+            "payout": 250000,
+            "status": "Script Approved"
+          }
+        ],
+        "start_date": "2026-09-20",
+        "end_date": "2026-10-20",
+        "created_at": "2026-09-18T14:00:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "br_swiggy_103",
+    "numeric_id": "BR-103",
+    "brand_name": "Swiggy One",
+    "company_legal_name": "Bundl Technologies Pvt. Ltd.",
+    "logo_url": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200&auto=format&fit=crop&q=80",
+    "website_url": "https://swiggy.com",
+    "industry": "Food Tech & Hyperlocal",
+    "tier": "Enterprise",
+    "status": "Active Client",
+    "account_manager": "Super Admin",
+    "primary_contact": {
+      "name": "Ananya Sen",
+      "designation": "Associate Director - Growth & Influencer Alliances",
+      "email": "brandpartnerships@swiggy.in",
+      "phone": "+91 97400 45678",
+      "whatsapp": "+91 97400 45678",
+      "city": "Bengaluru",
+      "address": "IBC Knowledge Park, Bannerghatta Main Road, Bengaluru, Karnataka"
+    },
+    "gstin": "29AAACB1234C1Z4",
+    "total_spend": 450000,
+    "active_campaigns_count": 1,
+    "total_campaigns_count": 1,
+    "notes": "Focus on high conversions and food cravings. Pinned link in comments with custom discount code is mandatory.",
+    "created_at": "2026-08-20T11:00:00.000Z",
+    "updated_at": "2026-09-22T10:00:00.000Z",
+    "campaigns": [
+      {
+        "id": "cmp_swiggy_gourmet_2026",
+        "campaign_name": "Swiggy Gourmet Food Week",
+        "objective": "Performance & Installs",
+        "promotion_type": "YouTube Shorts / Reels",
+        "budget": 450000,
+        "creator_payout_budget": 380000,
+        "status": "In Production",
+        "script_provided": false,
+        "script_status": "Approved",
+        "script_content": "Creator-led authentic ordering experience. Creator shows working late or hosting friends, unboxes gourmet food arriving in 25 mins with Swiggy One free delivery.",
+        "talking_points": [
+          "Zero delivery fee on top restaurants with Swiggy One",
+          "Up to 40% off with code SWIGGYNEST",
+          "Live food tracking experience"
+        ],
+        "dos_and_donts": "Do: Show appetizing food close-ups and app ordering screen. Don't: Show unbranded food packaging.",
+        "mandatory_hashtags": "#SwiggyGourmet #SwiggyOne #FoodCravings #Ad",
+        "cta_link": "https://swiggy.onelink.me/88564/creatornest",
+        "coupon_code": "SWIGGYNEST",
+        "target_creators_count": 5,
+        "selected_creators": [
+          {
+            "creator_id": "usr_cr_102",
+            "creator_name": "Jeet Choudhary",
+            "handle": "@techcreator",
+            "platform": "instagram",
+            "deliverable": "1 Instagram Reel + 1 Story with Link",
+            "payout": 85000,
+            "status": "Contracted"
+          }
+        ],
+        "start_date": "2026-09-22",
+        "end_date": "2026-10-15",
+        "created_at": "2026-09-20T14:15:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "br_zerodha_104",
+    "numeric_id": "BR-104",
+    "brand_name": "Zerodha Coin",
+    "company_legal_name": "Zerodha Broking Limited",
+    "logo_url": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=200&auto=format&fit=crop&q=80",
+    "website_url": "https://zerodha.com/coin",
+    "industry": "FinTech & Wealth Management",
+    "tier": "Enterprise",
+    "status": "Active Client",
+    "account_manager": "Super Admin",
+    "primary_contact": {
+      "name": "Vikram Malhotra",
+      "designation": "Vice President - Community & Education Partnerships",
+      "email": "outreach@zerodha.com",
+      "phone": "+91 98450 88990",
+      "whatsapp": "+91 98450 88990",
+      "city": "Bengaluru",
+      "address": "#153/154, 4th Cross, Dollars Colony, JP Nagar 4th Phase, Bengaluru"
+    },
+    "gstin": "29AABCZ1234E1Z1",
+    "total_spend": 960000,
+    "active_campaigns_count": 0,
+    "total_campaigns_count": 1,
+    "notes": "Strict SEBI compliance guidelines. No guarantee of returns allowed. Educational content only.",
+    "created_at": "2026-07-15T09:00:00.000Z",
+    "updated_at": "2026-09-18T11:00:00.000Z",
+    "campaigns": [
+      {
+        "id": "cmp_zerodha_q3_direct_mf",
+        "campaign_name": "Direct Mutual Funds Awareness",
+        "objective": "Brand Awareness",
+        "promotion_type": "Dedicated Video",
+        "budget": 960000,
+        "creator_payout_budget": 850000,
+        "status": "Completed",
+        "script_provided": true,
+        "script_status": "Approved",
+        "script_content": "Educational deep dive into regular vs direct mutual funds. Explaining expense ratios and how direct funds can compound to lakhs of extra savings over 15-20 years.",
+        "talking_points": [
+          "Zero commission on direct mutual funds via Zerodha Coin",
+          "No hidden distributor fees",
+          "Automated SIPs with UPI mandate"
+        ],
+        "dos_and_donts": "Mandatory SEBI disclaimer text: 'Mutual fund investments are subject to market risks. Read all scheme related documents carefully.' Absolutely no stock recommendations.",
+        "mandatory_hashtags": "#ZerodhaCoin #DirectMutualFunds #FinancialLiteracy #Partner",
+        "cta_link": "https://coin.zerodha.com/?utm_source=creatornest&utm_campaign=edu",
+        "target_creators_count": 3,
+        "selected_creators": [
+          {
+            "creator_id": "usr_cr_102",
+            "creator_name": "Jeet Choudhary",
+            "handle": "@techcreator",
+            "platform": "youtube",
+            "deliverable": "1 In-Depth Finance & Tech Video",
+            "payout": 320000,
+            "deliverable_link": "https://youtube.com/watch?v=demo_zerodha_live",
+            "status": "Published"
+          }
+        ],
+        "start_date": "2026-08-01",
+        "end_date": "2026-09-01",
+        "created_at": "2026-07-20T10:00:00.000Z",
+        "executed_metrics": {
+          "total_views": 620000,
+          "total_impressions": 1850000,
+          "total_clicks": 34500,
+          "engagement_rate": "8.2%",
+          "roas": "4.8x",
+          "execution_notes": "One of the highest performing educational campaigns of Q3. High watch-time retention (68% average percentage viewed)."
+        }
+      }
+    ]
+  },
+  {
+    "id": "br_mamaearth_105",
+    "numeric_id": "BR-105",
+    "brand_name": "Mamaearth",
+    "company_legal_name": "Honasa Consumer Limited",
+    "logo_url": "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=200&auto=format&fit=crop&q=80",
+    "website_url": "https://mamaearth.in",
+    "industry": "Beauty & Personal Care",
+    "tier": "Enterprise",
+    "status": "Prospect",
+    "account_manager": "Super Admin",
+    "primary_contact": {
+      "name": "Pooja Singhal",
+      "designation": "Media Planning Lead",
+      "email": "influencers@honasa.in",
+      "phone": "+91 98111 22334",
+      "whatsapp": "+91 98111 22334",
+      "city": "Gurugram",
+      "address": "Plot No. 63, 4th Floor, Sector 44, Gurugram, Haryana"
+    },
+    "gstin": "06AAGCH1234P1Z3",
+    "total_spend": 0,
+    "active_campaigns_count": 1,
+    "total_campaigns_count": 1,
+    "notes": "Brief received for Onion Hair Oil festive push. Currently shortlisting tier-2/3 lifestyle and family creators.",
+    "created_at": "2026-09-24T15:00:00.000Z",
+    "updated_at": "2026-09-29T11:00:00.000Z",
+    "campaigns": [
+      {
+        "id": "cmp_mamaearth_festive_2026",
+        "campaign_name": "Goodness Inside Festive Care",
+        "objective": "Brand Awareness",
+        "promotion_type": "Instagram Story Sequence",
+        "budget": 300000,
+        "creator_payout_budget": 250000,
+        "status": "Creator Shortlisting",
+        "script_provided": true,
+        "script_status": "Draft Submitted",
+        "script_content": "Story 1: Creator talks about festive pollution and hair fall. Story 2: Shows Mamaearth Onion Oil application with comb applicator. Story 3: Pinned link sticker with code MAMAFEST20 for flat 20% off.",
+        "talking_points": [
+          "Toxin-free, Made Safe certified formulation",
+          "Reduces hair fall and adds natural shine",
+          "Mamaearth plants a tree for every order placed"
+        ],
+        "dos_and_donts": "Show authentic use. No overnight miracle claims. Include link sticker on 3rd story frame.",
+        "mandatory_hashtags": "#MamaearthIndia #GoodnessInside #HairCareRoutine #Collab",
+        "cta_link": "https://mamaearth.in/product/onion-hair-oil",
+        "coupon_code": "MAMAFEST20",
+        "target_creators_count": 6,
+        "selected_creators": [],
+        "start_date": "2026-10-01",
+        "end_date": "2026-10-25",
+        "created_at": "2026-09-24T16:00:00.000Z"
+      }
+    ]
+  }
+]

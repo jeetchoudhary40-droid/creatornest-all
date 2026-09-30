@@ -105,7 +105,7 @@ export default function BrandForm() {
 
         <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
           <a
-            href={`https://wa.me/919876543210?text=${waText}`}
+            href={`https://wa.me/919460990011?text=${waText}`}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-green-500 hover:bg-green-600 text-white font-bold rounded-xl text-sm transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)]"

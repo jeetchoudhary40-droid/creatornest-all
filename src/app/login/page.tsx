@@ -2,7 +2,7 @@
 
 import React, { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Loader2, User, Lock, Eye, EyeOff, LogIn, ArrowRight, ShieldAlert, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Loader2, User, Lock, Eye, EyeOff, LogIn, ArrowRight, ShieldAlert, Sparkles, CheckCircle2, Key, X, RefreshCw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Logo from '@/components/Logo';
@@ -20,6 +20,16 @@ function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  // Forgot Password / Reset Access Modal State
+  const [resetModalOpen, setResetModalOpen] = useState(false);
+  const [resetIdentifier, setResetIdentifier] = useState('');
+  const [resetStep, setResetStep] = useState<'request' | 'confirm'>('request');
+  const [resetToken, setResetToken] = useState('');
+  const [newResetPassword, setNewResetPassword] = useState('');
+  const [resetMsg, setResetMsg] = useState('');
+  const [resetErr, setResetErr] = useState('');
+  const [resetSubmitting, setResetSubmitting] = useState(false);
 
   const next = searchParams.get('next');
 
@@ -75,6 +85,68 @@ function LoginForm() {
       setError(err.message || 'Login failed. Please check your credentials.');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleRequestReset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!resetIdentifier.trim()) {
+      setResetErr('Please enter your Creator ID or Email.');
+      return;
+    }
+    setResetSubmitting(true);
+    setResetErr('');
+    setResetMsg('');
+    try {
+      const res = await fetch('/api/auth/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'request', identifier: resetIdentifier.trim() }),
+      });
+      const data = await res.json();
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to request reset.');
+      }
+      setResetToken(data.token);
+      setResetMsg(`Reset authorized for ${data.user?.full_name} (${data.user?.numeric_id}). Please enter your new password below.`);
+      setResetStep('confirm');
+    } catch (err: any) {
+      setResetErr(err.message || 'Request failed.');
+    } finally {
+      setResetSubmitting(false);
+    }
+  };
+
+  const handleConfirmReset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newResetPassword || newResetPassword.length < 6) {
+      setResetErr('New password must be at least 6 characters.');
+      return;
+    }
+    setResetSubmitting(true);
+    setResetErr('');
+    try {
+      const res = await fetch('/api/auth/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'confirm', token: resetToken, newPassword: newResetPassword }),
+      });
+      const data = await res.json();
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to reset password.');
+      }
+      setResetMsg('Password reset successfully! You can now log in with your new password.');
+      setTimeout(() => {
+        setResetModalOpen(false);
+        setResetStep('request');
+        setResetIdentifier('');
+        setNewResetPassword('');
+        setResetMsg('');
+      }, 2000);
+    } catch (err: any) {
+      setResetErr(err.message || 'Failed to reset.');
+    } finally {
+      setResetSubmitting(false);
     }
   };
 
@@ -159,9 +231,19 @@ function LoginForm() {
               <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400">
                 Password
               </label>
-              <Link href="/contact" className="text-xs text-primary/80 hover:text-primary transition-colors">
-                Need Help?
-              </Link>
+              <button
+                type="button"
+                onClick={() => {
+                  setResetIdentifier(identifier);
+                  setResetModalOpen(true);
+                  setResetStep('request');
+                  setResetErr('');
+                  setResetMsg('');
+                }}
+                className="text-xs text-primary/90 hover:text-primary transition-colors font-semibold"
+              >
+                Forgot / Reset Password?
+              </button>
             </div>
             <div className="relative">
               <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
@@ -182,6 +264,9 @@ function LoginForm() {
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
+            <p className="text-[11px] text-gray-500 mt-1.5 ml-1">
+              Onboarded creators: Enter your assigned ID (e.g. <span className="text-primary font-mono font-bold">CR-102</span>) & default password.
+            </p>
           </div>
 
           {/* Sign In Button */}
@@ -217,6 +302,118 @@ function LoginForm() {
         </div>
 
       </motion.div>
+
+      {/* ── Password Reset Modal ── */}
+      <AnimatePresence>
+        {resetModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-surface border border-white/10 rounded-3xl w-full max-w-md p-6 sm:p-8 space-y-5 shadow-2xl relative"
+            >
+              <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                <div className="flex items-center space-x-2">
+                  <Key className="w-5 h-5 text-primary" />
+                  <h3 className="text-lg font-bold text-white">Reset Account Access</h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setResetModalOpen(false)}
+                  className="p-1.5 hover:bg-white/10 rounded-xl text-gray-400 hover:text-white"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {resetErr && (
+                <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 text-xs">
+                  {resetErr}
+                </div>
+              )}
+
+              {resetMsg && (
+                <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs">
+                  {resetMsg}
+                </div>
+              )}
+
+              {resetStep === 'request' ? (
+                <form onSubmit={handleRequestReset} className="space-y-4">
+                  <p className="text-xs text-gray-400 leading-relaxed">
+                    Enter your assigned Creator ID (e.g. <strong className="text-white">CR-102</strong>) or registered business email to verify your identity.
+                  </p>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5">
+                      Creator ID or Email
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={resetIdentifier}
+                      onChange={(e) => setResetIdentifier(e.target.value)}
+                      placeholder="e.g. CR-103 or you@creatornest.in"
+                      className="w-full bg-background border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-primary"
+                    />
+                  </div>
+
+                  <div className="pt-2 flex items-center justify-end space-x-2">
+                    <button
+                      type="button"
+                      onClick={() => setResetModalOpen(false)}
+                      className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-bold text-gray-400"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={resetSubmitting}
+                      className="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-background font-bold text-xs shadow-lg shadow-primary/20 disabled:opacity-50"
+                    >
+                      {resetSubmitting ? 'Verifying…' : 'Continue →'}
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <form onSubmit={handleConfirmReset} className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5">
+                      New Secret Password (min 6 chars)
+                    </label>
+                    <input
+                      type="password"
+                      required
+                      value={newResetPassword}
+                      onChange={(e) => setNewResetPassword(e.target.value)}
+                      placeholder="Enter your new password"
+                      className="w-full bg-background border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-primary"
+                    />
+                  </div>
+
+                  <div className="pt-2 flex items-center justify-end space-x-2">
+                    <button
+                      type="button"
+                      onClick={() => setResetStep('request')}
+                      className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-bold text-gray-400"
+                    >
+                      Back
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={resetSubmitting}
+                      className="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-background font-bold text-xs shadow-lg shadow-primary/20 disabled:opacity-50"
+                    >
+                      {resetSubmitting ? 'Updating…' : 'Set New Password'}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

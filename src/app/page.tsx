@@ -20,7 +20,7 @@ const homeJsonLd = {
       image: 'https://creatornest.in/images/og-cover.png',
       '@id': 'https://creatornest.in',
       url: 'https://creatornest.in',
-      telephone: '+91-9876543210',
+      telephone: '+91 9460990011',
       priceRange: '₹₹₹',
       address: {
         '@type': 'PostalAddress',

@@ -9,6 +9,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { verifyAdminRequest } from '@/lib/security';
+import { ensureCreatorAccount, syncAllRosterCreatorAccounts } from '@/lib/creatorAuthService';
 
 const ROSTER_FILE_PATH = path.join(process.cwd(), 'data', 'roster.json');
 
@@ -54,6 +55,8 @@ function determinePlatform(ytNum: number, igNum: number, existing?: string): str
 
 export async function GET() {
   try {
+    // Keep roster creators and users in sync
+    await syncAllRosterCreatorAccounts();
     const creators = getRosterFromFile();
     // Sort by rank ascending so order is correct
     creators.sort((a: any, b: any) => (a.rank ?? 999) - (b.rank ?? 999));
@@ -96,9 +99,10 @@ export async function POST(req: NextRequest) {
     const primaryNiche = nichesList[0] || niche || category || 'AI & Automation';
 
     const newCreator = {
+      ...body,
       id: newId,
       name: creatorName,
-      channelName: channelName || youtubeHandle || '',
+      channelName: channelName || youtubeHandle || body.channelName || '',
       niche: primaryNiche,
       niches: nichesList,
       platform: platform || determinePlatform(ytNum, igNum),
@@ -128,6 +132,32 @@ export async function POST(req: NextRequest) {
       linkedinUrl: linkedinUrl || '',
       twitterUrl: twitterUrl || '',
       websiteUrl: websiteUrl || '',
+      // Extended Performance & Audience Demographics
+      engagementRate: body.engagementRate !== undefined ? Number(body.engagementRate) : 0,
+      audience_india_pct: body.audience_india_pct !== undefined ? Number(body.audience_india_pct) : 86,
+      audience_tier1_city_pct: body.audience_tier1_city_pct !== undefined ? Number(body.audience_tier1_city_pct) : 60,
+      audience_top_countries: body.audience_top_countries || [],
+      audience_top_cities: body.audience_top_cities || [],
+      audience_age_13_17: body.audience_age_13_17 !== undefined ? Number(body.audience_age_13_17) : 8,
+      audience_age_18_24: body.audience_age_18_24 !== undefined ? Number(body.audience_age_18_24) : 52,
+      audience_age_25_34: body.audience_age_25_34 !== undefined ? Number(body.audience_age_25_34) : 30,
+      audience_age_35_44: body.audience_age_35_44 !== undefined ? Number(body.audience_age_35_44) : 7,
+      audience_age_45_plus: body.audience_age_45_plus !== undefined ? Number(body.audience_age_45_plus) : 3,
+      audience_gender_male: body.audience_gender_male !== undefined ? Number(body.audience_gender_male) : 75,
+      audience_gender_female: body.audience_gender_female !== undefined ? Number(body.audience_gender_female) : 25,
+      audience_income_segment: body.audience_income_segment || 'Upper-Middle',
+      audience_interests: body.audience_interests || [],
+      // Commercials & Deal Rates (INR)
+      deal_rate_dedicated_min: body.deal_rate_dedicated_min !== undefined ? Number(body.deal_rate_dedicated_min) : 0,
+      deal_rate_dedicated_max: body.deal_rate_dedicated_max !== undefined ? Number(body.deal_rate_dedicated_max) : 0,
+      deal_rate_integration_min: body.deal_rate_integration_min !== undefined ? Number(body.deal_rate_integration_min) : 0,
+      deal_rate_integration_max: body.deal_rate_integration_max !== undefined ? Number(body.deal_rate_integration_max) : 0,
+      deal_rate_short_min: body.deal_rate_short_min !== undefined ? Number(body.deal_rate_short_min) : 0,
+      deal_rate_short_max: body.deal_rate_short_max !== undefined ? Number(body.deal_rate_short_max) : 0,
+      brand_categories: body.brand_categories || [],
+      ai_brand_fit_summary: body.ai_brand_fit_summary || '',
+      creator_score: body.creator_score !== undefined ? Number(body.creator_score) : 70,
+      creator_tier: body.creator_tier || 'micro',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
@@ -135,7 +165,20 @@ export async function POST(req: NextRequest) {
     creators.push(newCreator);
     saveRosterToFile(creators);
 
-    return NextResponse.json({ success: true, message: `Creator "${creatorName}" added successfully.`, creator: newCreator });
+    // Auto-provision user login account with default password (Creator@123)
+    const accountRes = await ensureCreatorAccount(newCreator, 'Creator@123');
+
+    return NextResponse.json({
+      success: true,
+      message: `Creator "${creatorName}" onboarded successfully with ID ${accountRes.user.numeric_id}.`,
+      creator: newCreator,
+      user_account: {
+        numeric_id: accountRes.user.numeric_id,
+        email: accountRes.user.email,
+        default_password: accountRes.defaultPassword,
+        must_change_password: true,
+      },
+    });
   } catch (err: any) {
     console.error('POST /api/admin/roster error:', err);
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
@@ -177,6 +220,7 @@ export async function PUT(req: NextRequest) {
 
     creators[index] = {
       ...current,
+      ...updates,
       name: updates.name !== undefined ? String(updates.name).trim() : current.name,
       channelName: updates.channelName !== undefined ? updates.channelName : (current.channelName || current.youtubeHandle || ''),
       niche: primaryNiche,
@@ -213,7 +257,18 @@ export async function PUT(req: NextRequest) {
 
     saveRosterToFile(creators);
 
-    return NextResponse.json({ success: true, message: 'Creator updated successfully.', creator: creators[index] });
+    // Keep user account profile picture, name, and phone in sync
+    const accountRes = await ensureCreatorAccount(creators[index]);
+
+    return NextResponse.json({
+      success: true,
+      message: 'Creator updated successfully.',
+      creator: creators[index],
+      user_account: accountRes?.user ? {
+        numeric_id: accountRes.user.numeric_id,
+        email: accountRes.user.email,
+      } : null,
+    });
   } catch (err: any) {
     console.error('PUT /api/admin/roster error:', err);
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });

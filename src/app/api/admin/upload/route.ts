@@ -44,8 +44,11 @@ export async function POST(req: NextRequest) {
       .slice(0, 40);
     const filename = `${Date.now()}-${safeName}.${ext}`;
 
+    const folderField = (formData.get('folder') as string) || 'creators';
+    const safeFolder = folderField === 'brands' ? 'brands' : 'creators';
+
     // Ensure directory exists
-    const uploadDir = path.join(process.cwd(), 'public', 'images', 'creators');
+    const uploadDir = path.join(process.cwd(), 'public', 'images', safeFolder);
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
@@ -54,7 +57,7 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(await file.arrayBuffer());
     fs.writeFileSync(path.join(uploadDir, filename), buffer);
 
-    const url = `/images/creators/${filename}`;
+    const url = `/images/${safeFolder}/${filename}`;
     return NextResponse.json({ success: true, url, filename });
   } catch (err: any) {
     console.error('Upload error:', err);
