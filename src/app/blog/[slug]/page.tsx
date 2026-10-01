@@ -13,13 +13,9 @@ export async function generateStaticParams() {
 }
 
 async function getPost(slug: string): Promise<BlogPost | null> {
-  // 1. Fast path: Match static post immediately (0ms delay, zero network lag)
   const staticPost = STATIC_POSTS.find(p => p.slug === slug);
-  if (staticPost) {
-    return staticPost;
-  }
 
-  // 2. Fallback: If not in static posts, query Supabase with a tight 1s timeout
+  // 1. Query Supabase for any live database updates
   try {
     const { supabase } = await import('@/lib/supabase');
     const controller = new AbortController();
@@ -37,19 +33,29 @@ async function getPost(slug: string): Promise<BlogPost | null> {
 
     if (!error && data) {
       return {
+        ...staticPost,
         ...data,
-        category: data.category || 'strategy',
-        readTime: data.readTime || '5 min read',
-        tags: data.tags || ['Creator Economy'],
-        author: data.author || {
-          full_name: 'Creator Nest Team',
-          avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80',
-          role: 'Creator Strategist'
-        }
+        category: data.category || staticPost?.category || 'strategy',
+        readTime: data.read_time || data.readTime || staticPost?.readTime || '5 min read',
+        tags: data.tags || staticPost?.tags || ['Creator Economy'],
+        author: data.author_name ? {
+          full_name: data.author_name,
+          avatar_url: data.author_avatar || staticPost?.author?.avatar_url || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150',
+          role: data.author_role || staticPost?.author?.role || 'Lead Creator Economy Analyst'
+        } : (data.author || staticPost?.author || {
+          full_name: 'Ananya Verma',
+          avatar_url: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150',
+          role: 'Lead Creator Economy Analyst'
+        })
       };
     }
   } catch {
-    // Graceful fallback
+    // Graceful fallback to static post
+  }
+
+  // 2. Return static post if no DB override exists
+  if (staticPost) {
+    return staticPost;
   }
 
   return null;

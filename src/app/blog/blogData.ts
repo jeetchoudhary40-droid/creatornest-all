@@ -75,10 +75,10 @@ export const STATIC_POSTS: BlogPost[] = [
     created_at: new Date('2026-10-01T12:00:00Z').toISOString(),
     status: 'published',
     author: {
-      full_name: 'Creator Nest Editorial Team',
-      avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80',
+      full_name: 'Ananya Verma',
+      avatar_url: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150',
       role: 'Lead Creator Economy Analyst',
-      role_hi: 'चीफ क्रिएator इकोनोमी एनालिस्ट'
+      role_hi: 'चीफ क्रिएटर इकोनॉमी एनालिस्ट'
     },
     content: `
       <p class="text-xs sm:text-sm text-gray-400 border-b border-white/10 pb-3 mb-6">
@@ -399,10 +399,10 @@ export const STATIC_POSTS: BlogPost[] = [
     created_at: new Date('2026-09-24T12:00:00Z').toISOString(),
     status: 'published',
     author: {
-      full_name: 'Creator Nest AI & Product Research',
-      avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80',
-      role: 'Head of Emerging Technologies',
-      role_hi: 'हेड ऑफ इमर्जिंग टेक्नोलॉजीज'
+      full_name: 'Aarav Mehta',
+      avatar_url: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150',
+      role: 'Head of Emerging AI Technologies',
+      role_hi: 'हेड ऑफ इमर्जिंग AI टेक्नोलॉजीज'
     },
     content: `
       <p>At its flagship annual <strong>"Made on YouTube"</strong> event, YouTube officially crossed the threshold from being an online video hosting platform to becoming a comprehensive, AI-native creative production studio. The cornerstone of this transformation? The deep, native integration of <strong>Google DeepMind’s flagship generative video model: Veo</strong>.</p>
@@ -615,10 +615,10 @@ export const STATIC_POSTS: BlogPost[] = [
     created_at: new Date('2026-09-18T10:00:00Z').toISOString(),
     status: 'published',
     author: {
-      full_name: 'Creator Nest Policy Desk',
-      avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80',
-      role: 'Head of Legal & Compliance Research',
-      role_hi: 'हेड ऑफ लीगल एंड कंप्लायंस रिसर्च'
+      full_name: 'Pooja Sundaram',
+      avatar_url: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150',
+      role: 'Head of Legal & Creator Policy',
+      role_hi: 'हेड ऑफ लीगल एंड क्रिएटर पॉलिसी'
     },
     content: `
       <p>If you've spent any time on Instagram, X, or Threads lately, you've probably seen the claim: <strong>"Rajya Sabha passes National Creator Economy Bill, 2026."</strong> It's been shared by large pages, written up as a "landmark law" by marketing blogs, and repeated so often it now reads as settled fact.</p>
@@ -805,8 +805,8 @@ export const STATIC_POSTS: BlogPost[] = [
     created_at: new Date('2026-08-10').toISOString(),
     status: 'published',
     author: {
-      full_name: 'Rohit Sharma',
-      avatar_url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80',
+      full_name: 'Rohan Singhania',
+      avatar_url: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150',
       role: 'Head of Talent Partnerships',
       role_hi: 'हेड ऑफ टैलेंट पार्टनरशिप्स'
     },
@@ -860,10 +860,10 @@ export const STATIC_POSTS: BlogPost[] = [
     created_at: new Date('2026-08-05').toISOString(),
     status: 'published',
     author: {
-      full_name: 'Marcus Chen',
-      avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80',
-      role: 'Head of Creator Compliance',
-      role_hi: 'हेड ऑफ क्रिएटर कंप्लायंस'
+      full_name: 'Amit Patel',
+      avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+      role: 'Lead Finfluencer & Compliance Advisor',
+      role_hi: 'चीफ कंप्लायंस एडवाइजर'
     },
     content: `
       <p>The golden era of unregulated stock tips and cryptocurrency endorsements in India is officially over. The Securities and Exchange Board of India (SEBI) has transitioned from gentle advisories to rigorous active enforcement, enforcing sweeping restrictions on financial influencers ("finfluencers").</p>
@@ -915,10 +915,10 @@ export const STATIC_POSTS: BlogPost[] = [
     created_at: new Date('2026-07-30').toISOString(),
     status: 'published',
     author: {
-      full_name: 'Alex Rivera',
-      avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80',
-      role: 'Head of Creator Strategy',
-      role_hi: 'हेड ऑफ क्रिएटर स्ट्रेटेजी'
+      full_name: 'Divya Reddy',
+      avatar_url: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150',
+      role: 'Regional Creator Insights Director',
+      role_hi: 'रीजनल क्रिएटर इनसाइट्स डायरेक्टर'
     },
     content: `
       <p>The myth that successful digital creators must be based in Mumbai, Delhi, or Bengaluru has been thoroughly shattered. Industry research confirms that India’s creator economy is expanding toward an unprecedented <strong>₹4,500 to ₹5,000 crore valuation by 2027</strong>, with two-thirds of all new creator talent originating in non-metro heartlands.</p>
@@ -970,10 +970,10 @@ export const STATIC_POSTS: BlogPost[] = [
     created_at: new Date('2026-07-22').toISOString(),
     status: 'published',
     author: {
-      full_name: 'Rohit Sharma',
-      avatar_url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80',
-      role: 'Head of Talent Partnerships',
-      role_hi: 'हेड ऑफ टैलेंट पार्टनरशिप्स'
+      full_name: 'Vikram Singh',
+      avatar_url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150',
+      role: 'Creator Taxation & Finance Strategist',
+      role_hi: 'क्रिएटर टैक्सेशन स्ट्रैटेजिस्ट'
     },
     content: `
       <p>The Indian creator economy has reached a historic turning point. With over 100 million active digital creators and surging brand budgets, regulatory bodies and platform algorithms have introduced critical policy updates.</p>
@@ -1025,10 +1025,10 @@ export const STATIC_POSTS: BlogPost[] = [
     created_at: new Date('2026-07-01').toISOString(),
     status: 'published',
     author: {
-      full_name: 'Alex Rivera',
-      avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80',
-      role: 'Head of Creator Strategy',
-      role_hi: 'हेड ऑफ क्रिएटर स्ट्रेटेजी'
+      full_name: 'Kavya Nair',
+      avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
+      role: 'Video Retention & Storyboard Director',
+      role_hi: 'वीडियो रिटेंशन डायरेक्टर'
     },
     content: `
       <p>Every second counts in modern content creation. Data shows that the first 5 seconds of a video determine whether a viewer stays for the next 10 minutes or clicks away. To combat drop-off, professional production houses use the <strong>3-Hook Framework</strong>.</p>
@@ -1080,10 +1080,10 @@ export const STATIC_POSTS: BlogPost[] = [
     created_at: new Date('2026-07-14').toISOString(),
     status: 'published',
     author: {
-      full_name: 'Rohit Sharma',
-      avatar_url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80',
-      role: 'Head of Talent Partnerships',
-      role_hi: 'हेड ऑफ टैलेंट पार्टनरशिप्स'
+      full_name: 'Kabir Mehta',
+      avatar_url: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150',
+      role: 'Brand Deal & Sponsorship Lead',
+      role_hi: 'ब्रांड स्पॉन्सरशिप्स एक्सपर्ट'
     },
     content: `
       <p>The biggest mistake emerging creators make when pitching to brands is sending a static rate card tied exclusively to subscriber count or standard CPMs. Media buyers evaluate creators on ROI, conversion affinity, and commercial usage rights.</p>
@@ -1127,10 +1127,10 @@ export const STATIC_POSTS: BlogPost[] = [
     created_at: new Date('2026-07-05').toISOString(),
     status: 'published',
     author: {
-      full_name: 'Elena Rostova',
-      avatar_url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80',
-      role: 'Creative Director',
-      role_hi: 'क्रिएटिव डायरेक्टर'
+      full_name: 'Priya Sharma',
+      avatar_url: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150',
+      role: 'Omnichannel Video Strategist',
+      role_hi: 'ओमनीचैनल वीडियो स्ट्रैटेजिस्ट'
     },
     content: `
       <p>Creating content is exhausting. If you spend 20 hours editing a long-form YouTube video and only post it once, you are leaving millions of potential impressions on the table. Here is the step-by-step framework to maximize your return on effort.</p>
@@ -1174,10 +1174,10 @@ export const STATIC_POSTS: BlogPost[] = [
     created_at: new Date('2026-07-10').toISOString(),
     status: 'published',
     author: {
-      full_name: 'Marcus Chen',
-      avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80',
-      role: 'Thumbnail Strategist',
-      role_hi: 'थंबनेल स्ट्रेटेजिस्ट'
+      full_name: 'Devansh Joshi',
+      avatar_url: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150',
+      role: 'Thumbnail & CTR Specialist',
+      role_hi: 'थंबनेल और CTR विशेषज्ञ'
     },
     content: `
       <p>Your content could be the most valuable in the world, but if nobody clicks, nobody knows. Click-Through Rate (CTR) is the first gatekeeper of the YouTube algorithm. Here is how to optimize it before you film.</p>
@@ -1221,10 +1221,10 @@ export const STATIC_POSTS: BlogPost[] = [
     created_at: new Date('2026-07-18').toISOString(),
     status: 'published',
     author: {
-      full_name: 'Alex Rivera',
-      avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80',
-      role: 'Head of Creator Strategy',
-      role_hi: 'हेड ऑफ क्रिएटर स्ट्रेटेजी'
+      full_name: 'Isha Kapoor',
+      avatar_url: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150',
+      role: 'Head of Algorithm & Audience Research',
+      role_hi: 'हेड ऑफ एल्गोरिदम रिसर्च'
     },
     content: `
       <p>For years, creators obsessed over pure Average View Duration (AVD) and Click-Through Rate (CTR). But in 2026, YouTube's neural recommendation system emphasizes <em>Viewer Satisfaction</em> over raw clickbait hooks.</p>

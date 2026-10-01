@@ -77,6 +77,13 @@ export const ALLOWED_DATABASE_TABLES = new Set([
   'social_accounts',
   'brand_shortlists',
   'campaign_creators',
+  'blog_posts',
+  'tools',
+  'courses',
+  'course_sections',
+  'course_lessons',
+  'services',
+  'profiles',
 ]);
 
 export function isAllowedTable(tableName: string): boolean {
