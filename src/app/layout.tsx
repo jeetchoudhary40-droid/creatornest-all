@@ -149,6 +149,20 @@ const organizationJsonLd = {
   ]
 };
 
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Creator Nest',
+  alternateName: ['CreatorNest', 'Creator Nest India', 'The Creator Nest'],
+  url: 'https://creatornest.in',
+  publisher: {
+    '@type': 'Organization',
+    name: 'Creator Nest',
+    url: 'https://creatornest.in',
+    logo: 'https://creatornest.in/images/og-cover.png'
+  }
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -157,6 +171,10 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth" className={`${inter.variable} h-full`}>
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
