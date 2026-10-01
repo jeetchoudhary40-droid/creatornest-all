@@ -71,7 +71,7 @@ export const STATIC_POSTS: BlogPost[] = [
     featured: true,
     excerpt: 'India now commands one of the world\'s largest creator economies. Explore the top 10 Indian YouTubers and content creators of 2026, their subscriber counts, content niches, monetization channels, and algorithmic growth secrets.',
     excerpt_hi: 'भारत आज दुनिया की सबसे बड़ी क्रिएटर इकोनॉमी में शामिल है। जानिए 2026 के टॉप 10 भारतीय यूट्यूबर्स, उनके सब्सक्राइबर्स, कंटेंट नीश और उनकी जबरदस्त सफलता के पीछे के सीक्रेट्स।',
-    featured_image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    featured_image: '/images/blog/top-10-indian-creators-2026.jpg',
     created_at: new Date('2026-10-01T12:00:00Z').toISOString(),
     status: 'published',
     author: {
@@ -211,6 +211,13 @@ export const STATIC_POSTS: BlogPost[] = [
       </ul>
 
       <h3>5. CarryMinati (Ajey Nagar) — The Cultural Roasting Phenomenon (~45.2M Subscribers)</h3>
+      <div class="my-6 rounded-2xl overflow-hidden border border-white/10 bg-white/[0.03] max-w-sm mx-auto shadow-2xl">
+        <img src="/images/blog/creator-carryminati.jpg" alt="CarryMinati (Ajey Nagar) - Top Indian YouTuber 2026" class="w-full h-72 object-cover object-top" />
+        <div class="p-3 text-center border-t border-white/5">
+          <p class="text-xs font-semibold text-cyan-400">CarryMinati (Ajey Nagar)</p>
+          <p class="text-[11px] text-gray-400">King of Roasting &amp; Cultural Satire • ~45.2M Subscribers</p>
+        </div>
+      </div>
       <p>No conversation about the history of YouTube India is complete without <strong>CarryMinati (Ajey Nagar)</strong>. From starting as a teenage gaming commentator to crossing 10 million in 2019 and holding the all-time record for single-day subscriber surges, CarryMinati is the voice of Gen-Z rebellion.</p>
       <ul>
         <li><strong>Niche:</strong> Pop-culture roasts, social satire, music videos (rap), and live gaming on <em>CarryisLive</em>.</li>
@@ -225,7 +232,14 @@ export const STATIC_POSTS: BlogPost[] = [
         <li><strong>Why He Dominates:</strong> Mobile gaming accessibility. Millions of Indian youth who play on budget smartphones relate intimately to Ajjubhai’s humble, friendly Hindi commentary.</li>
       </ul>
 
-      <h3>7. Ashish Chanchlani — Cinematic Storytelling & Viral Mini-Series (~30.5M Subscribers)</h3>
+      <h3>7. Ashish Chanchlani — Cinematic Storytelling &amp; Viral Mini-Series (~30.5M Subscribers)</h3>
+      <div class="my-6 rounded-2xl overflow-hidden border border-white/10 bg-white/[0.03] max-w-sm mx-auto shadow-2xl">
+        <img src="/images/blog/creator-ashish-chanchlani.jpg" alt="Ashish Chanchlani - Top Indian Comedy Creator" class="w-full h-72 object-cover object-top" />
+        <div class="p-3 text-center border-t border-white/5">
+          <p class="text-xs font-semibold text-cyan-400">Ashish Chanchlani</p>
+          <p class="text-[11px] text-gray-400">Director, Writer &amp; Comedy Visionary • ~30.5M Subscribers</p>
+        </div>
+      </div>
       <p>Starting with vine-style comedy in 2014, <strong>Ashish Chanchlani</strong> evolved into a full-scale cinematic director. His original comedy-horror series <em>"Ekaki"</em> crossed 100+ million views, proving that long-form, high-effort video sketches continue to thrive alongside Shorts.</p>
       <ul>
         <li><strong>Niche:</strong> High-budget relatable comedy, college life parodies, and serialized web fiction.</li>
@@ -240,6 +254,13 @@ export const STATIC_POSTS: BlogPost[] = [
       </ul>
 
       <h3>9. Dhruv Rathee — The King of Educational Deep-Dives (~28.0M Subscribers)</h3>
+      <div class="my-6 rounded-2xl overflow-hidden border border-white/10 bg-white/[0.03] max-w-sm mx-auto shadow-2xl">
+        <img src="/images/blog/creator-dhruv-rathee.jpg" alt="Dhruv Rathee - Top Indian Educational Creator" class="w-full h-72 object-cover object-top" />
+        <div class="p-3 text-center border-t border-white/5">
+          <p class="text-xs font-semibold text-cyan-400">Dhruv Rathee</p>
+          <p class="text-[11px] text-gray-400">Explainer Journalism &amp; Global Issues • ~28.0M Subscribers</p>
+        </div>
+      </div>
       <p>Dispelling the myth that only comedy or gaming can achieve mass viral scale, <strong>Dhruv Rathee</strong> has demonstrated that research-intensive educational journalism can achieve blockbuster viewership in India.</p>
       <ul>
         <li><strong>Niche:</strong> Geopolitics, environment, history, current affairs, and critical thinking explainers.</li>
@@ -247,20 +268,39 @@ export const STATIC_POSTS: BlogPost[] = [
         <li><strong>Monetization Channels:</strong> High-ticket educational courses, premium financial sponsorships, book sales, and international CPM rates.</li>
       </ul>
 
-      <h3>10. Sourav Joshi — Daily Vlogging & Family Storytelling (~29.0M Subscribers)</h3>
+      <h3>10. Sourav Joshi — Daily Vlogging &amp; Family Storytelling (~29.0M Subscribers)</h3>
       <p>From sketching tutorials in Uttarakhand to becoming India’s most viewed daily vlogger, <strong>Sourav Joshi</strong> cracked the holy grail of YouTube: making his everyday life feel like a daily soap opera for tens of millions of loyal viewers.</p>
       <ul>
         <li><strong>Niche:</strong> 365-day daily family vlogs, automotive adventures, and visual arts.</li>
         <li><strong>Why He Dominates:</strong> Absolute consistency and zero controversy. Viewers tune in every morning at 8:00 AM as a daily ritual, generating billions of annual views.</li>
       </ul>
 
-      <h2>Honorable Mentions: Fast-Rising Indian Influencers in 2026</h2>
-      <p>While the top 10 represent the highest subscriber totals, several other creators wield equal or superior cultural engagement:</p>
+      <h2>Honorable Mentions: Iconic Trailblazers &amp; Fast-Rising Creators</h2>
+      <p>While the top 10 represent the highest subscriber totals, several iconic creators shaped the foundation of YouTube India:</p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
+        <div class="rounded-2xl overflow-hidden border border-white/10 bg-white/[0.03]">
+          <img src="/images/blog/creator-bhuvan-bam.jpg" alt="Bhuvan Bam (BB Ki Vines)" class="w-full h-64 object-cover object-top" />
+          <div class="p-3 text-center border-t border-white/5">
+            <p class="text-xs font-semibold text-purple-400">Bhuvan Bam (BB Ki Vines)</p>
+            <p class="text-[11px] text-gray-400">The Original Pioneer • India's First Solo 10M Creator</p>
+          </div>
+        </div>
+        <div class="rounded-2xl overflow-hidden border border-white/10 bg-white/[0.03]">
+          <img src="/images/blog/creator-prajakta-koli.jpg" alt="Prajakta Koli (MostlySane)" class="w-full h-64 object-cover object-top" />
+          <div class="p-3 text-center border-t border-white/5">
+            <p class="text-xs font-semibold text-pink-400">Prajakta Koli (MostlySane)</p>
+            <p class="text-[11px] text-gray-400">Top Female Creator Icon • Global Youth Ambassador</p>
+          </div>
+        </div>
+      </div>
+
       <ul>
+        <li><strong>Bhuvan Bam (BB Ki Vines):</strong> The original trailblazer who created the multi-character universe, now producing hit OTT web series (<em>Taaza Khabar</em>, <em>Dhindhora</em>).</li>
+        <li><strong>Prajakta Koli (MostlySane):</strong> Pioneer of relatable female-led youth comedy, now an acclaimed actress and global brand ambassador.</li>
         <li><strong>Elvish Yadav:</strong> Renowned for high-energy vlogging, reality TV triumphs, and strong youth community loyalty.</li>
         <li><strong>Fukra Insaan (Abhishek Malhan):</strong> Pioneer of high-budget Indian challenge videos, reality shows, and family gaming entertainment.</li>
         <li><strong>Triggered Insaan (Nischay Malhan):</strong> The undisputed king of family-friendly reaction videos, storytime rants, and roast-commentary.</li>
-        <li><strong>Bhuvan Bam (BB Ki Vines):</strong> The original trailblazer who created the multi-character universe, now producing hit OTT web series (<em>Taaza Khabar</em>, <em>Dhindhora</em>).</li>
       </ul>
 
       <h2>What the Top Indian Creators Have in Common</h2>

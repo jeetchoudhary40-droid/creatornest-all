@@ -293,7 +293,7 @@ INSERT INTO public.blog_posts (
 
       <h3>Which niche is growing fastest on YouTube India?</h3>
       <p>Educational explainers (infotainment), mobile gaming storylines, and regional lifestyle vlogs are experiencing the highest viewer retention and fastest subscriber expansion.</p>',
-  'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+  '/images/blog/top-10-indian-creators-2026.jpg',
   'published',
   'strategy',
   '9 min read',
