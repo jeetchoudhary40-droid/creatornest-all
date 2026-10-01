@@ -137,6 +137,50 @@ ALTER TABLE public.course_sections ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.course_lessons ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.services ENABLE ROW LEVEL SECURITY;
 
+-- Drop all existing policies first (prevents ERROR 42710: policy already exists when re-running)
+DO $$ 
+BEGIN
+    -- Public view policies
+    DROP POLICY IF EXISTS "Public profiles are viewable by everyone." ON public.profiles;
+    DROP POLICY IF EXISTS "Tools are viewable by everyone." ON public.tools;
+    DROP POLICY IF EXISTS "Courses are viewable by everyone." ON public.courses;
+    DROP POLICY IF EXISTS "Course sections are viewable by everyone." ON public.course_sections;
+    DROP POLICY IF EXISTS "Course lessons are viewable by everyone." ON public.course_lessons;
+    DROP POLICY IF EXISTS "Services are viewable by everyone." ON public.services;
+
+    -- Profiles policies
+    DROP POLICY IF EXISTS "Users can insert their own profile" ON public.profiles;
+    DROP POLICY IF EXISTS "Users can update their own profile" ON public.profiles;
+    DROP POLICY IF EXISTS "Admins can update profiles" ON public.profiles;
+
+    -- Tools admin policies
+    DROP POLICY IF EXISTS "Admins can insert tools" ON public.tools;
+    DROP POLICY IF EXISTS "Admins can update tools" ON public.tools;
+    DROP POLICY IF EXISTS "Admins can delete tools" ON public.tools;
+    
+    -- Courses admin policies
+    DROP POLICY IF EXISTS "Admins can insert courses" ON public.courses;
+    DROP POLICY IF EXISTS "Admins can update courses" ON public.courses;
+    DROP POLICY IF EXISTS "Admins can delete courses" ON public.courses;
+
+    -- Course sections admin policies
+    DROP POLICY IF EXISTS "Admins can insert course sections" ON public.course_sections;
+    DROP POLICY IF EXISTS "Admins can update course sections" ON public.course_sections;
+    DROP POLICY IF EXISTS "Admins can delete course sections" ON public.course_sections;
+
+    -- Course lessons admin policies
+    DROP POLICY IF EXISTS "Admins can insert course lessons" ON public.course_lessons;
+    DROP POLICY IF EXISTS "Admins can update course lessons" ON public.course_lessons;
+    DROP POLICY IF EXISTS "Admins can delete course lessons" ON public.course_lessons;
+
+    -- Services admin policies
+    DROP POLICY IF EXISTS "Admins can insert services" ON public.services;
+    DROP POLICY IF EXISTS "Admins can update services" ON public.services;
+    DROP POLICY IF EXISTS "Admins can delete services" ON public.services;
+EXCEPTION
+    WHEN undefined_object THEN NULL;
+END $$;
+
 -- Allow public read access to content
 CREATE POLICY "Public profiles are viewable by everyone." ON public.profiles FOR SELECT USING (true);
 CREATE POLICY "Tools are viewable by everyone." ON public.tools FOR SELECT USING (true);
@@ -144,36 +188,6 @@ CREATE POLICY "Courses are viewable by everyone." ON public.courses FOR SELECT U
 CREATE POLICY "Course sections are viewable by everyone." ON public.course_sections FOR SELECT USING (true);
 CREATE POLICY "Course lessons are viewable by everyone." ON public.course_lessons FOR SELECT USING (true);
 CREATE POLICY "Services are viewable by everyone." ON public.services FOR SELECT USING (true);
-
--- Drop existing policies if running multiple times (prevents policy already exists error)
-DO $$ 
-BEGIN
-    DROP POLICY IF EXISTS "Admins can insert tools" ON public.tools;
-    DROP POLICY IF EXISTS "Admins can update tools" ON public.tools;
-    DROP POLICY IF EXISTS "Admins can delete tools" ON public.tools;
-    
-    DROP POLICY IF EXISTS "Admins can insert courses" ON public.courses;
-    DROP POLICY IF EXISTS "Admins can update courses" ON public.courses;
-    DROP POLICY IF EXISTS "Admins can delete courses" ON public.courses;
-
-    DROP POLICY IF EXISTS "Admins can insert course sections" ON public.course_sections;
-    DROP POLICY IF EXISTS "Admins can update course sections" ON public.course_sections;
-    DROP POLICY IF EXISTS "Admins can delete course sections" ON public.course_sections;
-
-    DROP POLICY IF EXISTS "Admins can insert course lessons" ON public.course_lessons;
-    DROP POLICY IF EXISTS "Admins can update course lessons" ON public.course_lessons;
-    DROP POLICY IF EXISTS "Admins can delete course lessons" ON public.course_lessons;
-
-    DROP POLICY IF EXISTS "Admins can insert services" ON public.services;
-    DROP POLICY IF EXISTS "Admins can update services" ON public.services;
-    DROP POLICY IF EXISTS "Admins can delete services" ON public.services;
-
-    DROP POLICY IF EXISTS "Users can insert their own profile" ON public.profiles;
-    DROP POLICY IF EXISTS "Users can update their own profile" ON public.profiles;
-    DROP POLICY IF EXISTS "Admins can update profiles" ON public.profiles;
-EXCEPTION
-    WHEN undefined_object THEN NULL;
-END $$;
 
 -- Policies for Profiles (Upsert logic from auth)
 CREATE POLICY "Users can insert their own profile" ON public.profiles FOR INSERT WITH CHECK (auth.uid() = id);
@@ -184,7 +198,7 @@ CREATE POLICY "Admins can update profiles" ON public.profiles FOR UPDATE USING (
   EXISTS (SELECT 1 FROM profiles p WHERE p.id = auth.uid() AND p.user_type = 'admin')
 );
 
--- Policies for content
+-- Policies for Tools
 CREATE POLICY "Admins can insert tools" ON public.tools FOR INSERT WITH CHECK (
   EXISTS (SELECT 1 FROM profiles WHERE profiles.id = auth.uid() AND (profiles.user_type = 'admin' OR profiles.permissions ? 'manage_tools'))
 );
@@ -195,6 +209,7 @@ CREATE POLICY "Admins can delete tools" ON public.tools FOR DELETE USING (
   EXISTS (SELECT 1 FROM profiles WHERE profiles.id = auth.uid() AND (profiles.user_type = 'admin' OR profiles.permissions ? 'manage_tools'))
 );
 
+-- Policies for Courses
 CREATE POLICY "Admins can insert courses" ON public.courses FOR INSERT WITH CHECK (
   EXISTS (SELECT 1 FROM profiles WHERE profiles.id = auth.uid() AND (profiles.user_type = 'admin' OR profiles.permissions ? 'manage_courses'))
 );
@@ -205,6 +220,7 @@ CREATE POLICY "Admins can delete courses" ON public.courses FOR DELETE USING (
   EXISTS (SELECT 1 FROM profiles WHERE profiles.id = auth.uid() AND (profiles.user_type = 'admin' OR profiles.permissions ? 'manage_courses'))
 );
 
+-- Policies for Course Sections
 CREATE POLICY "Admins can insert course sections" ON public.course_sections FOR INSERT WITH CHECK (
   EXISTS (SELECT 1 FROM profiles WHERE profiles.id = auth.uid() AND (profiles.user_type = 'admin' OR profiles.permissions ? 'manage_courses'))
 );
@@ -215,6 +231,7 @@ CREATE POLICY "Admins can delete course sections" ON public.course_sections FOR 
   EXISTS (SELECT 1 FROM profiles WHERE profiles.id = auth.uid() AND (profiles.user_type = 'admin' OR profiles.permissions ? 'manage_courses'))
 );
 
+-- Policies for Course Lessons
 CREATE POLICY "Admins can insert course lessons" ON public.course_lessons FOR INSERT WITH CHECK (
   EXISTS (SELECT 1 FROM profiles WHERE profiles.id = auth.uid() AND (profiles.user_type = 'admin' OR profiles.permissions ? 'manage_courses'))
 );
@@ -225,6 +242,7 @@ CREATE POLICY "Admins can delete course lessons" ON public.course_lessons FOR DE
   EXISTS (SELECT 1 FROM profiles WHERE profiles.id = auth.uid() AND (profiles.user_type = 'admin' OR profiles.permissions ? 'manage_courses'))
 );
 
+-- Policies for Services
 CREATE POLICY "Admins can insert services" ON public.services FOR INSERT WITH CHECK (
   EXISTS (SELECT 1 FROM profiles WHERE profiles.id = auth.uid() AND (profiles.user_type = 'admin' OR profiles.permissions ? 'manage_services'))
 );
@@ -234,3 +252,4 @@ CREATE POLICY "Admins can update services" ON public.services FOR UPDATE USING (
 CREATE POLICY "Admins can delete services" ON public.services FOR DELETE USING (
   EXISTS (SELECT 1 FROM profiles WHERE profiles.id = auth.uid() AND (profiles.user_type = 'admin' OR profiles.permissions ? 'manage_services'))
 );
+
