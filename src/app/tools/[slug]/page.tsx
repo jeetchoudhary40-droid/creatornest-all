@@ -3,9 +3,10 @@
 import { useState, use } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Wand2, Sparkles, Loader2, ArrowLeft, Copy, CheckCircle2, Lock, FileText, Video, MessageSquare, Zap
+  Wand2, Sparkles, Loader2, ArrowLeft, Copy, CheckCircle2, Lock, FileText, Video, MessageSquare, Zap, Shield
 } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import { useAuth } from '@/context/AuthContext';
 import BrandDealCalculator from '@/components/BrandDealCalculator';
@@ -18,6 +19,14 @@ const TOOLS_DATA: Record<string, any> = {
     accent: '#10B981',
     planRequired: 'free',
     isCalculator: true
+  },
+  'youtube-monetization-audit': {
+    title: 'YouTube Monetization Channel Audit',
+    description: 'AI-powered YPP eligibility check, revenue projections in ₹, and a 12-point audit matrix.',
+    icon: Shield,
+    accent: '#EF4444',
+    planRequired: 'free',
+    isRedirect: '/tools/youtube-monetization-audit'
   },
   'script-generator': {
     title: 'YouTube Script Generator',
@@ -68,6 +77,23 @@ export default function AIToolPage({ params }: { params: Promise<{ slug: string 
             <p className="text-gray-400 text-xs sm:text-sm mt-1">India 2026 Edition with dual-niche comparison & deliverable rate card</p>
           </div>
           <BrandDealCalculator />
+        </div>
+      </main>
+    );
+  }
+
+  if (tool?.isRedirect) {
+    if (typeof window !== 'undefined') {
+      window.location.href = tool.isRedirect;
+    }
+    return (
+      <main className="min-h-screen bg-[#070B11] text-white flex items-center justify-center">
+        <Navbar />
+        <div className="text-center pt-32">
+          <p className="text-gray-400 text-sm">Redirecting to {tool.title}...</p>
+          <Link href={tool.isRedirect} className="text-red-400 mt-3 inline-block hover:underline font-bold">
+            Click here if not redirected
+          </Link>
         </div>
       </main>
     );

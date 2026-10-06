@@ -9,11 +9,27 @@ export async function GET() {
     const usersPath = path.join(dataDir, 'users.json');
     const rosterPath = path.join(dataDir, 'roster.json');
     const calcLeadsPath = path.join(dataDir, 'calculator_leads.json');
+    const toolLeadsPath = path.join(dataDir, 'tool_leads.json');
 
     const submissions = fs.existsSync(submissionsPath) ? JSON.parse(fs.readFileSync(submissionsPath, 'utf-8') || '[]') : [];
     const users = fs.existsSync(usersPath) ? JSON.parse(fs.readFileSync(usersPath, 'utf-8') || '[]') : [];
     const roster = fs.existsSync(rosterPath) ? JSON.parse(fs.readFileSync(rosterPath, 'utf-8') || '[]') : [];
     const calcLeads = fs.existsSync(calcLeadsPath) ? JSON.parse(fs.readFileSync(calcLeadsPath, 'utf-8') || '[]') : [];
+    const toolLeads = fs.existsSync(toolLeadsPath) ? JSON.parse(fs.readFileSync(toolLeadsPath, 'utf-8') || '[]') : [];
+
+    // Combine unique leads between tool_leads and calcLeads
+    const seenIds = new Set<string>();
+    const allUnifiedToolLeads: any[] = [];
+    toolLeads.forEach((l: any) => {
+      seenIds.add(l.id);
+      allUnifiedToolLeads.push(l);
+    });
+    calcLeads.forEach((c: any) => {
+      if (!seenIds.has(c.id)) {
+        seenIds.add(c.id);
+        allUnifiedToolLeads.push(c);
+      }
+    });
 
     // Filter Brand Leads & Inquiries
     const brandInquiries = submissions.filter((s: any) => 
@@ -37,7 +53,7 @@ export async function GET() {
     const totalRosterCreators = roster.length;
     const totalBrands = brandInquiries.length + users.filter((u: any) => u.role === 'brand').length;
     const totalApplications = submissions.length;
-    const totalCalculations = calcLeads.length;
+    const totalCalculations = allUnifiedToolLeads.length;
     const totalAudienceReach = roster.reduce((acc: number, c: any) => acc + (Number(c.youtubeNum) || 0) + (Number(c.instaNum) || 0), 0);
 
     // Total Estimated Brand Pipeline Value
@@ -51,6 +67,7 @@ export async function GET() {
         total_applications: totalApplications,
         total_unread_applications: submissions.filter((s: any) => !s.isRead).length,
         total_calculator_leads: totalCalculations,
+        total_tool_leads: allUnifiedToolLeads.length,
         total_users: users.length,
         total_audience_reach: totalAudienceReach,
         estimated_pipeline_value: Math.round(brandPipelineVal),
@@ -60,6 +77,7 @@ export async function GET() {
       brand_inquiries: brandInquiries,
       creator_applications: creatorApplications,
       calculator_leads: calcLeads,
+      tool_leads: allUnifiedToolLeads,
       registered_users: users,
       recent_activity: submissions.slice(0, 10).map((s: any) => ({
         id: s.id,

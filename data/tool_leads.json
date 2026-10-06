@@ -1,0 +1,69 @@
+[
+  {
+    "id": "tool_lead_1791197248305_sjl32",
+    "tool_id": "youtube-monetization-audit",
+    "tool_name": "YouTube Monetization Channel Audit",
+    "handle": "@jeetchoudhary",
+    "channel_title": "TechFest",
+    "email": null,
+    "phone": null,
+    "subscribers": 15400,
+    "total_views": 1253649,
+    "video_count": 229,
+    "niche": "News & Current Affairs",
+    "country": "IN",
+    "overall_score": 50,
+    "monetization_status": "Near Eligible",
+    "primary_need": "The creator's single biggest bottleneck is the significant deficit in valid public watch hours required for YouTube Partner Program eligibility.",
+    "estimated_monthly_revenue": "₹2,292 - ₹9,169",
+    "metadata": {
+      "topStrengths": [
+        "Strong subscriber base (15,400) exceeding YPP threshold.",
+        "Clean metadata with 100% unique titles, indicating good content organization.",
+        "High reliance on YouTube Search (84.73%) suggests effective SEO for specific topics."
+      ],
+      "criticalIssues": [
+        "Significant deficit in valid public watch hours (1,762/4,000) for YPP eligibility.",
+        "Low audience retention (1m 30s AVD, 25.53% APV) and minimal subscribed watch time (0.14%).",
+        "Active Community Guidelines warning and a Content ID claim, posing policy compliance risks."
+      ]
+    },
+    "status": "NEW",
+    "notes": "",
+    "created_at": "2026-10-05T10:47:28.305Z",
+    "updated_at": "2026-10-05T10:49:14.389Z"
+  },
+  {
+    "id": "tool_lead_1791197060169_6who9",
+    "tool_id": "youtube-monetization-audit",
+    "tool_name": "YouTube Monetization Channel Audit",
+    "handle": "@techwithtim",
+    "channel_title": "Tech With Tim",
+    "email": "creator.tim.hindi@example.com",
+    "phone": "+91 99887 76655",
+    "subscribers": 2090000,
+    "total_views": 244340900,
+    "video_count": 2207,
+    "niche": "Tech & Gadgets",
+    "country": "CA",
+    "overall_score": 85,
+    "monetization_status": "Eligible",
+    "primary_need": "चैनल को अपने मौजूदा सब्सक्राइबर बेस से अधिक एंगेजमेंट प्राप्त करने और शॉर्ट्स को लॉन्ग-फॉर्म कंटेंट में बदलने की रणनीति को मजबूत करने की आवश्यकता है।",
+    "estimated_monthly_revenue": "₹45,000 - ₹55,000",
+    "metadata": {
+      "topStrengths": [
+        "मजबूत सब्सक्राइबर बेस और YPP पात्रता।",
+        "उच्च सीपीएम वाले टेक और गैजेट्स जैसे आकर्षक आला।",
+        "कोई कॉपीराइट या कम्युनिटी गाइडलाइन्स स्ट्राइक नहीं।"
+      ],
+      "criticalIssues": [
+        "मौजूदा सब्सक्राइबर बेस से औसत व्यूज और एंगेजमेंट रेट कम है।",
+        "शॉर्ट्स से लॉन्ग-फॉर्म कंटेंट में दर्शकों को बदलने की रणनीति में सुधार की आवश्यकता है।"
+      ]
+    },
+    "status": "NEW",
+    "notes": "",
+    "created_at": "2026-10-05T10:44:20.169Z",
+    "updated_at": "2026-10-05T10:44:20.169Z"
+  }
+]

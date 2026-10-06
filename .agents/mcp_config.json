@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "youtube-data": {
+      "command": "python",
+      "args": ["-m", "backend.youtube_mcp_server"],
+      "env": {
+        "YOUTUBE_API_KEY": "${YOUTUBE_API_KEY}"
+      },
+      "description": "YouTube Data API v3 integration for fetching channel public statistics, video catalogs, and engagement metrics."
+    }
+  }
+}

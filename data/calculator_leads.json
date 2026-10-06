@@ -1,5 +1,37 @@
 [
   {
+    "id": "tool_lead_1791197248305_sjl32",
+    "tool": "YouTube Monetization Channel Audit",
+    "handle": "@jeetchoudhary",
+    "platform": "youtube",
+    "followers": 15400,
+    "avg_views": 5474,
+    "niche": "News & Current Affairs",
+    "score": 50,
+    "need": "The creator's single biggest bottleneck is the significant deficit in valid public watch hours required for YouTube Partner Program eligibility.",
+    "base_rate": "₹2,292 - ₹9,169",
+    "email": null,
+    "phone": null,
+    "status": "NEW",
+    "created_at": "2026-10-05T10:47:28.305Z"
+  },
+  {
+    "id": "tool_lead_1791197060169_6who9",
+    "tool": "YouTube Monetization Channel Audit",
+    "handle": "@techwithtim",
+    "platform": "youtube",
+    "followers": 2090000,
+    "avg_views": 30362,
+    "niche": "Tech & Gadgets",
+    "score": 85,
+    "need": "चैनल को अपने मौजूदा सब्सक्राइबर बेस से अधिक एंगेजमेंट प्राप्त करने और शॉर्ट्स को लॉन्ग-फॉर्म कंटेंट में बदलने की रणनीति को मजबूत करने की आवश्यकता है।",
+    "base_rate": "₹45,000 - ₹55,000",
+    "email": "creator.tim.hindi@example.com",
+    "phone": "+91 99887 76655",
+    "status": "NEW",
+    "created_at": "2026-10-05T10:44:20.169Z"
+  },
+  {
     "id": "kit_1788348719923_rthsp",
     "handle": "@ElectionGuide",
     "platform": "youtube / instagram",

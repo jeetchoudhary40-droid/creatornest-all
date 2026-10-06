@@ -38,9 +38,13 @@ function ResourceCard({ item, userTier, isHindi }: { item: any; userTier: string
   const locked = isTool ? false : (PLAN_ORDER[item.plan] > PLAN_ORDER[(userTier as keyof typeof PLAN_ORDER) ?? 'free']);
   const accentColor = item.accent || '#00F2FE';
 
-  const targetHref = isTool
-    ? (item.id === 't-calc' || item.id === 'brand-deal-calculator' ? '/tools/brand-deal-calculator' : `/marketplace/item/${item.id}`)
-    : (item.href || `/marketplace/item/${item.id}`);
+  const targetHref = item.external_url || item.href || (isTool
+    ? (item.id === 'tool-yt-monetization-audit'
+        ? '/tools/youtube-monetization-audit'
+        : item.id === 't-calc' || item.id === 'brand-deal-calculator'
+        ? '/tools/brand-deal-calculator'
+        : `/marketplace/item/${item.id}`)
+    : `/marketplace/item/${item.id}`);
 
   const getTypeBadge = (type: string) => {
     switch (type) {
@@ -188,7 +192,7 @@ function ResourceCard({ item, userTier, isHindi }: { item: any; userTier: string
 
 // ── Compact Trending Spotlight ────────────────────────────────────────────────
 function TrendingSpotlight({ items, isHindi }: { items: any[]; isHindi: boolean }) {
-  const topTool = items.find(i => i.id === 't1' || i.type === 'tool' || i.id === 'brand-deal-calculator') || items[0];
+  const topTool = items.find(i => i.id === 'tool-yt-monetization-audit' || i.id === 'tool-media-kit-builder' || i.id === 't1' || i.type === 'tool') || items[0];
   const topCourse = items.find(i => i.id === 'c17' || i.id === '17' || i.type === 'course') || items[1];
   const topService = items.find(i => i.id === 's1' || i.type === 'service') || items[2];
 
@@ -231,6 +235,7 @@ function TrendingSpotlight({ items, isHindi }: { items: any[]; isHindi: boolean 
         {highlights.map((h, idx) => {
           const it = h.item;
           const Icon = getLucideIcon(it.icon);
+          const spotlightHref = it.external_url || it.href || (it.type === 'tool' ? (it.id === 'tool-yt-monetization-audit' ? '/tools/youtube-monetization-audit' : it.id === 't-calc' || it.id === 'brand-deal-calculator' ? '/tools/brand-deal-calculator' : `/marketplace/item/${it.id}`) : `/marketplace/item/${it.id}`);
           return (
             <motion.div
               key={idx}
@@ -255,7 +260,7 @@ function TrendingSpotlight({ items, isHindi }: { items: any[]; isHindi: boolean 
                 </p>
               </div>
               <Link 
-                href={it.href || (it.type === 'tool' ? (it.id === 't-calc' || it.id === 'brand-deal-calculator' ? '/tools/brand-deal-calculator' : `/marketplace/item/${it.id}`) : `/marketplace/item/${it.id}`)}
+                href={spotlightHref}
                 className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white shrink-0"
               >
                 <ArrowUpRight className="w-4 h-4" />
@@ -308,13 +313,17 @@ export default function MarketplacePage() {
       price: item.type === 'tool' ? (item.id === 't2' ? 499 : item.id === 't3' ? 299 : item.id === 't4' ? 599 : item.id === 't5' ? 399 : item.id === 't6' ? 449 : 0) : 0,
       rating: item.rating || 5.0,
       thumbnail_url: item.thumbnailUrl || '',
-      href: item.type === 'tool'
-        ? (item.id === 't-calc' || item.id === 'brand-deal-calculator' ? '/tools/brand-deal-calculator' : `/marketplace/item/${item.id}`)
-        : item.type === 'service' ? `/marketplace/services/${item.id}` : item.type === 'course' ? `/nschool/course/${item.id}` : `/marketplace/item/${item.id}`,
+      href: item.href || (item.type === 'tool'
+        ? (item.id === 'tool-yt-monetization-audit'
+            ? '/tools/youtube-monetization-audit'
+            : item.id === 't-calc' || item.id === 'brand-deal-calculator' 
+            ? '/tools/brand-deal-calculator' 
+            : `/marketplace/item/${item.id}`)
+        : item.type === 'service' ? `/marketplace/services/${item.id}` : item.type === 'course' ? `/nschool/course/${item.id}` : `/marketplace/item/${item.id}`),
       tags: item.tags || [],
       badge: item.badge || '',
       cta: item.type === 'tool'
-        ? (item.id === 't-calc' || item.id === 'brand-deal-calculator' ? 'Calculate Rates' : (item.id === 't1' ? 'Try Free' : 'Buy Now'))
+        ? (item.id === 'tool-yt-monetization-audit' ? 'Run Free Audit' : item.id === 't-calc' || item.id === 'brand-deal-calculator' ? 'Calculate Rates' : (item.id === 't1' ? 'Try Free' : 'Buy Now'))
         : (item.cta || 'Open')
     }));
   });
@@ -346,12 +355,18 @@ export default function MarketplacePage() {
               thumbnail_url: item.thumbnail_url,
               file_url: item.file_url,
               external_url: item.external_url,
-              href: (item.id === 't-calc' || item.id === 'brand-deal-calculator') 
-                ? '/tools/brand-deal-calculator' 
-                : `/marketplace/item/${item.id}`,
+              href: item.external_url || item.href || (
+                (item.id === 'tool-yt-monetization-audit')
+                  ? '/tools/youtube-monetization-audit'
+                  : (item.id === 't-calc' || item.id === 'brand-deal-calculator') 
+                  ? '/tools/brand-deal-calculator' 
+                  : `/marketplace/item/${item.id}`
+              ),
               tags: item.tags || [],
               badge: item.badge || (Number(item.price) === 0 ? 'FREE ACCESS' : 'BUY ONCE'),
-              cta: (item.id === 't-calc' || item.id === 'brand-deal-calculator')
+              cta: (item.id === 'tool-yt-monetization-audit')
+                ? 'Run Free Audit'
+                : (item.id === 't-calc' || item.id === 'brand-deal-calculator')
                 ? 'Calculate Rates'
                 : Number(item.price) > 0
                 ? `Buy Now • ₹${item.price}`

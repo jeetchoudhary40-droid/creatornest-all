@@ -16,6 +16,7 @@ interface AdminData {
     total_brands: number;
     total_applications: number;
     total_calculator_leads: number;
+    total_tool_leads?: number;
     total_users: number;
     total_audience_reach: number;
     estimated_pipeline_value: number;
@@ -25,6 +26,7 @@ interface AdminData {
   brand_inquiries: any[];
   creator_applications: any[];
   calculator_leads: any[];
+  tool_leads?: any[];
   recent_activity: any[];
 }
 
@@ -125,18 +127,20 @@ export default function AdminDashboardPage() {
     );
   }, [data?.creator_applications, searchQuery]);
 
-  // Filtered Calculator Valuation Leads
+  // Filtered Tool & Calculator Leads
   const filteredCalcLeads = useMemo(() => {
-    if (!data?.calculator_leads) return [];
-    if (!searchQuery.trim()) return data.calculator_leads;
+    const list = data?.tool_leads || data?.calculator_leads || [];
+    if (!searchQuery.trim()) return list;
     const q = searchQuery.toLowerCase();
-    return data.calculator_leads.filter(l => 
+    return list.filter((l: any) => 
       l.handle?.toLowerCase().includes(q) ||
       l.niche?.toLowerCase().includes(q) ||
       l.platform?.toLowerCase().includes(q) ||
+      l.tool_name?.toLowerCase().includes(q) ||
+      l.primary_need?.toLowerCase().includes(q) ||
       l.email?.toLowerCase().includes(q)
     );
-  }, [data?.calculator_leads, searchQuery]);
+  }, [data?.tool_leads, data?.calculator_leads, searchQuery]);
 
   if (loading) {
     return (
@@ -311,7 +315,7 @@ export default function AdminDashboardPage() {
               { id: 'creators', label: `🎬 Onboarded Roster (${data?.onboarded_creators.length || 0})` },
               { id: 'brands', label: `🏢 Brand Inquiries (${data?.brand_inquiries.length || 0})` },
               { id: 'applications', label: `🚀 Creator Applications (${data?.creator_applications.length || 0})` },
-              { id: 'calculator', label: `🧮 Calculator Leads (${data?.calculator_leads.length || 0})` },
+              { id: 'calculator', label: `⚡ Tool Leads & Inquiries (${data?.tool_leads?.length || data?.calculator_leads.length || 0})` },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -567,68 +571,79 @@ export default function AdminDashboardPage() {
           </div>
         )}
 
-        {/* Tab 4: Calculator Valuation Leads */}
+        {/* Tab 4: Universal Tool Leads & Creator Inquiries */}
         {activeTab === 'calculator' && (
           <div className="space-y-4">
             <div className="flex items-center justify-between text-xs text-slate-400">
-              <span>Showing <strong>{filteredCalcLeads.length}</strong> real creator rate calculations</span>
-              <Link href="/tools/brand-deal-calculator" target="_blank" className="text-cyan-400 hover:underline flex items-center gap-1 font-bold">
-                Open Live Pricing Engine <ExternalLink className="w-3 h-3" />
-              </Link>
+              <span>Showing <strong>{filteredCalcLeads.length}</strong> creator inquiries across all AI tools</span>
+              <div className="flex items-center gap-3">
+                <Link href="/tools/youtube-monetization-audit" target="_blank" className="text-red-400 hover:underline flex items-center gap-1 font-bold">
+                  YouTube Audit <ExternalLink className="w-3 h-3" />
+                </Link>
+                <span className="text-gray-600">|</span>
+                <Link href="/tools/brand-deal-calculator" target="_blank" className="text-cyan-400 hover:underline flex items-center gap-1 font-bold">
+                  Brand Deal Calculator <ExternalLink className="w-3 h-3" />
+                </Link>
+              </div>
             </div>
 
             <div className="overflow-x-auto rounded-2xl border border-white/10 bg-[#0E1522] custom-scrollbar">
-              <table className="w-full text-left text-xs sm:text-sm min-w-[700px]">
+              <table className="w-full text-left text-xs sm:text-sm min-w-[750px]">
                 <thead className="bg-[#182333] border-b border-white/10 text-purple-300 font-bold uppercase tracking-wider text-[11px]">
                   <tr>
                     <th className="px-4 py-3.5">Creator Handle</th>
-                    <th className="px-4 py-3.5">Platform</th>
-                    <th className="px-4 py-3.5">Followers</th>
-                    <th className="px-4 py-3.5">Avg Views</th>
-                    <th className="px-4 py-3.5">Niche</th>
-                    <th className="px-4 py-3.5">1-Deal Base Fee (₹)</th>
-                    <th className="px-4 py-3.5">Monthly Capacity</th>
-                    <th className="px-4 py-3.5 text-right">Calculated At</th>
+                    <th className="px-4 py-3.5">Tool Source</th>
+                    <th className="px-4 py-3.5">Audience & Score</th>
+                    <th className="px-4 py-3.5">Creator Need & Growth Bottleneck</th>
+                    <th className="px-4 py-3.5">Est. Value (₹)</th>
+                    <th className="px-4 py-3.5 text-right">Date</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5">
-                  {filteredCalcLeads.map((lead: any) => (
-                    <tr key={lead.id} className="hover:bg-white/[0.03] transition-colors">
-                      <td className="px-4 py-3.5 font-bold text-white flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-cyan-400" />
-                        <span>@{lead.handle.replace(/^@/, '')}</span>
-                      </td>
-                      <td className="px-4 py-3.5">
-                        <span className={`px-2 py-0.5 rounded-md text-xs font-bold uppercase ${
-                          lead.platform === 'youtube' ? 'bg-red-500/15 text-red-300 border border-red-500/30' : 'bg-pink-500/15 text-pink-300 border border-pink-500/30'
-                        }`}>
-                          {lead.platform}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3.5 font-mono text-slate-200 font-bold">
-                        {formatNum(lead.followers)}
-                      </td>
-                      <td className="px-4 py-3.5 font-mono text-cyan-300 font-bold">
-                        {formatNum(lead.avg_views)}
-                      </td>
-                      <td className="px-4 py-3.5 text-xs text-slate-300">
-                        {lead.niche}
-                      </td>
-                      <td className="px-4 py-3.5 font-mono font-black text-emerald-400 text-sm">
-                        ₹{(lead.base_rate || 0).toLocaleString('en-IN')}
-                      </td>
-                      <td className="px-4 py-3.5 text-xs text-slate-400 font-mono">
-                        {lead.monthly_capacity || '1–2 Deals'}
-                      </td>
-                      <td className="px-4 py-3.5 text-right text-xs text-slate-400 font-mono">
-                        {new Date(lead.created_at).toLocaleDateString('en-IN')}
-                      </td>
-                    </tr>
-                  ))}
+                  {filteredCalcLeads.map((lead: any) => {
+                    const isYT = lead.tool_id?.includes('youtube') || lead.tool_name?.toLowerCase().includes('youtube');
+                    const score = lead.overall_score || lead.score;
+                    return (
+                      <tr key={lead.id} className="hover:bg-white/[0.03] transition-colors">
+                        <td className="px-4 py-3.5 font-bold text-white">
+                          <div className="flex items-center gap-2">
+                            <span className={`w-2 h-2 rounded-full ${isYT ? 'bg-red-400' : 'bg-cyan-400'}`} />
+                            <span>@{lead.handle.replace(/^@/, '')}</span>
+                          </div>
+                          {lead.email && <span className="block text-[10px] text-gray-400 font-mono font-normal mt-0.5">{lead.email}</span>}
+                        </td>
+                        <td className="px-4 py-3.5">
+                          <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${
+                            isYT ? 'bg-red-500/15 text-red-300 border border-red-500/30' : 'bg-purple-500/15 text-purple-300 border border-purple-500/30'
+                          }`}>
+                            {isYT ? 'YouTube Audit' : (lead.tool_name || 'Calculator')}
+                          </span>
+                          <span className="block text-[10px] text-gray-500 mt-0.5">{lead.niche || 'General'}</span>
+                        </td>
+                        <td className="px-4 py-3.5 font-mono text-slate-200">
+                          <span className="font-bold">{formatNum(lead.subscribers || lead.followers)} subs</span>
+                          {score && (
+                            <span className="block text-[10px] text-emerald-400 font-bold">
+                              Score: {score}/100
+                            </span>
+                          )}
+                        </td>
+                        <td className="px-4 py-3.5 text-xs text-slate-300 max-w-xs">
+                          <p className="line-clamp-2 text-white font-medium">{lead.primary_need || lead.need || 'Monetization & Brand Growth Consultation'}</p>
+                        </td>
+                        <td className="px-4 py-3.5 font-mono font-black text-emerald-400 text-sm">
+                          {lead.estimated_monthly_revenue || (lead.base_rate ? `₹${Number(lead.base_rate).toLocaleString('en-IN')}` : '—')}
+                        </td>
+                        <td className="px-4 py-3.5 text-right text-xs text-slate-400 font-mono">
+                          {lead.created_at ? new Date(lead.created_at).toLocaleDateString('en-IN') : 'Recent'}
+                        </td>
+                      </tr>
+                    );
+                  })}
                   {filteredCalcLeads.length === 0 && (
                     <tr>
-                      <td colSpan={8} className="text-center py-10 text-slate-500">
-                        No calculator valuation leads recorded yet. Try running the Brand Deal Calculator.
+                      <td colSpan={6} className="text-center py-10 text-slate-500">
+                        No tool leads recorded yet. Try running the YouTube Monetization Audit or Brand Deal Calculator.
                       </td>
                     </tr>
                   )}
