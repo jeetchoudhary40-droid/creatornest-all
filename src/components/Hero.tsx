@@ -29,11 +29,14 @@ export default function Hero() {
             </div>
             
             <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold font-sans tracking-tight leading-[1.15] text-white">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-cyan-300 to-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-2 tracking-normal">
+                Creator Nest
+              </span>
               Fueling Creators <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-cyan-300 to-white">to Become Brands.</span>
             </h1>
             
             <p className="text-sm sm:text-lg text-gray-300 max-w-xl leading-relaxed">
-              We empower creators across Education, Tech, Entertainment, Lifestyle, Gaming, and Finance to scale their audience, secure high-value brand deals, launch digital products, and build sustainable media empires.
+              Creator Nest is India&apos;s premier creator growth ecosystem. We empower creators across Education, Tech, Entertainment, Lifestyle, Gaming, and Finance to scale their audience, secure high-value brand deals, launch digital products, and build sustainable media empires.
             </p>
             
             {/* Dual CTAs for Creators & Brands */}

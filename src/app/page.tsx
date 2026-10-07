@@ -16,10 +16,14 @@ const homeJsonLd = {
   '@graph': [
     {
       '@type': 'ProfessionalService',
-      name: 'Creator Nest — All-Category Creator Growth & Talent Ecosystem',
+      '@id': 'https://creatornest.in/#service',
+      name: 'Creator Nest',
+      alternateName: 'Creator Nest — All-Category Creator Growth & Talent Ecosystem',
       image: 'https://creatornest.in/images/og-cover.png',
-      '@id': 'https://creatornest.in',
-      url: 'https://creatornest.in',
+      url: 'https://creatornest.in/',
+      parentOrganization: {
+        '@id': 'https://creatornest.in/#organization'
+      },
       telephone: '+91 9460990011',
       priceRange: '₹₹₹',
       address: {

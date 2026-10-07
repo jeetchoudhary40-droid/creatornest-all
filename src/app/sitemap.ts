@@ -33,7 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   const staticSitemaps = routes.map((r) => ({
-    url: `${siteUrl}${r.path}`,
+    url: r.path === '' ? `${siteUrl}/` : `${siteUrl}${r.path}`,
     lastModified: new Date(),
     changeFrequency: r.changeFrequency,
     priority: r.priority,

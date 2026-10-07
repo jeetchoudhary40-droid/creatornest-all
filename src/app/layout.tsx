@@ -18,8 +18,15 @@ export const metadata: Metadata = {
     default: "Creator Nest | Fueling Creators to Become Brands",
     template: "%s | Creator Nest",
   },
-  description: "India’s premier creator growth ecosystem & creators’ first choice for brand deals. Turning passionate creators into iconic brands with high-trust partnerships.",
+  applicationName: "Creator Nest",
+  appleWebApp: {
+    title: "Creator Nest",
+    statusBarStyle: "black-translucent",
+    capable: true,
+  },
+  description: "Creator Nest is India’s premier creator growth ecosystem and creators’ first choice for brand deals. Turning passionate creators into iconic household brands with high-trust partnerships.",
   keywords: [
+    "creator nest",
     "creator management agency",
     "creator economy india",
     "fueling creators to become brands",
@@ -36,7 +43,6 @@ export const metadata: Metadata = {
     "youtube creator management",
     "instagram influencer agency",
     "creator monetization platform",
-    "creator nest",
     "creator roster india"
   ],
   authors: [{ name: "Creator Nest", url: "https://creatornest.in" }],
@@ -48,12 +54,12 @@ export const metadata: Metadata = {
     address: true,
   },
   alternates: {
-    canonical: 'https://creatornest.in',
+    canonical: 'https://creatornest.in/',
   },
   openGraph: {
     title: "Creator Nest | Fueling Creators to Become Brands",
-    description: "India’s premier creator growth ecosystem & creators’ first choice for brand deals. We empower digital creators to build sustainable businesses and help visionary brands scale with authentic trust.",
-    url: "https://creatornest.in",
+    description: "Creator Nest is India’s premier creator growth ecosystem and creators’ first choice for brand deals. Turning passionate creators into iconic household brands.",
+    url: "https://creatornest.in/",
     siteName: "Creator Nest",
     images: [
       {
@@ -69,7 +75,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Creator Nest | Fueling Creators to Become Brands",
-    description: "India’s premier creator growth ecosystem & creators’ first choice for brand deals. 100+ Creators. ₹5Cr+ Brand Deals Closed.",
+    description: "Creator Nest is India’s premier creator growth ecosystem and creators’ first choice for brand deals. 100+ Creators. ₹5Cr+ Brand Deals Closed.",
     images: ["/images/og-cover.png"],
     creator: "@creatornest",
   },
@@ -115,11 +121,21 @@ import ScrollToTopButton from "@/components/ScrollToTopButton";
 const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': 'https://creatornest.in/#organization',
   name: 'Creator Nest',
-  alternateName: 'CreatorNest India',
-  url: 'https://creatornest.in',
-  logo: 'https://creatornest.in/images/og-cover.png',
-  description: "Creator Nest is India’s fastest-growing creator economy ecosystem and the #1 trusted choice for digital creators and brands. Born to fuel creators into iconic household brands, Creator Nest bridges ambitious talent across Tech, Education, Gaming, Lifestyle, and Entertainment with high-ROI brand deals, production scaling, and transparent contracts.",
+  legalName: 'Creator Nest',
+  alternateName: ['CreatorNest', 'Creator Nest India', 'CreatorNest Media'],
+  url: 'https://creatornest.in/',
+  logo: {
+    '@type': 'ImageObject',
+    '@id': 'https://creatornest.in/#logo',
+    url: 'https://creatornest.in/icon-512.png',
+    caption: 'Creator Nest',
+    width: 512,
+    height: 512,
+  },
+  image: 'https://creatornest.in/images/og-cover.png',
+  description: "Creator Nest is India’s premier creator growth ecosystem and the #1 trusted network for digital creators and brands. Born to fuel creators into iconic household brands, Creator Nest bridges ambitious talent across Tech, Education, Gaming, Lifestyle, and Entertainment with high-ROI brand deals, production scaling, and transparent contracts.",
   sameAs: [
     'https://www.instagram.com/creatornestmedia/',
     'https://www.youtube.com/@CreatorNestMedia',
@@ -152,14 +168,13 @@ const organizationJsonLd = {
 const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
+  '@id': 'https://creatornest.in/#website',
   name: 'Creator Nest',
-  alternateName: ['CreatorNest', 'Creator Nest India', 'The Creator Nest'],
-  url: 'https://creatornest.in',
+  alternateName: ['CreatorNest', 'Creator Nest India', 'CreatorNest Media', 'The Creator Nest'],
+  url: 'https://creatornest.in/',
+  inLanguage: 'en-IN',
   publisher: {
-    '@type': 'Organization',
-    name: 'Creator Nest',
-    url: 'https://creatornest.in',
-    logo: 'https://creatornest.in/images/og-cover.png'
+    '@id': 'https://creatornest.in/#organization'
   }
 };
 

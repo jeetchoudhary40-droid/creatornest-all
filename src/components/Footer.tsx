@@ -33,7 +33,7 @@ export default function Footer() {
 
           {/* Brand & Mission */}
           <div className="md:col-span-6 space-y-4">
-            <Link href="/" className="inline-block">
+            <Link href="/" className="inline-block" aria-label="Creator Nest — Official Home">
               <Logo />
             </Link>
             <p className="text-gray-400 max-w-md text-sm sm:text-base leading-relaxed">
