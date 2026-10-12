@@ -33,30 +33,40 @@ const PLAN_LABELS: Record<string, string> = { free: 'Free', silver: 'Silver', go
 // ── Spacious, High-Impact Resource Card ──────────────────────────────────────
 function ResourceCard({ item, userTier, isHindi }: { item: any; userTier: string; isHindi: boolean }) {
   const Icon = getLucideIcon(item.icon);
-  const isTool = item.type === 'tool';
-  // Tools are individually purchasable digital products or free assets, so they are never locked behind membership tiers!
-  const locked = isTool ? false : (PLAN_ORDER[item.plan] > PLAN_ORDER[(userTier as keyof typeof PLAN_ORDER) ?? 'free']);
-  const accentColor = item.accent || '#00F2FE';
+  const isTool = item.type === 'tool' || item.item_type === 'tool';
+  const isService = item.type === 'service' || item.item_type === 'service';
+  // Neither tools nor services should be locked behind subscription plan tiers.
+  // Services have packages (Basic, Standard, Pro) booked per project/retainer, and tools are free or one-time purchases.
+  const locked = (isTool || isService) ? false : (PLAN_ORDER[item.plan] > PLAN_ORDER[(userTier as keyof typeof PLAN_ORDER) ?? 'free']);
+  const accentColor = item.accent || (isService ? '#FBBF24' : '#00F2FE');
 
-  const targetHref = item.external_url || item.href || (isTool
-    ? (item.id === 'tool-yt-monetization-audit'
-        ? '/tools/youtube-monetization-audit'
-        : item.id === 't-calc' || item.id === 'brand-deal-calculator'
-        ? '/tools/brand-deal-calculator'
-        : `/marketplace/item/${item.id}`)
-    : `/marketplace/item/${item.id}`);
+  const targetHref = isService
+    ? `/marketplace/services/${item.id}`
+    : (isTool
+        ? (item.external_url || item.href || (
+            item.id === 'tool-yt-monetization-audit'
+              ? '/tools/youtube-monetization-audit'
+              : item.id === 't-calc' || item.id === 'brand-deal-calculator'
+              ? '/tools/brand-deal-calculator'
+              : item.id === 'tool-media-kit-builder'
+              ? '/tools/media-kit-builder'
+              : item.id === 'tool-youtube-er-calc'
+              ? '/tools/youtube-engagement-calculator'
+              : `/marketplace/tool/${item.id}`
+          ))
+        : (item.external_url || item.href || `/marketplace/item/${item.id}`));
 
   const getTypeBadge = (type: string) => {
     switch (type) {
-      case 'tool': return { label: isHindi ? 'एआई टूल' : 'AI Tool', color: '#00F2FE', bg: 'rgba(0,242,254,0.15)', border: 'rgba(0,242,254,0.35)' };
+      case 'tool': return { label: isHindi ? 'एआई टूल व सॉफ्टवेयर' : 'AI Tool & Software', color: '#00F2FE', bg: 'rgba(0,242,254,0.15)', border: 'rgba(0,242,254,0.35)' };
       case 'course': return { label: isHindi ? 'क्रिएटर स्कूल' : 'Creator Skool', color: '#A78BFA', bg: 'rgba(167,139,250,0.15)', border: 'rgba(167,139,250,0.35)' };
-      case 'service': return { label: isHindi ? 'सर्विस' : 'Service', color: '#FBBF24', bg: 'rgba(251,191,36,0.15)', border: 'rgba(251,191,36,0.35)' };
+      case 'service': return { label: isHindi ? 'डन-फॉर-यू सर्विस' : 'Done-For-You Service', color: '#FBBF24', bg: 'rgba(251,191,36,0.15)', border: 'rgba(251,191,36,0.35)' };
       case 'template': return { label: isHindi ? 'टेम्पलेट' : 'Template', color: '#34D399', bg: 'rgba(52,211,153,0.15)', border: 'rgba(52,211,153,0.35)' };
       default: return { label: isHindi ? 'रिसोर्स' : 'Resource', color: '#00F2FE', bg: 'rgba(0,242,254,0.15)', border: 'rgba(0,242,254,0.35)' };
     }
   };
 
-  const typeInfo = getTypeBadge(item.type);
+  const typeInfo = getTypeBadge(item.type || item.item_type);
 
   return (
     <motion.div
@@ -114,16 +124,29 @@ function ResourceCard({ item, userTier, isHindi }: { item: any; userTier: string
           </div>
         </div>
 
-        {/* Title & Description (Clickable to Description & Buy Page) */}
+        {/* Title & Description */}
         <Link href={targetHref} className="block group/title">
           <h3 className="font-extrabold text-white text-base sm:text-lg mb-2 leading-snug group-hover/title:text-primary transition-colors line-clamp-1">
             {item.title}
           </h3>
         </Link>
         
-        <p className="text-gray-300 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-2 min-h-[40px] font-normal">
+        <p className="text-gray-300 text-xs sm:text-sm leading-relaxed mb-3 line-clamp-2 min-h-[40px] font-normal">
           {item.desc}
         </p>
+
+        {/* Clarification Note for Services vs Tools */}
+        <div className="mb-4">
+          {isService ? (
+            <span className="inline-flex items-center gap-1.5 text-[11px] text-amber-300/90 font-medium bg-amber-500/10 px-2.5 py-1 rounded-lg border border-amber-500/20">
+              <Sparkles className="w-3 h-3 text-amber-400 shrink-0" /> Done-for-you agency deliverable · No download
+            </span>
+          ) : isTool ? (
+            <span className="inline-flex items-center gap-1.5 text-[11px] text-cyan-300/90 font-medium bg-cyan-500/10 px-2.5 py-1 rounded-lg border border-cyan-500/20">
+              <Wrench className="w-3 h-3 text-cyan-400 shrink-0" /> Interactive web tool · Download available files
+            </span>
+          ) : null}
+        </div>
       </div>
 
       {/* Card Footer: Rating, Meta & CTA */}
@@ -141,7 +164,13 @@ function ResourceCard({ item, userTier, isHindi }: { item: any; userTier: string
             )}
           </div>
 
-          {Number(item.price) > 0 ? (
+          {isService ? (
+            <div className="text-right">
+              <span className="font-black text-amber-300 text-sm sm:text-base font-mono">
+                {item.meta || (Number(item.price) > 0 ? `From ₹${Number(item.price).toLocaleString('en-IN')}` : 'Package Rates')}
+              </span>
+            </div>
+          ) : Number(item.price) > 0 ? (
             <div className="flex items-center gap-1.5">
               <span className="font-black text-white text-sm sm:text-base font-mono">
                 ₹{Number(item.price).toLocaleString('en-IN')}
@@ -166,6 +195,14 @@ function ResourceCard({ item, userTier, isHindi }: { item: any; userTier: string
             <Lock className="w-3.5 h-3.5 text-yellow-400" />
             <span>{isHindi ? 'अनलॉक के लिए अपग्रेड करें' : 'Upgrade to Unlock'}</span>
           </Link>
+        ) : isService ? (
+          <Link
+            href={targetHref}
+            className="w-full py-2.5 sm:py-3 px-4 rounded-xl text-black text-xs sm:text-sm font-black flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-[0.98] group/btn cursor-pointer bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 shadow-[0_0_20px_rgba(251,191,36,0.25)]"
+          >
+            <span>{isHindi ? 'सर्विस पैकेज बुक करें' : 'Book Service & Packages'}</span>
+            <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+          </Link>
         ) : (
           <Link
             href={targetHref}
@@ -178,8 +215,8 @@ function ResourceCard({ item, userTier, isHindi }: { item: any; userTier: string
             <span>
               {item.cta || (isTool 
                 ? (Number(item.price) > 0 
-                  ? (isHindi ? `अभी खरीदें • ₹${item.price}` : `Buy Now • ₹${item.price}`) 
-                  : (isHindi ? 'मुफ्त एक्सेस' : 'Try Free'))
+                  ? (isHindi ? `अभी खरीदें • ₹${item.price}` : `Buy Tool • ₹${item.price}`) 
+                  : (isHindi ? 'मुफ्त टूल खोलें' : 'Launch Free Tool'))
                 : (isHindi ? 'रिसोर्स खोलें' : 'Open Resource'))}
             </span>
             <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
@@ -427,7 +464,9 @@ export default function MarketplacePage() {
                 cta: item.item_type === 'service' ? 'Book Service' : 'Open Resource'
               }));
               if (nonToolCached.length > 0) {
-                setItems(prev => [...(liveTools.length > 0 ? liveTools : prev.filter(p => p.type === 'tool')), ...nonToolCached]);
+                const cachedIds = new Set(nonToolCached.map((c: any) => String(c.id)));
+                const missingBase = baseNonTools.filter(b => !cachedIds.has(String(b.id)));
+                setItems(prev => [...(liveTools.length > 0 ? liveTools : prev.filter(p => p.type === 'tool')), ...nonToolCached, ...missingBase]);
               }
             }
           } catch (e) {}
@@ -444,7 +483,11 @@ export default function MarketplacePage() {
     // Filter by Tab
     if (activeTab !== 'all') {
       const typeMap: Record<TabId, string> = { all: '', tools: 'tool', courses: 'course', services: 'service', templates: 'template' };
-      list = list.filter((i) => i.type === typeMap[activeTab]);
+      const expectedType = typeMap[activeTab];
+      list = list.filter((i) => {
+        const itemType = i.type || i.item_type;
+        return itemType === expectedType;
+      });
     }
 
     // Search query

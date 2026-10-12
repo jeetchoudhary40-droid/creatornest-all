@@ -91,7 +91,9 @@ export default function AdminServicesPage() {
         const parsed = JSON.parse(cached);
         const servicesOnly = parsed.filter((i: any) => i.item_type === 'service');
         if (servicesOnly.length > 0) {
-          setItems(servicesOnly);
+          const cachedIds = new Set(servicesOnly.map((i: any) => String(i.id)));
+          const missingStatic = STATIC_SERVICES.filter(s => !cachedIds.has(String(s.id)));
+          setItems([...servicesOnly, ...missingStatic]);
         }
       }
     }
@@ -104,7 +106,9 @@ export default function AdminServicesPage() {
         .order('created_at', { ascending: false });
         
       if (!error && data && data.length > 0) {
-        setItems(data);
+        const dbIds = new Set(data.map((i: any) => String(i.id)));
+        const missingStatic = STATIC_SERVICES.filter(s => !dbIds.has(String(s.id)));
+        setItems([...data, ...missingStatic]);
         if (typeof window !== 'undefined') {
           const cached = localStorage.getItem('cn_market_items');
           let allItems = cached ? JSON.parse(cached) : [];

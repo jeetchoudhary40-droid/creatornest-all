@@ -65,6 +65,18 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/tools" className="text-gray-400 hover:text-cyan-400 transition-colors text-sm sm:text-base flex items-center gap-1.5">
+                  <span>AI Tools & Suite</span>
+                  <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Tools</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/services" className="text-gray-400 hover:text-amber-400 transition-colors text-sm sm:text-base flex items-center gap-1.5">
+                  <span>Creator Services</span>
+                  <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">Agency</span>
+                </Link>
+              </li>
+              <li>
                 <Link href="/blog" className="text-gray-400 hover:text-primary transition-colors text-sm sm:text-base flex items-center gap-1.5">
                   <span>Blog</span>
                   <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-primary/10 text-primary border border-primary/20">New</span>

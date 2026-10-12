@@ -277,13 +277,25 @@ export default function Navbar() {
                   {isHindi ? 'त्वरित लिंक एवं टूल' : 'Creator Features'}
                 </div>
                 <Link
-                  href="/marketplace?tab=tools"
-                  onClick={(e) => handleNavClick(e, '/marketplace?tab=tools')}
+                  href="/tools"
+                  onClick={(e) => handleNavClick(e, '/tools')}
                   className="flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition-colors"
                 >
                   <span className="flex items-center gap-2.5">
-                    <Calculator className="w-4 h-4 text-emerald-400" />
-                    {isHindi ? 'ब्रांड डील कैलकुलेटर व टूल्स' : 'Brand Deal Calculator & Tools'}
+                    <Calculator className="w-4 h-4 text-cyan-400" />
+                    {isHindi ? 'एआई टूल्स व कैलकुलेटर' : 'AI Creator Tools & Software'}
+                  </span>
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-500" />
+                </Link>
+
+                <Link
+                  href="/services"
+                  onClick={(e) => handleNavClick(e, '/services')}
+                  className="flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition-colors"
+                >
+                  <span className="flex items-center gap-2.5">
+                    <Sparkles className="w-4 h-4 text-amber-400" />
+                    {isHindi ? 'क्रिएटर सर्विसेज (डन-फॉर-यू)' : 'Creator Agency Services'}
                   </span>
                   <ArrowRight className="w-3.5 h-3.5 text-slate-500" />
                 </Link>

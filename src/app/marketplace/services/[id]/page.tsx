@@ -133,6 +133,24 @@ export default function ServiceDetailPage() {
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
+    // Guardrail: Tools must NEVER render on the Done-For-You service booking page!
+    if (typeof id === 'string') {
+      const cleanId = id.trim();
+      if (/^t\d+$/i.test(cleanId) || cleanId.startsWith('tool-') || cleanId === 't-calc' || cleanId === 'brand-deal-calculator') {
+        const dest = cleanId === 'tool-yt-monetization-audit'
+          ? '/tools/youtube-monetization-audit'
+          : cleanId === 't-calc' || cleanId === 'brand-deal-calculator'
+          ? '/tools/brand-deal-calculator'
+          : cleanId === 'tool-media-kit-builder'
+          ? '/tools/media-kit-builder'
+          : cleanId === 'tool-youtube-er-calc'
+          ? '/tools/youtube-engagement-calculator'
+          : `/marketplace/tool/${cleanId}`;
+        window.location.replace(dest);
+        return;
+      }
+    }
+
     let foundService = null;
     if (typeof window !== 'undefined') {
       const cached = localStorage.getItem('cn_market_items');
@@ -307,6 +325,22 @@ export default function ServiceDetailPage() {
 
             {/* Left: Main Content */}
             <div className="lg:col-span-2 space-y-10">
+
+              {/* Service Nature Clarification Banner */}
+              <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-start sm:items-center gap-3.5 shadow-sm">
+                <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+                  <Sparkles className="w-5 h-5" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-xs font-black uppercase tracking-wider text-amber-400">Done-For-You Agency Service</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/10 text-gray-300 font-bold border border-white/10">No Software Download</span>
+                  </div>
+                  <p className="text-xs text-gray-300 mt-1 leading-relaxed">
+                    This is a professional human-executed service (not downloadable software). Our vetted specialists execute your project tailored to your requirements with custom revisions, milestones, and direct delivery.
+                  </p>
+                </div>
+              </div>
 
               {/* Title block */}
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>

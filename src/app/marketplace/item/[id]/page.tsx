@@ -231,9 +231,25 @@ export default function MarketItemDetailPage({ params }: { params: Promise<{ id:
     }
   }, [user]);
 
+  // Guardrail: Services must NEVER be displayed on the digital tool download / checkout page!
+  // If an id starts with 's' (e.g. s1, s11) or belongs to a service, redirect immediately to /marketplace/services/[id].
+  useEffect(() => {
+    if (typeof id === 'string') {
+      const cleanId = id.trim();
+      if (/^s\d+$/i.test(cleanId) || cleanId.startsWith('service-')) {
+        window.location.replace(`/marketplace/services/${cleanId}`);
+        return;
+      }
+    }
+  }, [id]);
+
   // Load Item logic
   useEffect(() => {
     async function loadItemData() {
+      if (typeof id === 'string' && (/^s\d+$/i.test(id.trim()) || id.startsWith('service-'))) {
+        window.location.replace(`/marketplace/services/${id.trim()}`);
+        return;
+      }
       setLoading(true);
 
       // 1. Try fetching from public server API first

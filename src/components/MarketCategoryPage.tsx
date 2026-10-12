@@ -41,6 +41,9 @@ const getFallbackThumbnail = (item: any) => {
       s8: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=600&auto=format&fit=crop', // Brand Deal Pitching
       s9: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=600&auto=format&fit=crop', // Digital Product & Community Builder
       s10: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop', // Tech Support for Creators & Channel Audit
+      s11: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=600&auto=format&fit=crop', // Instagram Account Manager
+      s12: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop', // YouTube Account Manager
+      s13: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop', // YouTube Channel Monetization Apply
     };
     return serviceImages[item.id] || 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=600&auto=format&fit=crop';
   }
@@ -93,7 +96,20 @@ const getStaticItemsForCategory = (categoryType: string) => {
       const numStr = item.meta.replace(/[^0-9]/g, '');
       if (numStr) priceVal = parseInt(numStr, 10);
     }
-    return { ...item, short_desc: item.desc, price: priceVal };
+    const resolvedHref = categoryType === 'service'
+      ? `/marketplace/services/${item.id}`
+      : (item.external_url || item.href || (
+          item.id === 'tool-yt-monetization-audit'
+            ? '/tools/youtube-monetization-audit'
+            : item.id === 't-calc' || item.id === 'brand-deal-calculator'
+            ? '/tools/brand-deal-calculator'
+            : item.id === 'tool-media-kit-builder'
+            ? '/tools/media-kit-builder'
+            : item.id === 'tool-youtube-er-calc'
+            ? '/tools/youtube-engagement-calculator'
+            : `/marketplace/tool/${item.id}`
+        ));
+    return { ...item, short_desc: item.desc, price: priceVal, href: resolvedHref };
   });
 };
 
@@ -125,6 +141,10 @@ export default function MarketCategoryPage({ categoryType, pageTitle, pageSubtit
         const parsed = JSON.parse(cached);
         const filteredCached = parsed.filter((item: any) => item.item_type === categoryType);
         if (filteredCached.length > 0) {
+          const cachedIds = new Set(filteredCached.map((item: any) => String(item.id)));
+          const staticList = getStaticItemsForCategory(categoryType);
+          const missingStatic = staticList.filter(s => !cachedIds.has(String(s.id)));
+
           const mappedCached = filteredCached.map((item: any) => ({
             id: item.id,
             type: item.item_type,
@@ -148,8 +168,9 @@ export default function MarketCategoryPage({ categoryType, pageTitle, pageSubtit
               faqs: item.features?.faqs || []
             }
           }));
-          setItems(mappedCached);
-          const uniqueCats = Array.from(new Set(mappedCached.map((t: any) => t.category).filter(Boolean))) as string[];
+          const combined = [...mappedCached, ...missingStatic];
+          setItems(combined);
+          const uniqueCats = Array.from(new Set(combined.map((t: any) => t.category).filter(Boolean))) as string[];
           setCategories(['All', ...uniqueCats]);
         }
       }
@@ -204,6 +225,10 @@ export default function MarketCategoryPage({ categoryType, pageTitle, pageSubtit
         .order('sort_order', { ascending: true });
 
       if (!error && dbItems && dbItems.length > 0) {
+        const dbIds = new Set(dbItems.map(item => String(item.id)));
+        const staticList = getStaticItemsForCategory(categoryType);
+        const missingStatic = staticList.filter(s => !dbIds.has(String(s.id)) && !dbIds.has(getUUIDFromStaticId(String(s.id))));
+
         const mapped = dbItems.map(item => ({
           id: item.id,
           type: item.item_type,
@@ -227,8 +252,9 @@ export default function MarketCategoryPage({ categoryType, pageTitle, pageSubtit
             faqs: item.features?.faqs || []
           }
         }));
-        setItems(mapped);
-        const uniqueCats = Array.from(new Set(mapped.map(t => t.category).filter(Boolean)));
+        const combined = [...mapped, ...missingStatic];
+        setItems(combined);
+        const uniqueCats = Array.from(new Set(combined.map(t => t.category).filter(Boolean)));
         setCategories(['All', ...uniqueCats]);
         
         if (typeof window !== 'undefined') {
@@ -297,6 +323,10 @@ export default function MarketCategoryPage({ categoryType, pageTitle, pageSubtit
   };
 
   const filtered = items.filter(t => {
+    // Strictly isolate: never show tool in service, never show service in tool
+    const itType = t.item_type || t.type;
+    if (itType && itType !== categoryType) return false;
+
     const matchCat = activeCategory === 'All' || t.category === activeCategory;
     const q = searchQuery.toLowerCase();
     const matchSearch = !q || 
@@ -402,15 +432,30 @@ export default function MarketCategoryPage({ categoryType, pageTitle, pageSubtit
             <div className="flex-1 min-w-0">
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
                 {filtered.map((item, i) => {
-                  const accent = item.accent || '#00F2FE';
+                  const isService = categoryType === 'service' || item.type === 'service' || item.item_type === 'service';
+                  const accent = item.accent || (isService ? '#FBBF24' : '#00F2FE');
+                  const targetHref = isService 
+                    ? `/marketplace/services/${item.id}`
+                    : (item.external_url || item.href || (
+                        item.id === 'tool-yt-monetization-audit'
+                          ? '/tools/youtube-monetization-audit'
+                          : item.id === 't-calc' || item.id === 'brand-deal-calculator'
+                          ? '/tools/brand-deal-calculator'
+                          : item.id === 'tool-media-kit-builder'
+                          ? '/tools/media-kit-builder'
+                          : item.id === 'tool-youtube-er-calc'
+                          ? '/tools/youtube-engagement-calculator'
+                          : `/marketplace/tool/${item.id}`
+                      ));
+
                   return (
-                    <Link href={item.href || `/marketplace/item/${item.id}`} key={item.id}>
+                    <Link href={targetHref} key={item.id} className="flex">
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.08 }}
-                        className="bg-surface border border-white/5 rounded-3xl overflow-hidden group hover:border-white/20 transition-all duration-300 flex flex-col h-full hover:shadow-[0_0_40px_rgba(0,0,0,0.5)] hover:-translate-y-1 relative"
+                        className="bg-surface border border-white/5 rounded-3xl overflow-hidden group hover:border-white/20 transition-all duration-300 flex flex-col h-full w-full hover:shadow-[0_0_40px_rgba(0,0,0,0.5)] hover:-translate-y-1 relative"
                       >
                         {/* Glow Behind */}
                         <div className="absolute -top-16 -right-16 w-32 h-32 rounded-full blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: accent }} />
@@ -422,11 +467,23 @@ export default function MarketCategoryPage({ categoryType, pageTitle, pageSubtit
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />
                           
-                          {item.category && (
-                            <div className="absolute top-4 left-4 bg-background/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold border border-white/10 text-white shadow-lg">
-                              {item.category}
-                            </div>
-                          )}
+                          <div className="absolute top-4 left-4 flex items-center gap-1.5 flex-wrap">
+                            {item.category && (
+                              <span className="bg-background/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold border border-white/10 text-white shadow-lg">
+                                {item.category}
+                              </span>
+                            )}
+                            <span 
+                              className="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider backdrop-blur-md border shadow-lg"
+                              style={
+                                isService 
+                                  ? { background: 'rgba(251,191,36,0.2)', color: '#FBBF24', borderColor: 'rgba(251,191,36,0.45)' }
+                                  : { background: 'rgba(0,242,254,0.2)', color: '#00F2FE', borderColor: 'rgba(0,242,254,0.45)' }
+                              }
+                            >
+                              {isService ? 'Done-For-You Service' : 'AI Tool & Software'}
+                            </span>
+                          </div>
                           
                           {item.plan !== 'free' && (
                             <div className="absolute top-4 right-4 flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold shadow-lg backdrop-blur-md" 
@@ -437,9 +494,24 @@ export default function MarketCategoryPage({ categoryType, pageTitle, pageSubtit
                         </div>
                         
                         <div className="p-6 flex flex-col flex-1 relative z-10">
-                          <h3 className="text-xl font-bold text-white mb-2 group-hover:text-white transition-colors">{item.title}</h3>
-                          <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1 line-clamp-3">{item.short_desc}</p>
+                          <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">{item.title}</h3>
+                          <p className="text-gray-400 text-sm leading-relaxed mb-3 flex-1 line-clamp-3">{item.short_desc}</p>
                           
+                          {/* Clarification Note for Services vs Tools */}
+                          <div className="mb-4">
+                            {isService ? (
+                              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300/90 text-[11px] font-medium">
+                                <Sparkles className="w-3 h-3 text-amber-400 shrink-0" />
+                                <span>Human Agency Deliverable · No Download</span>
+                              </div>
+                            ) : (
+                              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-300/90 text-[11px] font-medium">
+                                <Wrench className="w-3 h-3 text-cyan-400 shrink-0" />
+                                <span>Interactive Software · Download If Available</span>
+                              </div>
+                            )}
+                          </div>
+
                           {item.tags && item.tags.length > 0 && (
                             <div className="flex flex-wrap gap-1.5 mb-5">
                               {item.tags.slice(0, 3).map((tag: string) => (
@@ -450,18 +522,40 @@ export default function MarketCategoryPage({ categoryType, pageTitle, pageSubtit
                             </div>
                           )}
 
-                          <div className="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
-                            {item.rating ? (
-                              <div className="flex items-center gap-1.5">
-                                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                                <span className="text-yellow-400 font-bold text-sm">{item.rating}</span>
-                              </div>
-                            ) : (
-                              <div className="text-xs font-semibold text-gray-500">New</div>
-                            )}
+                          <div className="mt-auto pt-4 border-t border-white/5 flex flex-col gap-3">
+                            <div className="flex items-center justify-between">
+                              {item.rating ? (
+                                <div className="flex items-center gap-1.5">
+                                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                                  <span className="text-yellow-400 font-bold text-sm">{item.rating}</span>
+                                </div>
+                              ) : (
+                                <div className="text-xs font-semibold text-gray-500">Top Rated</div>
+                              )}
 
-                            <div className="font-black text-white text-lg">
-                              {item.price > 0 ? `₹${item.price}` : 'Free'}
+                              <div className="font-black text-right">
+                                {isService ? (
+                                  <span className="text-amber-400 text-base font-mono font-bold">
+                                    {item.meta || (item.price > 0 ? `From ₹${item.price.toLocaleString('en-IN')}` : 'Package Rates')}
+                                  </span>
+                                ) : (
+                                  <span className="text-white text-lg font-mono">
+                                    {item.price > 0 ? `₹${item.price.toLocaleString('en-IN')}` : 'Free Access'}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Action CTA Button */}
+                            <div
+                              className={`w-full py-2.5 px-4 rounded-xl text-center text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-md group-hover:shadow-lg ${
+                                isService
+                                  ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-black shadow-amber-500/20 group-hover:from-amber-300 group-hover:to-amber-400'
+                                  : 'bg-gradient-to-r from-cyan-400 to-cyan-500 text-black shadow-cyan-500/20 group-hover:from-cyan-300 group-hover:to-cyan-400'
+                              }`}
+                            >
+                              <span>{isService ? 'Book Service & Packages' : (item.price > 0 ? `Buy Tool • ₹${item.price}` : 'Launch Free Tool')}</span>
+                              <Sparkles className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
                             </div>
                           </div>
                         </div>

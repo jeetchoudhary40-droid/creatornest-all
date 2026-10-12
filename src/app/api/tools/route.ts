@@ -31,15 +31,15 @@ export async function GET(req: NextRequest) {
     const tools = getTools();
 
     if (id) {
-      const found = tools.find((t: any) => String(t.id) === String(id));
+      const found = tools.find((t: any) => String(t.id) === String(id) && ((t.item_type || t.type) === 'tool' || !t.item_type));
       if (!found) {
         return NextResponse.json({ success: false, error: 'Tool not found.' }, { status: 404 });
       }
       return NextResponse.json({ success: true, tool: found });
     }
 
-    // Return only published items for public directory
-    const published = tools.filter((t: any) => t.is_published !== false);
+    // Return only published AI tool items for public directory
+    const published = tools.filter((t: any) => t.is_published !== false && ((t.item_type || t.type) === 'tool' || !t.item_type));
     return NextResponse.json({ success: true, count: published.length, tools: published });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });

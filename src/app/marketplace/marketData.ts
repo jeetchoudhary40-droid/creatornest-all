@@ -1,7 +1,8 @@
 import {
   Brain, Palette, Zap, Target, TrendingUp, BarChart3,
   BookOpen, Video, Scissors, Mic, FileText, Shield, Megaphone,
-  Globe, Users, Rocket, GraduationCap, Coins, Calculator, Wrench, Sparkles
+  Globe, Users, Rocket, GraduationCap, Coins, Calculator, Wrench, Sparkles,
+  Camera, ShieldCheck
 } from 'lucide-react';
 
 export interface PricingPackage {
@@ -48,6 +49,8 @@ export interface MarketItem {
   tags?: string[];
   thumbnailUrl?: string;
   thumbnail_url?: string;
+  external_url?: string;
+  price?: number;
   details?: ServiceDetails | ToolDetails | any;
 }
 
@@ -614,23 +617,23 @@ export const ITEMS: MarketItem[] = [
     } as ServiceDetails,
   },
   {
-    id: 's2', type: 'service', title: 'AI Content Generation',
-    desc: 'Scripts, captions, hashtags, descriptions — all AI-written for your brand voice.',
-    category: 'SEO Services', icon: Brain, accent: '#8B5CF6', plan: 'free', rating: 4.8,
-    meta: 'From ₹499/mo', cta: 'Get Started', href: '/marketplace/services/s2',
-    tags: ['AI Content', 'Scripts', 'Captions'],
+    id: 's2', type: 'service', title: 'Professional Scriptwriting & Copywriting Desk',
+    desc: 'Done-for-you video scripts, viral hooks, SEO descriptions, and high-converting copy written by dedicated creator copywriters.',
+    category: 'Scriptwriting & Copywriting', icon: FileText, accent: '#8B5CF6', plan: 'free', rating: 4.8,
+    meta: 'From ₹1,499/mo', cta: 'Hire Copywriter', href: '/marketplace/services/s2',
+    tags: ['Scriptwriting', 'Copywriting', 'Viral Hooks', 'SEO Descriptions'],
     details: {
-      provider: 'Creator Nest AI Studio',
-      delivery_time: 'Same Day',
+      provider: 'Creator Nest Creative Writing Desk',
+      delivery_time: '24–48 Hours',
       revisions: 2,
-      longDesc: 'Let AI handle your content pipeline. Our AI Content Generation service uses Creator Nest\'s proprietary models fine-tuned on viral creator content to produce scripts, captions, descriptions, and hashtag packs that sound like YOU — not a robot.\n\nPerfect for creators who post daily and need a constant supply of fresh, engaging copy without spending hours writing.',
+      longDesc: 'Stop wasting days struggling with writer\'s block. Our dedicated creative writing desk pairs you with professional creator copywriters who craft high-retention video scripts, viral Reels hooks, and SEO descriptions custom-tailored to your creator voice.\n\nFrom educational explainers and tech breakdowns to commercial brand sponsor segments, our professional copywriters deliver publish-ready scripts and copy directly to your dashboard.',
       features: [
-        'Daily script generation (niche-tuned)',
-        'Instagram & YouTube captions (10 variants)',
-        'Hashtag bundles (platform-specific)',
-        'YouTube video descriptions (500+ words)',
-        'Brand voice profile setup',
-        'Monthly content calendar',
+        'Dedicated professional creator copywriter',
+        'Custom script drafts with 3 retention hook variants',
+        'Instagram Reels & YouTube Shorts micro-scripts',
+        'SEO-optimized video descriptions & chapter markers',
+        'Brand sponsor organic integration scripts',
+        'Monthly content cadence calendar',
       ],
       packages: [
         {
@@ -1121,6 +1124,233 @@ export const ITEMS: MarketItem[] = [
         { q: 'Can I do this if I have a small audience?', a: 'Yes! A small, highly-engaged audience of 1,000 followers can generate substantial monthly income when structured with the right community model.' }
       ]
     } as ServiceDetails
+  },
+  {
+    id: 's11', type: 'service', title: 'Instagram Account Manager',
+    desc: 'Dedicated growth & operations management for creators and brands: viral Reels cadence, feed aesthetic curation, DM triage, and community engagement.',
+    category: 'Channel Management', icon: Camera, accent: '#E1306C', plan: 'gold', rating: 4.9,
+    meta: 'From ₹9,999/mo', cta: 'Hire Manager', href: '/marketplace/services/s11',
+    tags: ['Instagram', 'Account Manager', 'Reels Growth', 'Social Media', 'Engagement'], featured: true, badge: '🔥 Top Retainer',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=600&auto=format&fit=crop',
+    details: {
+      provider: 'Creator Nest Talent & Social Desk',
+      delivery_time: 'Monthly Retainer / Daily Active',
+      revisions: 5,
+      longDesc: 'Stop losing hours wrestling with Instagram\'s algorithm and endless DMs. Our dedicated Instagram Account Managers take full ownership of your account\'s daily execution, strategic scheduling, and audience retention.\n\nFrom viral Reels scripting and trending audio research to carousel storytelling, aesthetic feed layout, story sequence funnels, and high-intent inbound DM filtering (brand deals, customer inquiries, and creator collabs) — we act as your personal executive production and community desk.\n\nWhether you are a solo creator scaling to 100K+ followers, a coach generating leads, or a modern D2C brand, our managers optimize every touchpoint so you can focus 100% on recording authentic content.',
+      features: [
+        'Dedicated Instagram Account Manager & Private Slack/WhatsApp desk',
+        'Complete 30-Day Content Calendar (Reels, Carousels & Interactive Stories)',
+        'Trending Audio, Viral Hook & Format Research for your specific niche',
+        'High-Retention Caption Copywriting & Strategic Hashtag Clusters',
+        'Daily Comment Moderation & Spam / Bot Filtering',
+        'Inbound DM Triage (Brand Sponsorship Lead Flagging & Customer Support)',
+        'Aesthetic Profile Makeover (Bio, Highlights, Link-in-Bio Funnel)',
+        'Bi-Weekly Growth Analytics & Reach Performance Reports',
+      ],
+      packages: [
+        {
+          name: 'Creator Starter',
+          price: 9999,
+          delivery: 'Monthly Retainer',
+          revisions: 2,
+          features: [
+            '15 Planned Posts/Reels scheduled per month',
+            'Weekly Story engagement sequences',
+            'Niche trending sound & hook curation',
+            'Comment moderation (within 24 hrs)',
+            'Bio & Highlight icons refresh',
+            'Monthly Growth & Reach KPI Report',
+          ],
+        },
+        {
+          name: 'Growth & Scale',
+          price: 19999,
+          delivery: 'Monthly Retainer',
+          revisions: 4,
+          features: [
+            '25-30 Planned Posts & Reels scheduled per month',
+            'Daily Story sequence funnels (Polls, Q&As, Countdown)',
+            'Carousel design & script hooks included',
+            'Priority DM handling & Brand Deal lead forwarding',
+            'Active outreach for creator collaborations (3/mo)',
+            'Bi-Weekly Analytics review call (30 min)',
+            'Dedicated Account Manager on WhatsApp',
+          ],
+        },
+        {
+          name: 'Executive Suite',
+          price: 39999,
+          delivery: 'Monthly Retainer',
+          revisions: 99,
+          features: [
+            'Daily posting (Reels, Carousels, Broadcast Channel & Stories)',
+            'Real-time DM lead qualification & CRM logging',
+            'Meta Ads booster management (budget separate)',
+            'Sponsorship deliverable compliance & media kit sync',
+            'Dedicated Senior Manager + Assistant team',
+            'Weekly 1-on-1 Strategy Sync Call',
+            '24/7 Priority Emergency Channel Support',
+          ],
+        },
+      ],
+      faqs: [
+        { q: 'How do you access my Instagram account securely?', a: 'We access your account securely through Meta Business Suite, Creator Studio, or official scheduler integrations without needing your personal login password. If direct login is ever required, we use encrypted credentials with two-factor authentication (2FA).' },
+        { q: 'Do I still need to record my own videos?', a: 'Yes, you record the raw video footage or send us clips. Your Account Manager provides the scripts, hooks, trending audio recommendations, editing briefs, captions, and handles all posting, formatting, and community engagement.' },
+        { q: 'How do you handle incoming brand sponsorship inquiries?', a: 'Your manager filters out spam and immediately flags verified brand collaboration inquiries to you, summarizing the brand\'s budget, deliverable requirements, and syncing with your rate card.' },
+        { q: 'Can I cancel or pause my retainer anytime?', a: 'Yes, all our account management retainers are billed month-to-month with zero lock-in contracts. You can pause or cancel with 7 days notice before your next billing cycle.' },
+      ],
+    } as ServiceDetails,
+  },
+  {
+    id: 's12', type: 'service', title: 'YouTube Account Manager',
+    desc: 'Full-spectrum channel management: upload operations, high-CTR metadata SEO, A/B thumbnail testing, Community Tab, and audience retention tuning.',
+    category: 'Channel Management', icon: Video, accent: '#EF4444', plan: 'gold', rating: 5.0,
+    meta: 'From ₹11,999/mo', cta: 'Hire Channel Manager', href: '/marketplace/services/s12',
+    tags: ['YouTube', 'Channel Manager', 'Video SEO', 'Thumbnails', 'Watch Time'], featured: true, badge: '⭐ High Growth',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop',
+    details: {
+      provider: 'Creator Nest YouTube Operations Desk',
+      delivery_time: 'Monthly Retainer / Ongoing',
+      revisions: 5,
+      longDesc: 'Transform your YouTube channel from an unpredictable hobby into a finely tuned, algorithmically optimized growth machine. Managing a thriving YouTube channel requires far more than uploading video files — it demands disciplined SEO metadata, click-tested thumbnails, strategic end-screens, copyright safety checks, and active community cultivation.\n\nOur professional YouTube Account Managers oversee your entire publishing pipeline. We research high-volume, low-competition keywords, write compelling click-worthy titles with high CTR potential, format descriptive keyword-rich descriptions with timestamped chapters, configure info cards and end-screen playlists to maximize viewer session time, and moderate comments to boost algorithmic velocity.\n\nWe act as your channel director, coordinating with your editors and designers to ensure strict publishing schedules and continuous watch-time growth.',
+      features: [
+        'Dedicated YouTube Channel Director & Upload Manager',
+        'Algorithmic SEO: Keyword-targeted titles, rich descriptions & search tags',
+        'Automated Chapter Markers, Timestamps & SEO Playlists',
+        'End Screen & Info Card retention funnels (Boosting Session Time)',
+        'A/B Thumbnail & Title Testing using YouTube Studio native tools',
+        'Community Tab Strategy (Polls, Behind-the-scenes, Image updates)',
+        'Active Comment Moderation, Pinned Comments & Engagement Priming',
+        'Copyright, Content ID & Monetization Pre-Upload Checks',
+        'Monthly Deep-Dive Analytics (CTR, Average View Duration, Traffic Sources)',
+      ],
+      packages: [
+        {
+          name: 'Channel Starter',
+          price: 11999,
+          delivery: 'Monthly Retainer',
+          revisions: 3,
+          features: [
+            'Up to 8 Video Uploads/Scheduling per month',
+            'Complete SEO: Titles, Descriptions, Tags & Chapters',
+            'End Screen & Card configuration for retention',
+            'Basic Comment Moderation (Spam filtering)',
+            'Monthly Performance & Traffic Source report',
+          ],
+        },
+        {
+          name: 'Channel Growth',
+          price: 24999,
+          delivery: 'Monthly Retainer',
+          revisions: 5,
+          features: [
+            'Up to 16 Long-form Videos + Unlimited Shorts per month',
+            'Advanced A/B Thumbnail & Title Testing setup',
+            'Weekly Community Tab engagement polls & updates',
+            'Competitor niche benchmarking & search trend alerts',
+            'Brand sponsor link insertion & deliverable tracking',
+            'Bi-Weekly Channel Strategy Call',
+            'Dedicated Channel Manager on WhatsApp',
+          ],
+        },
+        {
+          name: 'Studio Enterprise',
+          price: 49999,
+          delivery: 'Monthly Retainer',
+          revisions: 99,
+          features: [
+            'Daily publishing (30+ long-form & Shorts uploads/mo)',
+            'Multi-channel or Podcast show management',
+            'Team pipeline oversight (Direct coordination with editors/designers)',
+            'YPP monetization protection & Content ID claims management',
+            'Ad revenue & CPM optimization strategy',
+            'Weekly Strategy & Retrospective Video Conference',
+            '24/7 Dedicated Senior Channel Lead',
+          ],
+        },
+      ],
+      faqs: [
+        { q: 'How do you access my YouTube channel without compromising security?', a: 'We utilize YouTube Studio Channel Permissions (Manager or Editor role). You invite our verified agency email through YouTube Studio Settings > Permissions. You NEVER share your Google account password and maintain 100% channel ownership and payout control.' },
+        { q: 'Do you edit the videos or design the thumbnails in this package?', a: 'Account Management focuses on channel operations, SEO, publishing, scheduling, A/B testing, and community management. Video editing and graphic thumbnail design can be bundled seamlessly with our in-house Video Editing (s1) and Thumbnail Design (s3) services.' },
+        { q: 'How do you help improve Average View Duration (AVD) and CTR?', a: 'We analyze your video retention graph drop-offs to advise your scripting and editing team. For CTR, we formulate 3 title variations per video and configure YouTube\'s "Test & Compare" thumbnail tool to find the highest-converting creative.' },
+        { q: 'Can you manage multi-language or dubbed secondary channels?', a: 'Yes! Our Studio Enterprise tier supports multi-channel networks, regional dubbing uploads, and podcast audio syncs.' },
+      ],
+    } as ServiceDetails,
+  },
+  {
+    id: 's13', type: 'service', title: 'YouTube Channel Monetization Apply (For Eligible Channels)',
+    desc: 'Step-by-step YPP monetization application concierge: 20-point compliance audit, reused content cleanup, AdSense setup & approval guidance.',
+    category: 'Monetization', icon: ShieldCheck, accent: '#10B981', plan: 'silver', rating: 5.0,
+    meta: 'From ₹2,499/audit', cta: 'Apply with Experts', href: '/marketplace/services/s13',
+    tags: ['Monetization', 'YPP', 'YouTube Partner Program', 'AdSense', 'Reused Content Fix'], featured: true, badge: '⭐ 100% Policy-Safe',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop',
+    details: {
+      provider: 'Creator Nest Monetization & Compliance Wing',
+      delivery_time: '24–72 Hours / Concierge Guided',
+      revisions: 3,
+      longDesc: 'Reaching 1,000 subscribers and 4,000 public watch hours (or 10M Shorts views) is a monumental milestone. But nothing is more heartbreaking than waiting weeks only to receive a rejection email citing "Reused Content", "Repetitious Content", "Misleading Metadata", or running into the dreaded "Step 2 AdSense Error: You already have an existing account".\n\nYouTube\'s monetization review is conducted by both automated heuristics and human reviewers who inspect your top-viewed videos, channel themes, thumbnail honesty, and AdSense payment profile. Submitting blindly puts your channel at risk of a 30-day or 90-day cooldown period.\n\nCreator Nest\'s Monetization Application Service is a policy-first diagnostic and application concierge. We perform an exhaustive 20-point pre-flight compliance audit, sanitize flagged metadata, guide seamless Google AdSense linking, and oversee your submission to maximize your first-time approval rate — 100% ethically without bots or shortcuts.',
+      features: [
+        'Pre-Flight YPP Eligibility Verification (Valid Public Watch Hours vs Private/Deleted/Shorts)',
+        '20-Point YouTube Monetization Policy Audit (Reused & Repetitious Content Risk)',
+        'Top 5 Most Viewed Videos Deep-Dive (Commentary, Editing Value & Transformative Check)',
+        'Channel Metadata & Thumbnail Cleanup (Clickbait & Misleading Title correction)',
+        'Step 2 Google AdSense Account Linking Concierge (Duplicate Account Prevention)',
+        'Tax Info & Indian PAN/GST Declaration Guidance for AdSense',
+        'Post-Submission Tracking & Review Status Monitoring',
+        'Custom 5-Minute Video Appeal Blueprint (If previously rejected by YouTube)',
+      ],
+      packages: [
+        {
+          name: 'Pre-Apply Audit',
+          price: 2499,
+          delivery: '48 Hours',
+          revisions: 2,
+          features: [
+            'Full 20-Point YPP Policy Compliance Audit Report',
+            'Watch Hours verification check (identifies invalid hours)',
+            'Identification of high-risk videos (Reused/Copyright)',
+            'Exact metadata & thumbnail fix checklist before clicking Apply',
+            'Written Action Plan PDF',
+          ],
+        },
+        {
+          name: 'Full Concierge',
+          price: 5999,
+          delivery: '72 Hours + Until Decision',
+          revisions: 5,
+          features: [
+            'Everything in Pre-Apply Audit',
+            '1-on-1 Google Meet / Screen-share Application Session',
+            'Step 1 (YPP Terms Acceptance) guidance',
+            'Step 2 (Google AdSense Setup/Link) without duplicate profile errors',
+            'Indian Tax (W-8BEN / Indian GST) information setup',
+            'Step 3 Manual Review submission oversight',
+            'WhatsApp direct concierge support until final review decision',
+          ],
+        },
+        {
+          name: 'Rejection Recovery & Appeal',
+          price: 11999,
+          delivery: '5 Business Days',
+          revisions: 99,
+          features: [
+            'For channels previously rejected for Reused Content or Ineligible',
+            'Forensic audit of rejected channel and root-cause diagnostic',
+            'Channel cleansing blueprint (what to unlist vs keep)',
+            'Full scriptwriting for YouTube\'s 5-minute Video Appeal',
+            'Appeal video review & editing direction showing editing software proof',
+            'Re-application timeline strategy after cooldown period',
+            'Direct Senior Compliance Specialist access',
+          ],
+        },
+      ],
+      faqs: [
+        { q: 'Can you guarantee 100% that YouTube will approve my monetization?', a: 'No honest agency can guarantee YouTube\'s internal decisions — YouTube alone makes the final approval. What we guarantee is 100% adherence to YouTube\'s strict Channel Monetization Policies, identifying red flags before submission, fixing AdSense bugs, and optimizing your chances to the highest industry benchmark.' },
+        { q: 'My watch hours reached 4,000, but Earn tab shows less. Why?', a: 'YouTube Studio Earn tab only counts valid public long-form watch hours accrued in the last 365 days. Watch hours from Shorts, unlisted videos, private videos, deleted videos, and ad campaigns (Google Ads) do NOT count toward YPP. We audit your exact eligible watch hours.' },
+        { q: 'What is the most common reason for YPP rejection?', a: 'Over 70% of rejections are due to "Reused Content" (uploading content from other creators, movies, or compilations without significant original commentary or educational value) or Step 2 AdSense "Duplicate Account" errors. We specialize in resolving both issues.' },
+        { q: 'How do you fix the Step 2 AdSense duplicate account error?', a: 'Google only permits one AdSense account per individual payee. If you previously created an AdSense account years ago with another email, Step 2 will get stuck. We guide you through locating, closing, or correctly associating the existing profile or setting up a verified family/business payee profile.' },
+      ],
+    } as ServiceDetails,
   },
 
   // ─── Templates ────────────────────────────────────────────────────────────────
