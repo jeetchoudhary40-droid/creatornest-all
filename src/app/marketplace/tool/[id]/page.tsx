@@ -13,7 +13,7 @@ import { useParams } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/context/AuthContext';
-import { ITEMS } from '@/app/marketplace/marketData';
+import { ITEMS, getServiceHref } from '@/app/marketplace/marketData';
 import { supabase } from '@/lib/supabase';
 import * as Lucide from 'lucide-react';
 import BrandDealCalculator from '@/components/BrandDealCalculator';
@@ -208,7 +208,7 @@ export default function ToolDetailPage() {
     if (typeof id === 'string') {
       const cleanId = id.trim();
       if (/^s\d+$/i.test(cleanId) || cleanId.startsWith('service-')) {
-        window.location.replace(`/marketplace/services/${cleanId}`);
+        window.location.replace(getServiceHref(cleanId));
         return;
       }
     }

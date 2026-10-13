@@ -11,8 +11,16 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { ITEMS } from '@/app/marketplace/marketData';
-import { ServiceDetails, PricingPackage } from '@/app/marketplace/marketData';
+import {
+  ITEMS,
+  ServiceDetails,
+  PricingPackage,
+  getServiceSlug,
+  getServiceHref,
+  slugify,
+  SERVICE_SLUG_MAP,
+  SERVICE_ID_BY_SLUG
+} from '@/app/marketplace/marketData';
 import { supabase } from '@/lib/supabase';
 import * as Lucide from 'lucide-react';
 import { getUUIDFromStaticId } from '@/lib/uuidHelper';
@@ -133,82 +141,112 @@ export default function ServiceDetailPage() {
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
+    if (!id || typeof id !== 'string') return;
+    const rawId = id.trim();
+    const cleanId = rawId.toLowerCase();
+
     // Guardrail: Tools must NEVER render on the Done-For-You service booking page!
-    if (typeof id === 'string') {
-      const cleanId = id.trim();
-      if (/^t\d+$/i.test(cleanId) || cleanId.startsWith('tool-') || cleanId === 't-calc' || cleanId === 'brand-deal-calculator') {
-        const dest = cleanId === 'tool-yt-monetization-audit'
-          ? '/tools/youtube-monetization-audit'
-          : cleanId === 't-calc' || cleanId === 'brand-deal-calculator'
-          ? '/tools/brand-deal-calculator'
-          : cleanId === 'tool-media-kit-builder'
-          ? '/tools/media-kit-builder'
-          : cleanId === 'tool-youtube-er-calc'
-          ? '/tools/youtube-engagement-calculator'
-          : `/marketplace/tool/${cleanId}`;
-        window.location.replace(dest);
-        return;
-      }
+    if (/^t\d+$/i.test(cleanId) || cleanId.startsWith('tool-') || cleanId === 't-calc' || cleanId === 'brand-deal-calculator') {
+      const dest = cleanId === 'tool-yt-monetization-audit'
+        ? '/tools/youtube-monetization-audit'
+        : cleanId === 't-calc' || cleanId === 'brand-deal-calculator'
+        ? '/tools/brand-deal-calculator'
+        : cleanId === 'tool-media-kit-builder'
+        ? '/tools/media-kit-builder'
+        : cleanId === 'tool-youtube-er-calc'
+        ? '/tools/youtube-engagement-calculator'
+        : `/marketplace/tool/${cleanId}`;
+      window.location.replace(dest);
+      return;
     }
 
-    let foundService = null;
-    if (typeof window !== 'undefined') {
+    // 1. Resolve from static ITEMS first with full slug/id support
+    let foundService: any = ITEMS.find((item) => {
+      if (item.type !== 'service') return false;
+      const itemSlug = (item.slug || getServiceSlug(item)).toLowerCase();
+      const itemId = String(item.id).toLowerCase();
+      return (
+        itemSlug === cleanId ||
+        itemId === cleanId ||
+        slugify(item.title) === cleanId ||
+        SERVICE_ID_BY_SLUG[cleanId] === itemId ||
+        SERVICE_SLUG_MAP[cleanId] === itemSlug
+      );
+    });
+
+    // 2. Resolve from local storage cache if not found in static items
+    if (!foundService && typeof window !== 'undefined') {
       const cached = localStorage.getItem('cn_market_items');
       if (cached) {
-        const parsed = JSON.parse(cached);
-        const localItem = parsed.find((item: any) => String(item.id) === String(id) || getUUIDFromStaticId(String(item.id)) === getUUIDFromStaticId(String(id)));
-        if (localItem) {
-          foundService = {
-            id: localItem.id,
-            type: localItem.item_type,
-            title: localItem.title,
-            desc: localItem.short_desc,
-            short_desc: localItem.short_desc,
-            long_desc: localItem.long_desc,
-            category: localItem.category,
-            icon: getLucideIcon(localItem.icon),
-            accent: localItem.accent,
-            plan: localItem.plan,
-            price: localItem.price,
-            rating: localItem.rating,
-            thumbnail_url: localItem.thumbnail_url,
-            file_url: localItem.file_url,
-            external_url: localItem.external_url,
-            tags: localItem.tags || [],
-            badge: localItem.features?.badge || localItem.tags?.[0] || '',
-            details: {
-              provider: localItem.features?.provider || 'Creator Nest',
-              delivery_time: localItem.features?.delivery_time || '3-5 Days',
-              revisions: localItem.features?.revisions || 3,
-              features: localItem.features?.features || [],
-              packages: localItem.features?.packages || [],
-              faqs: localItem.features?.faqs || []
-            }
-          };
+        try {
+          const parsed = JSON.parse(cached);
+          const localItem = parsed.find((item: any) =>
+            item.item_type === 'service' && (
+              String(item.id).toLowerCase() === cleanId ||
+              (item.slug && item.slug.toLowerCase() === cleanId) ||
+              slugify(item.title || '') === cleanId ||
+              SERVICE_ID_BY_SLUG[cleanId] === String(item.id) ||
+              getUUIDFromStaticId(String(item.id)) === getUUIDFromStaticId(cleanId)
+            )
+          );
+          if (localItem) {
+            foundService = {
+              id: localItem.id,
+              slug: localItem.slug || slugify(localItem.title || String(localItem.id)),
+              type: localItem.item_type,
+              title: localItem.title,
+              desc: localItem.short_desc,
+              short_desc: localItem.short_desc,
+              long_desc: localItem.long_desc,
+              category: localItem.category,
+              icon: getLucideIcon(localItem.icon),
+              accent: localItem.accent,
+              plan: localItem.plan,
+              price: localItem.price,
+              rating: localItem.rating,
+              thumbnail_url: localItem.thumbnail_url,
+              file_url: localItem.file_url,
+              external_url: localItem.external_url,
+              tags: localItem.tags || [],
+              badge: localItem.features?.badge || localItem.tags?.[0] || '',
+              details: {
+                provider: localItem.features?.provider || 'Creator Nest',
+                delivery_time: localItem.features?.delivery_time || '3-5 Days',
+                revisions: localItem.features?.revisions || 3,
+                features: localItem.features?.features || [],
+                packages: localItem.features?.packages || [],
+                faqs: localItem.features?.faqs || []
+              }
+            };
+          }
+        } catch (e) {
+          console.warn('Failed to parse cached market items', e);
         }
-      }
-    }
-
-    if (!foundService) {
-      const staticService = ITEMS.find((item) => String(item.id) === String(id) && item.type === 'service');
-      if (staticService) {
-        foundService = staticService;
       }
     }
 
     if (foundService) {
       setService(foundService);
       setLoading(false);
+
+      // Always normalize browser URL to the SEO canonical slug (e.g. /marketplace/services/professional-video-editing)
+      const targetSlug = foundService.slug || getServiceSlug(foundService);
+      if (typeof window !== 'undefined' && targetSlug && cleanId !== targetSlug.toLowerCase()) {
+        const canonicalUrl = `/marketplace/services/${targetSlug}`;
+        window.history.replaceState(null, '', canonicalUrl);
+      }
     } else {
       setLoading(true);
     }
 
     async function fetchService() {
       try {
+        const resolvedStaticId = SERVICE_ID_BY_SLUG[cleanId] || cleanId;
+        const targetUUID = getUUIDFromStaticId(resolvedStaticId);
         const { data, error } = await supabase
           .from('market_items')
           .select('*')
-          .eq('id', getUUIDFromStaticId(id))
+          .eq('id', targetUUID)
           .eq('item_type', 'service')
           .single();
 
@@ -216,6 +254,7 @@ export default function ServiceDetailPage() {
           const isJsonFeatures = data.features && typeof data.features === 'object' && !Array.isArray(data.features);
           const mapped = {
             id: data.id,
+            slug: data.slug || slugify(data.title || String(data.id)),
             type: data.item_type,
             title: data.title,
             desc: data.short_desc,
@@ -242,6 +281,10 @@ export default function ServiceDetailPage() {
             }
           };
           setService(mapped);
+          const targetSlug = mapped.slug || getServiceSlug(mapped);
+          if (typeof window !== 'undefined' && targetSlug && cleanId !== targetSlug.toLowerCase()) {
+            window.history.replaceState(null, '', `/marketplace/services/${targetSlug}`);
+          }
         }
       } catch (err) {
         console.error("Error background loading service details", err);
@@ -298,8 +341,50 @@ export default function ServiceDetailPage() {
   // Related services
   const related = ITEMS.filter((i) => i.type === 'service' && String(i.id) !== String(service.id)).slice(0, 3);
 
+  const serviceSlug = service.slug || getServiceSlug(service);
+  const canonicalHref = `/marketplace/services/${serviceSlug}`;
+  const siteUrl = 'https://creatornest.in';
+  const fullCanonicalUrl = `${siteUrl}${canonicalHref}`;
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: service.title,
+    description: service.desc || (details?.longDesc ? details.longDesc.slice(0, 160) : ''),
+    serviceType: service.category,
+    provider: {
+      '@type': 'Organization',
+      name: 'Creator Nest',
+      url: siteUrl,
+    },
+    url: fullCanonicalUrl,
+    offers: packages.map((pkg) => ({
+      '@type': 'Offer',
+      name: pkg.name,
+      price: pkg.price,
+      priceCurrency: 'INR',
+      description: `${pkg.delivery} delivery with ${pkg.revisions} revisions`,
+    })),
+  };
+
   return (
     <main className="flex min-h-screen flex-col bg-background">
+      {/* Dynamic SEO Meta & Structured Data */}
+      <title>{`${service.title} | Creator Nest Services`}</title>
+      <meta name="description" content={service.desc || (details?.longDesc ? details.longDesc.slice(0, 160) : '')} />
+      <meta name="keywords" content={`${service.title}, ${service.category}, Creator Services, YouTube, Instagram, Video Editing, Creator Nest, ${service.tags?.join(', ') || ''}`} />
+      <link rel="canonical" href={fullCanonicalUrl} />
+      <meta property="og:title" content={`${service.title} | Creator Nest Services`} />
+      <meta property="og:description" content={service.desc} />
+      <meta property="og:url" content={fullCanonicalUrl} />
+      <meta property="og:type" content="website" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={`${service.title} | Creator Nest Services`} />
+      <meta name="twitter:description" content={service.desc} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Navbar />
 
       {/* Hero */}

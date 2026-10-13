@@ -15,7 +15,7 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/context/AuthContext';
-import { ITEMS } from '@/app/marketplace/marketData';
+import { ITEMS, getServiceHref } from '@/app/marketplace/marketData';
 import { getUUIDFromStaticId } from '@/lib/uuidHelper';
 
 const PLAN_ORDER = { free: 0, silver: 1, gold: 2, platinum: 3 };
@@ -237,7 +237,7 @@ export default function MarketItemDetailPage({ params }: { params: Promise<{ id:
     if (typeof id === 'string') {
       const cleanId = id.trim();
       if (/^s\d+$/i.test(cleanId) || cleanId.startsWith('service-')) {
-        window.location.replace(`/marketplace/services/${cleanId}`);
+        window.location.replace(getServiceHref(cleanId));
         return;
       }
     }
@@ -247,7 +247,7 @@ export default function MarketItemDetailPage({ params }: { params: Promise<{ id:
   useEffect(() => {
     async function loadItemData() {
       if (typeof id === 'string' && (/^s\d+$/i.test(id.trim()) || id.startsWith('service-'))) {
-        window.location.replace(`/marketplace/services/${id.trim()}`);
+        window.location.replace(getServiceHref(id.trim()));
         return;
       }
       setLoading(true);

@@ -32,6 +32,7 @@ export interface ToolDetails {
 
 export interface MarketItem {
   id: string | number;
+  slug?: string;
   type: 'tool' | 'course' | 'service' | 'template';
   title: string;
   desc: string;
@@ -52,6 +53,63 @@ export interface MarketItem {
   external_url?: string;
   price?: number;
   details?: ServiceDetails | ToolDetails | any;
+}
+
+export const SERVICE_SLUG_MAP: Record<string, string> = {
+  s1: 'professional-video-editing',
+  s2: 'professional-scriptwriting-and-copywriting',
+  s3: 'thumbnail-design',
+  s4: 'channel-strategy-and-audit',
+  s5: 'social-media-management',
+  s6: 'voice-over-and-dubbing',
+  s7: 'storytelling-and-hook-coaching',
+  s8: 'brand-deal-sourcing-and-pitching',
+  s9: 'digital-product-and-community-builder',
+  s10: 'tech-support-for-creators-channel-audit',
+  s11: 'instagram-account-manager',
+  s12: 'youtube-account-manager',
+  s13: 'youtube-channel-monetization-apply',
+};
+
+// Reverse map for quick lookup: slug -> id + aliases
+export const SERVICE_ID_BY_SLUG: Record<string, string> = Object.entries(SERVICE_SLUG_MAP).reduce(
+  (acc, [id, slug]) => {
+    acc[slug] = id;
+    return acc;
+  },
+  {
+    'clickworthy-thumbnail-design': 's3',
+    '1-on-1-storytelling-and-hook-coaching': 's7',
+    'tech-support-for-creators': 's10',
+    'youtube-monetization-apply': 's13',
+  } as Record<string, string>
+);
+
+export function slugify(text: string): string {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/&/g, 'and')
+    .replace(/[\s\W-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+export function getServiceSlug(idOrItem: string | number | Partial<MarketItem> | any, title?: string): string {
+  if (typeof idOrItem === 'object' && idOrItem !== null) {
+    if (idOrItem.slug) return idOrItem.slug;
+    const strId = String(idOrItem.id);
+    if (SERVICE_SLUG_MAP[strId]) return SERVICE_SLUG_MAP[strId];
+    return slugify(idOrItem.title || strId);
+  }
+  const strId = String(idOrItem);
+  if (SERVICE_SLUG_MAP[strId]) return SERVICE_SLUG_MAP[strId];
+  if (title) return slugify(title);
+  return slugify(strId);
+}
+
+export function getServiceHref(idOrItem: string | number | Partial<MarketItem> | any, title?: string): string {
+  return `/marketplace/services/${getServiceSlug(idOrItem, title)}`;
 }
 
 export const ITEMS: MarketItem[] = [
@@ -481,10 +539,10 @@ export const ITEMS: MarketItem[] = [
 
   // ─── Services ────────────────────────────────────────────────────────────────
   {
-    id: 's10', type: 'service', title: 'Tech Support for Creators: Channel Audit & Growth Blueprint',
+    id: 's10', slug: 'tech-support-for-creators-channel-audit', type: 'service', title: 'Tech Support for Creators: Channel Audit & Growth Blueprint',
     desc: 'Deep-dive channel/account diagnostic audit, custom 90-day algorithmic growth plan, studio tech stack optimization, and 1-on-1 technical support for onboarded talent.',
     category: 'Tech Support & Growth', icon: Wrench, accent: '#00F2FE', plan: 'free', rating: 5.0,
-    meta: 'Free for Onboarded Creators / From ₹0', cta: 'Book Tech Support', href: '/marketplace/services/s10',
+    meta: 'Free for Onboarded Creators / From ₹0', cta: 'Book Tech Support', href: '/marketplace/services/tech-support-for-creators-channel-audit',
     tags: ['Tech Support', 'Channel Audit', 'Growth Plan', 'Onboarded Talent', 'YouTube', 'Instagram'], featured: true, badge: '⭐ Free for Onboarded Talent',
     details: {
       provider: 'Creator Nest Engineering & Growth Wing',
@@ -549,10 +607,10 @@ export const ITEMS: MarketItem[] = [
     } as ServiceDetails,
   },
   {
-    id: 's1', type: 'service', title: 'Professional Video Editing',
+    id: 's1', slug: 'professional-video-editing', type: 'service', title: 'Professional Video Editing',
     desc: 'Hollywood-grade editing with color grading, transitions, and motion graphics. Delivered in 48hrs.',
     category: 'Video Editing', icon: Scissors, accent: '#00F2FE', plan: 'free', rating: 4.9,
-    meta: 'From ₹1,499/video', cta: 'Book Now', href: '/marketplace/services/s1',
+    meta: 'From ₹1,499/video', cta: 'Book Now', href: '/marketplace/services/professional-video-editing',
     tags: ['Editing', 'YouTube', 'Reels'], featured: true, badge: '⚡ 48hr delivery',
     details: {
       provider: 'Creator Nest Edit Team',
@@ -617,10 +675,10 @@ export const ITEMS: MarketItem[] = [
     } as ServiceDetails,
   },
   {
-    id: 's2', type: 'service', title: 'Professional Scriptwriting & Copywriting Desk',
+    id: 's2', slug: 'professional-scriptwriting-and-copywriting', type: 'service', title: 'Professional Scriptwriting & Copywriting Desk',
     desc: 'Done-for-you video scripts, viral hooks, SEO descriptions, and high-converting copy written by dedicated creator copywriters.',
     category: 'Scriptwriting & Copywriting', icon: FileText, accent: '#8B5CF6', plan: 'free', rating: 4.8,
-    meta: 'From ₹1,499/mo', cta: 'Hire Copywriter', href: '/marketplace/services/s2',
+    meta: 'From ₹1,499/mo', cta: 'Hire Copywriter', href: '/marketplace/services/professional-scriptwriting-and-copywriting',
     tags: ['Scriptwriting', 'Copywriting', 'Viral Hooks', 'SEO Descriptions'],
     details: {
       provider: 'Creator Nest Creative Writing Desk',
@@ -680,10 +738,10 @@ export const ITEMS: MarketItem[] = [
     } as ServiceDetails,
   },
   {
-    id: 's3', type: 'service', title: 'Thumbnail Design',
+    id: 's3', slug: 'thumbnail-design', type: 'service', title: 'Thumbnail Design',
     desc: 'Click-through optimised thumbnail design by our expert visual team. A/B variants included.',
     category: 'Graphic Design', icon: Palette, accent: '#F59E0B', plan: 'free', rating: 4.7,
-    meta: 'From ₹299/thumbnail', cta: 'Book Now', href: '/marketplace/services/s3',
+    meta: 'From ₹299/thumbnail', cta: 'Book Now', href: '/marketplace/services/thumbnail-design',
     tags: ['Design', 'CTR', 'YouTube'],
     details: {
       provider: 'Creator Nest Design Studio',
@@ -744,10 +802,10 @@ export const ITEMS: MarketItem[] = [
     } as ServiceDetails,
   },
   {
-    id: 's4', type: 'service', title: 'Channel Strategy & Audit',
+    id: 's4', slug: 'channel-strategy-and-audit', type: 'service', title: 'Channel Strategy & Audit',
     desc: 'Full channel audit with competitor analysis and a 90-day growth roadmap from our strategists.',
     category: 'Strategy & Consulting', icon: Target, accent: '#10B981', plan: 'silver', rating: 5.0,
-    meta: '₹2,999/audit', cta: 'Book Audit', href: '/marketplace/services/s4',
+    meta: '₹2,999/audit', cta: 'Book Audit', href: '/marketplace/services/channel-strategy-and-audit',
     tags: ['Strategy', 'Growth', 'Audit'], badge: '✨ Featured',
     details: {
       provider: 'Creator Nest Strategy Team',
@@ -807,10 +865,10 @@ export const ITEMS: MarketItem[] = [
     } as ServiceDetails,
   },
   {
-    id: 's5', type: 'service', title: 'Social Media Management',
+    id: 's5', slug: 'social-media-management', type: 'service', title: 'Social Media Management',
     desc: 'End-to-end social management: posting, engagement, growth & analytics reports.',
     category: 'Channel Management', icon: Megaphone, accent: '#EC4899', plan: 'gold', rating: 4.8,
-    meta: 'From ₹9,999/mo', cta: 'Learn More', href: '/marketplace/services/s5',
+    meta: 'From ₹9,999/mo', cta: 'Learn More', href: '/marketplace/services/social-media-management',
     tags: ['Social Media', 'Management', 'Growth'],
     details: {
       provider: 'Creator Nest Social Team',
@@ -874,10 +932,10 @@ export const ITEMS: MarketItem[] = [
     } as ServiceDetails,
   },
   {
-    id: 's6', type: 'service', title: 'Voice Over & Dubbing',
+    id: 's6', slug: 'voice-over-and-dubbing', type: 'service', title: 'Voice Over & Dubbing',
     desc: 'Professional voice-over in Hindi, English & regional languages. AI-assisted dubbing in 50+ languages.',
     category: 'Voice Over & Dubbing', icon: Mic, accent: '#6366F1', plan: 'free', rating: 4.6,
-    meta: 'From ₹799/minute', cta: 'Request Quote', href: '/marketplace/services/s6',
+    meta: 'From ₹799/minute', cta: 'Request Quote', href: '/marketplace/services/voice-over-and-dubbing',
     tags: ['Voice', 'Dubbing', 'AI'],
     details: {
       provider: 'Creator Nest Voice Studio',
@@ -938,10 +996,10 @@ export const ITEMS: MarketItem[] = [
     } as ServiceDetails,
   },
   {
-    id: 's7', type: 'service', title: '1-on-1 Storytelling & Hook Coaching',
+    id: 's7', slug: 'storytelling-and-hook-coaching', type: 'service', title: '1-on-1 Storytelling & Hook Coaching',
     desc: 'Private coaching to refine your hook scripting, video pacing, and on-camera storytelling style.',
     category: 'Skill Coaching', icon: GraduationCap, accent: '#6366F1', plan: 'free', rating: 4.9,
-    meta: '₹4,999/session', cta: 'Book Session', href: '/marketplace/services/s7',
+    meta: '₹4,999/session', cta: 'Book Session', href: '/marketplace/services/storytelling-and-hook-coaching',
     tags: ['Coaching', 'Hook', 'Storytelling'],
     details: {
       provider: 'Creator Nest Coaching Team',
@@ -1000,10 +1058,10 @@ export const ITEMS: MarketItem[] = [
     } as ServiceDetails
   },
   {
-    id: 's8', type: 'service', title: 'Brand Deal Sourcing & Pitching',
+    id: 's8', slug: 'brand-deal-sourcing-and-pitching', type: 'service', title: 'Brand Deal Sourcing & Pitching',
     desc: 'Pitching to premium brands, building media kits, and negotiating contracts for creators.',
     category: 'Monetization', icon: Coins, accent: '#10B981', plan: 'silver', rating: 4.8,
-    meta: 'From ₹4,999/mo', cta: 'Apply for Agent', href: '/marketplace/services/s8',
+    meta: 'From ₹4,999/mo', cta: 'Apply for Agent', href: '/marketplace/services/brand-deal-sourcing-and-pitching',
     tags: ['Brand Deals', 'Sponsorship', 'Management'], badge: '🔥 Hot',
     details: {
       provider: 'Creator Nest Brand Team',
@@ -1063,10 +1121,10 @@ export const ITEMS: MarketItem[] = [
     } as ServiceDetails
   },
   {
-    id: 's9', type: 'service', title: 'Digital Product & Community Builder',
+    id: 's9', slug: 'digital-product-and-community-builder', type: 'service', title: 'Digital Product & Community Builder',
     desc: 'Launch a private community (Skool/Discord) and package your expertise into digital products.',
     category: 'Scale & IP Creation', icon: Rocket, accent: '#EC4899', plan: 'gold', rating: 5.0,
-    meta: 'From ₹9,999/launch', cta: 'Book Consultation', href: '/marketplace/services/s9',
+    meta: 'From ₹9,999/launch', cta: 'Book Consultation', href: '/marketplace/services/digital-product-and-community-builder',
     tags: ['Community', 'Skool', 'Launch'],
     details: {
       provider: 'Creator Nest Scale Team',
@@ -1126,10 +1184,10 @@ export const ITEMS: MarketItem[] = [
     } as ServiceDetails
   },
   {
-    id: 's11', type: 'service', title: 'Instagram Account Manager',
+    id: 's11', slug: 'instagram-account-manager', type: 'service', title: 'Instagram Account Manager',
     desc: 'Dedicated growth & operations management for creators and brands: viral Reels cadence, feed aesthetic curation, DM triage, and community engagement.',
     category: 'Channel Management', icon: Camera, accent: '#E1306C', plan: 'gold', rating: 4.9,
-    meta: 'From ₹9,999/mo', cta: 'Hire Manager', href: '/marketplace/services/s11',
+    meta: 'From ₹9,999/mo', cta: 'Hire Manager', href: '/marketplace/services/instagram-account-manager',
     tags: ['Instagram', 'Account Manager', 'Reels Growth', 'Social Media', 'Engagement'], featured: true, badge: '🔥 Top Retainer',
     thumbnailUrl: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=600&auto=format&fit=crop',
     details: {
@@ -1202,10 +1260,10 @@ export const ITEMS: MarketItem[] = [
     } as ServiceDetails,
   },
   {
-    id: 's12', type: 'service', title: 'YouTube Account Manager',
+    id: 's12', slug: 'youtube-account-manager', type: 'service', title: 'YouTube Account Manager',
     desc: 'Full-spectrum channel management: upload operations, high-CTR metadata SEO, A/B thumbnail testing, Community Tab, and audience retention tuning.',
     category: 'Channel Management', icon: Video, accent: '#EF4444', plan: 'gold', rating: 5.0,
-    meta: 'From ₹11,999/mo', cta: 'Hire Channel Manager', href: '/marketplace/services/s12',
+    meta: 'From ₹11,999/mo', cta: 'Hire Channel Manager', href: '/marketplace/services/youtube-account-manager',
     tags: ['YouTube', 'Channel Manager', 'Video SEO', 'Thumbnails', 'Watch Time'], featured: true, badge: '⭐ High Growth',
     thumbnailUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop',
     details: {
@@ -1278,10 +1336,10 @@ export const ITEMS: MarketItem[] = [
     } as ServiceDetails,
   },
   {
-    id: 's13', type: 'service', title: 'YouTube Channel Monetization Apply (For Eligible Channels)',
+    id: 's13', slug: 'youtube-channel-monetization-apply', type: 'service', title: 'YouTube Channel Monetization Apply (For Eligible Channels)',
     desc: 'Step-by-step YPP monetization application concierge: 20-point compliance audit, reused content cleanup, AdSense setup & approval guidance.',
     category: 'Monetization', icon: ShieldCheck, accent: '#10B981', plan: 'silver', rating: 5.0,
-    meta: 'From ₹2,499/audit', cta: 'Apply with Experts', href: '/marketplace/services/s13',
+    meta: 'From ₹2,499/audit', cta: 'Apply with Experts', href: '/marketplace/services/youtube-channel-monetization-apply',
     tags: ['Monetization', 'YPP', 'YouTube Partner Program', 'AdSense', 'Reused Content Fix'], featured: true, badge: '⭐ 100% Policy-Safe',
     thumbnailUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop',
     details: {

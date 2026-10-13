@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next';
-import { ITEMS } from './marketplace/marketData';
+import { ITEMS, getServiceHref } from './marketplace/marketData';
 import { STATIC_POSTS } from './blog/blogData';
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -39,12 +39,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: r.priority,
   }));
 
-  // Dynamic service detail pages
+  // Dynamic service detail pages (High-priority SEO slug URLs)
   const dynamicServices = ITEMS.filter(item => item.type === 'service').map((service) => ({
-    url: `${siteUrl}/marketplace/services/${service.id}`,
+    url: `${siteUrl}${getServiceHref(service)}`,
     lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
+    changeFrequency: 'weekly' as const,
+    priority: 0.85,
   }));
 
   // Dynamic tool & template detail pages

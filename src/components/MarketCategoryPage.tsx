@@ -11,7 +11,7 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/context/AuthContext';
-import { ITEMS as staticItems } from '@/app/marketplace/marketData';
+import { ITEMS as staticItems, getServiceHref, getServiceSlug, SERVICE_ID_BY_SLUG } from '@/app/marketplace/marketData';
 
 import { supabase } from '@/lib/supabase';
 import * as Lucide from 'lucide-react';
@@ -45,7 +45,7 @@ const getFallbackThumbnail = (item: any) => {
       s12: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop', // YouTube Account Manager
       s13: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop', // YouTube Channel Monetization Apply
     };
-    return serviceImages[item.id] || 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=600&auto=format&fit=crop';
+    return serviceImages[item.id] || (item.slug ? serviceImages[SERVICE_ID_BY_SLUG[item.slug]] : null) || serviceImages[item.slug] || 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=600&auto=format&fit=crop';
   }
   
   if (item.type === 'tool') {
@@ -97,7 +97,7 @@ const getStaticItemsForCategory = (categoryType: string) => {
       if (numStr) priceVal = parseInt(numStr, 10);
     }
     const resolvedHref = categoryType === 'service'
-      ? `/marketplace/services/${item.id}`
+      ? getServiceHref(item)
       : (item.external_url || item.href || (
           item.id === 'tool-yt-monetization-audit'
             ? '/tools/youtube-monetization-audit'
@@ -435,7 +435,7 @@ export default function MarketCategoryPage({ categoryType, pageTitle, pageSubtit
                   const isService = categoryType === 'service' || item.type === 'service' || item.item_type === 'service';
                   const accent = item.accent || (isService ? '#FBBF24' : '#00F2FE');
                   const targetHref = isService 
-                    ? `/marketplace/services/${item.id}`
+                    ? getServiceHref(item)
                     : (item.external_url || item.href || (
                         item.id === 'tool-yt-monetization-audit'
                           ? '/tools/youtube-monetization-audit'

@@ -13,7 +13,7 @@ import Footer from '@/components/Footer';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 
-import { ITEMS } from './marketData';
+import { ITEMS, getServiceHref } from './marketData';
 import { supabase } from '@/lib/supabase';
 import { getUUIDFromStaticId } from '@/lib/uuidHelper';
 import * as Lucide from 'lucide-react';
@@ -41,7 +41,7 @@ function ResourceCard({ item, userTier, isHindi }: { item: any; userTier: string
   const accentColor = item.accent || (isService ? '#FBBF24' : '#00F2FE');
 
   const targetHref = isService
-    ? `/marketplace/services/${item.id}`
+    ? getServiceHref(item)
     : (isTool
         ? (item.external_url || item.href || (
             item.id === 'tool-yt-monetization-audit'
@@ -356,7 +356,7 @@ export default function MarketplacePage() {
             : item.id === 't-calc' || item.id === 'brand-deal-calculator' 
             ? '/tools/brand-deal-calculator' 
             : `/marketplace/item/${item.id}`)
-        : item.type === 'service' ? `/marketplace/services/${item.id}` : item.type === 'course' ? `/nschool/course/${item.id}` : `/marketplace/item/${item.id}`),
+        : item.type === 'service' ? getServiceHref(item) : item.type === 'course' ? `/nschool/course/${item.id}` : `/marketplace/item/${item.id}`),
       tags: item.tags || [],
       badge: item.badge || '',
       cta: item.type === 'tool'
@@ -428,7 +428,7 @@ export default function MarketplacePage() {
         price: 0,
         rating: item.rating || 5.0,
         thumbnail_url: item.thumbnailUrl || '',
-        href: item.type === 'service' ? `/marketplace/services/${item.id}` : item.type === 'course' ? `/nschool/course/${item.id}` : `/marketplace/item/${item.id}`,
+        href: item.type === 'service' ? getServiceHref(item) : item.type === 'course' ? `/nschool/course/${item.id}` : `/marketplace/item/${item.id}`,
         tags: item.tags || [],
         badge: item.badge || '',
         cta: item.cta || 'Open'
@@ -458,7 +458,7 @@ export default function MarketplacePage() {
                 price: item.price || 0,
                 rating: item.rating || 4.9,
                 thumbnail_url: item.thumbnail_url,
-                href: item.item_type === 'service' ? `/marketplace/services/${item.id}` : `/marketplace/item/${item.id}`,
+                href: item.item_type === 'service' ? getServiceHref(item) : `/marketplace/item/${item.id}`,
                 tags: item.tags || [],
                 badge: item.features?.badge || item.tags?.[0] || '',
                 cta: item.item_type === 'service' ? 'Book Service' : 'Open Resource'
