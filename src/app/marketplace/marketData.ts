@@ -13,6 +13,15 @@ export interface PricingPackage {
   features: string[];
 }
 
+export interface ServiceCategoryCovered {
+  title: string;
+  platforms: string;
+  aspectRatio: string;
+  badge?: string;
+  desc: string;
+  highlights: string[];
+}
+
 export interface ServiceDetails {
   provider: string;
   delivery_time: string;
@@ -20,6 +29,7 @@ export interface ServiceDetails {
   features: string[];
   packages: PricingPackage[];
   longDesc: string;
+  categoriesCovered?: ServiceCategoryCovered[];
   faqs?: { q: string; a: string }[];
 }
 
@@ -82,6 +92,10 @@ export const SERVICE_ID_BY_SLUG: Record<string, string> = Object.entries(SERVICE
     '1-on-1-storytelling-and-hook-coaching': 's7',
     'tech-support-for-creators': 's10',
     'youtube-monetization-apply': 's13',
+    'reels-editing': 's1',
+    'vlog-video-editing': 's1',
+    'vlog-editing': 's1',
+    'all-type-editing': 's1',
   } as Record<string, string>
 );
 
@@ -607,70 +621,154 @@ export const ITEMS: MarketItem[] = [
     } as ServiceDetails,
   },
   {
-    id: 's1', slug: 'professional-video-editing', type: 'service', title: 'Professional Video Editing',
-    desc: 'Hollywood-grade editing with color grading, transitions, and motion graphics. Delivered in 48hrs.',
+    id: 's1', slug: 'professional-video-editing', type: 'service', title: 'Professional Video Editing (Reels, Vlogs & All Formats)',
+    desc: 'End-to-end video editing across all categories: Viral Reels & Shorts for Instagram, YouTube & Facebook, cinematic travel vlogs, talking-head videos, podcasts, and commercial brand edits.',
     category: 'Video Editing', icon: Scissors, accent: '#00F2FE', plan: 'free', rating: 4.9,
-    meta: 'From ₹1,499/video', cta: 'Book Now', href: '/marketplace/services/professional-video-editing',
-    tags: ['Editing', 'YouTube', 'Reels'], featured: true, badge: '⚡ 48hr delivery',
+    meta: 'From ₹1,499/video', cta: 'Book Video Editing', href: '/marketplace/services/professional-video-editing',
+    tags: ['Reels Editing', 'Vlog Editing', 'YouTube Shorts', 'Instagram Reels', 'Facebook Reels', 'All Video Editing', 'Color Grading', 'Motion Graphics'], featured: true, badge: '⚡ 48hr Turnaround',
     details: {
-      provider: 'Creator Nest Edit Team',
-      delivery_time: '48 Hours',
+      provider: 'Creator Nest Edit Desk & Post-Production Wing',
+      delivery_time: '24–48 Hours',
       revisions: 3,
-      longDesc: 'Our professional video editing team brings Hollywood-level production value to creator content. From precise cuts and seamless transitions to cinematic colour grading and custom motion graphics — every video is crafted to maximise watch time and viewer retention.\n\nTrusted by 500+ creators across YouTube, Instagram, and OTT platforms. We work with your raw footage and return a polished, publish-ready video.',
+      longDesc: `Elevate your creator content with high-retention, platform-native video editing. Our specialized post-production team edits across every modern creator format — from viral vertical Reels to cinematic multi-camera YouTube vlogs, talking-head masterclasses, and commercial ads.
+
+Whether you need quick 30-second viral hooks for Instagram, Facebook, and YouTube Shorts, or full 20-minute storytelling edits with custom sound design and Hollywood-grade color grading, our vetted editors craft every cut to maximize audience retention, viewer watch-time, and algorithmic shares.
+
+### 🎬 Editing Formats & Categories Covered:
+
+1. **Viral Reels & Short-Form Editing (Instagram, YouTube Shorts & Facebook Reels)**
+   Fast-paced, hook-optimized vertical video (9:16) with punch-in zooms, dynamic animated subtitles (Hormozi, Ali Abdaal, or minimal aesthetic), sound effect risers/whooshes, B-roll overlays, and trending audio synchronization designed to stop the scroll in the first 3 seconds.
+
+2. **Cinematic Vlog & Travel Video Editing (YouTube Long-Form & Travel Films)**
+   Transform hours of messy raw footage into an emotionally captivating narrative. Includes cinematic LUT color grading, audio leveling (speech cleanup, wind noise removal), ambient environmental soundscapes, drone shot stabilization, and rhythm-matched music pacing.
+
+3. **Talking-Head, Educational & Interview Editing**
+   Seamless jump-cut removal, dynamic multi-camera angle switching, custom branded lower-thirds, bullet-point graphics, screen-recording zoom callouts, and clean broadcast-grade audio mastering for creators teaching courses, reviewing tech, or analyzing finance.
+
+4. **All-Type Video Editing (Podcasts, D2C Ads, Gaming & Cash Cow)**
+   Full-spectrum production for podcasts with audiograms, high-converting D2C eCommerce video ads, gaming highlight reels with meme soundboards, and faceless cash cow channels with Storyblocks/Envato B-roll curation.
+
+### ⚡ How the Creator Nest Editing Pipeline Works:
+• **Step 1: Upload Footage** — Drop your raw clips and reference style link via our high-speed Drive/Dropbox upload portal.
+• **Step 2: Senior Editor Assignment** — A specialized editor matching your niche (Reels, Vlogs, or Long-form) begins assembling your timeline.
+• **Step 3: Fast 24–48hr Turnaround** — Receive your first cut in 4K/1080p with animated captions, color grading, and SFX pre-rendered.
+• **Step 4: Streamlined Revisions & Final Master** — Request timestamped adjustments with up to 3–5 revision cycles until your video is 100% publish-ready.`,
       features: [
-        'Professional cuts & pacing optimisation',
-        'Cinema-grade colour grading (LUTs)',
-        'Custom intro & outro animation',
-        'Background music & SFX',
-        'Captions & subtitles included',
-        'Thumbnail design (1 variant)',
-        '4K export ready',
+        'Instagram Reels, YouTube Shorts & Facebook Reels (9:16 Vertical Viral Formats)',
+        'Cinematic Travel & Lifestyle Vlog Editing (Story pacing, color grade & sound design)',
+        'Talking-Head, Educational & Explainer Videos (Lower-thirds, graphics & slides)',
+        'Full Podcast & Interview Show Multi-Cam Cuts with Audio Denoising',
+        'Faceless / Cash Cow Video Assembly with Stock Footage & Soundtracks',
+        'Dynamic Animated Subtitles & Captions (Hormozi, Devastating & Minimal Styles)',
+        'Cinema-Grade Color Grading (Film LUTs, Skin Tone Balancing & HDR)',
+        'Custom Sound Design (Whooshes, Risers, Ambient SFX & Copyright-Safe Music)',
+        'High-Converting Click-Worthy Thumbnail Design (Included in Master Suite)',
+        '4K Ultra-HD Master Delivery + Fast 24-48hr Turnaround',
       ],
-      packages: [
+      categoriesCovered: [
         {
-          name: 'Basic',
-          price: 1499,
-          delivery: '72 hours',
-          revisions: 1,
-          features: [
-            'Up to 10 min edited video',
-            'Basic colour correction',
-            'Music & SFX',
-            '1080p export',
+          title: 'Reels & Shorts Viral Editing',
+          platforms: 'Instagram Reels • YouTube Shorts • Facebook Reels',
+          aspectRatio: '9:16 Vertical',
+          badge: '🔥 Top Viral Reach',
+          desc: 'High-velocity vertical video editing engineered to capture attention within the first 3 seconds and sustain watch-time with kinetic typography and punchy SFX.',
+          highlights: [
+            '0–3 second attention-grabbing visual hooks',
+            'Dynamic kinetic captions (Hormozi & minimal styles)',
+            'Sound effects (whooshes, risers, pops) & trending audio sync',
+            'Native UI safe-zone compliance (no buttons or captions obscured)',
           ],
         },
         {
-          name: 'Standard',
+          title: 'Vlog & Cinematic Travel Editing',
+          platforms: 'YouTube Long-Form • Lifestyle Vlogs • Documentaries',
+          aspectRatio: '16:9 Widescreen',
+          badge: '🎬 Cinematic Pacing',
+          desc: 'Story-driven narrative editing that turns hours of unorganized travel or lifestyle footage into immersive, rhythm-paced films with film-grade color.',
+          highlights: [
+            'Chronological narrative pacing & seamless scene transitions',
+            'Hollywood cinematic color grading (Film LUTs & natural skin)',
+            'Multi-track audio leveling, wind noise reduction & music curves',
+            'Drone shot stabilization & speed ramping',
+          ],
+        },
+        {
+          title: 'Talking-Head & Podcast Editing',
+          platforms: 'YouTube • Masterclasses • Podcasts • Educational Shows',
+          aspectRatio: '16:9 / 1:1 / 4:5',
+          badge: '🎙️ High Retention',
+          desc: 'Clean, authoritative presentation editing with multi-cam angle switching, branded lower-thirds, graphic callouts, and broadcast audio mastering.',
+          highlights: [
+            'Multi-camera angle switching & multi-speaker sync',
+            'Custom branded lower-thirds, charts & text callouts',
+            'Screen recording zooms, spotlights & presentation callouts',
+            'AI background noise removal & studio-quality vocal clarity',
+          ],
+        },
+        {
+          title: 'All-Type Commercial & Creator Edits',
+          platforms: 'D2C Brand Ads • Cash Cow Channels • Gaming Streams',
+          aspectRatio: 'All Aspect Ratios',
+          badge: '⚡ Full Spectrum',
+          desc: 'Custom post-production for high-converting eCommerce video ads, faceless cash cow channels, gaming meme highlights, and corporate brand videos.',
+          highlights: [
+            'High-converting D2C product hooks & problem-solution pacing',
+            'Storyblocks / Envato B-roll sourcing & voiceover alignment',
+            'Gaming stream highlights & funny meme soundboards',
+            'Commercial ad variants & CTA animation overlays',
+          ],
+        },
+      ],
+      packages: [
+        {
+          name: 'Shorts & Reels Pack',
+          price: 1499,
+          delivery: '48 hours',
+          revisions: 2,
+          features: [
+            'Up to 3 Viral Short-Form Videos (Reels, Shorts or Facebook Reels)',
+            'Dynamic animated captions (Hormozi or Clean minimal style)',
+            'Sound effects (SFX), punch-ins, zooms & trending audio sync',
+            'Safe-zone padding for IG & YT overlays',
+            '1080p/4K 9:16 Vertical export',
+          ],
+        },
+        {
+          name: 'YouTube Vlog & Long-Form',
           price: 2999,
           delivery: '48 hours',
           revisions: 3,
           features: [
-            'Up to 20 min edited video',
-            'Cinema colour grading',
-            'Animated intro/outro',
-            'Captions included',
-            '4K export',
+            'Up to 15–20 minutes finished long-form video (Vlog or Talking-head)',
+            'Cinematic color grading (Film LUTs & natural skin tones)',
+            'Multi-track audio leveling, dialogue cleanup & music curves',
+            'Engaging B-roll insertions, custom motion graphics & lower thirds',
+            '1 Free Viral Shorts/Reels teaser cut extracted from the episode',
+            '4K Master export + Priority editor access',
           ],
         },
         {
-          name: 'Premium',
+          name: 'All-Format Master Suite',
           price: 5999,
-          delivery: '24 hours',
+          delivery: '24–48 hours',
           revisions: 5,
           features: [
-            'Up to 60 min edited video',
-            'Full cinematic grade',
-            'Custom motion graphics',
-            'Thumbnail design',
-            '4K + Shorts cut',
-            'Priority support',
+            'Up to 45–60 minutes finished edit (Podcasts, Docu-Vlogs, Courses)',
+            'Full cinematic color grade, multi-cam switching & sound design',
+            '3 Viral Short-Form vertical clips extracted for Instagram/YouTube',
+            'Custom high-CTR YouTube thumbnail design included (2 variants)',
+            'Source project file handover (Premiere / DaVinci Resolve)',
+            'Dedicated Art Director & WhatsApp support desk',
           ],
         },
       ],
       faqs: [
-        { q: 'What formats do you accept?', a: 'We accept MP4, MOV, MKV, and all major raw formats from DSLRs, mirrorless cameras, and screen recordings.' },
-        { q: 'How do I share my footage?', a: 'After booking, you\'ll receive a Google Drive upload link. We start editing once all footage is uploaded.' },
-        { q: 'Can I request a specific editing style?', a: 'Yes! Share reference videos during onboarding and we\'ll match the style, pacing, and tone.' },
+        { q: 'What video editing formats and styles do you support?', a: 'We edit ALL types of video: Instagram Reels, YouTube Shorts, Facebook Reels, YouTube travel vlogs, daily lifestyle vlogs, talking-head educational videos, multi-camera podcasts, D2C brand commercial ads, gaming stream highlights, and faceless cash cow channels.' },
+        { q: 'Can you deliver vertical 9:16 videos optimized for Instagram, YouTube Shorts, and Facebook Reels?', a: 'Yes! All short-form edits are delivered in vertical 9:16 format with strict adherence to platform safe-zones — ensuring likes, comments, and profile buttons do not cover captions or faces.' },
+        { q: 'How do you handle Vlog footage with lots of camera shake or bad audio?', a: 'Our editors use advanced stabilization algorithms (Warp Stabilizer and Gyro flow) to eliminate camera shakes. For audio, we isolate voices, remove wind and room rumble using neural audio denoisers, and balance background music.' },
+        { q: 'Do you provide copyright-safe background music and stock footage?', a: 'Yes! We have enterprise licensing with Epidemic Sound, Artlist, and Envato Elements. All music tracks, SFX, and B-roll clips come with 100% commercial clearance so you never face copyright strikes or demonetization.' },
+        { q: 'How do I share my raw footage with the editor?', a: 'After booking, you will receive a private Google Drive / Dropbox upload folder. You can upload raw camera clips, voice recordings, and any brand assets or reference links you want us to match.' },
+        { q: 'Can you match a specific creator\'s editing style (e.g. Hormozi, Magnates Media, Casey Neistat)?', a: 'Absolutely! Simply attach 1–2 YouTube or Instagram reference links when submitting your project brief, and our editor will replicate the pacing, font styling, color grading, and SFX cadence.' },
       ],
     } as ServiceDetails,
   },

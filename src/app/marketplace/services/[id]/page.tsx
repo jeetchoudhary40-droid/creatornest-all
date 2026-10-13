@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   ChevronRight, CheckCircle2, Star, ArrowLeft, Clock, RefreshCw,
   Users, Shield, ChevronDown, ChevronUp, MessageCircle, Zap,
-  X, Send, Check, Sparkles, Building2, User, Phone, Mail, Link as LinkIcon
+  X, Send, Check, Sparkles, Building2, User, Phone, Mail, Link as LinkIcon, Video
 } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
@@ -123,11 +123,31 @@ function FAQItem({ q, a, accent }: { q: string; a: string; accent: string }) {
   );
 }
 
+function findStaticService(rawId?: string | string[]) {
+  if (!rawId || typeof rawId !== 'string') return null;
+  const cleanId = rawId.trim().toLowerCase();
+  return (
+    ITEMS.find((item) => {
+      if (item.type !== 'service') return false;
+      const itemSlug = (item.slug || getServiceSlug(item)).toLowerCase();
+      const itemId = String(item.id).toLowerCase();
+      return (
+        itemSlug === cleanId ||
+        itemId === cleanId ||
+        slugify(item.title) === cleanId ||
+        SERVICE_ID_BY_SLUG[cleanId] === itemId ||
+        SERVICE_SLUG_MAP[cleanId] === itemSlug
+      );
+    }) || null
+  );
+}
+
 // ── Main ──────────────────────────────────────────────────────────────────────
 export default function ServiceDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const [service, setService] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const initialService = useMemo(() => findStaticService(id), [id]);
+  const [service, setService] = useState<any>(initialService);
+  const [loading, setLoading] = useState(!initialService);
 
   // Booking Modal States
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -215,6 +235,7 @@ export default function ServiceDetailPage() {
                 revisions: localItem.features?.revisions || 3,
                 features: localItem.features?.features || [],
                 packages: localItem.features?.packages || [],
+                categoriesCovered: localItem.features?.categoriesCovered || [],
                 faqs: localItem.features?.faqs || []
               }
             };
@@ -277,6 +298,7 @@ export default function ServiceDetailPage() {
               revisions: isJsonFeatures ? (data.features.revisions || 3) : 3,
               features: isJsonFeatures ? (data.features.features || []) : (Array.isArray(data.features) ? data.features : []),
               packages: isJsonFeatures ? (data.features.packages || []) : [],
+              categoriesCovered: isJsonFeatures ? (data.features.categoriesCovered || []) : [],
               faqs: isJsonFeatures ? (data.features.faqs || []) : []
             }
           };
@@ -476,6 +498,81 @@ export default function ServiceDetailPage() {
                   <h2 className="text-xl font-bold text-white mb-4">About This Service</h2>
                   <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-6">
                     <p className="text-gray-400 leading-relaxed whitespace-pre-line">{details.longDesc}</p>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Editing Categories & Formats Covered */}
+              {details?.categoriesCovered && details.categoriesCovered.length > 0 && (
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}>
+                  <div className="flex items-center justify-between mb-5 flex-wrap gap-2">
+                    <div>
+                      <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                        <Video className="w-5 h-5 text-primary" />
+                        <span>Editing Categories & Formats Covered</span>
+                      </h2>
+                      <p className="text-xs text-gray-400 mt-1">
+                        Platform-native aspect ratios, high-retention pacing, and algorithm-optimized soundscapes.
+                      </p>
+                    </div>
+                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+                      {details.categoriesCovered.length} Production Formats
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {details.categoriesCovered.map((cat, idx) => (
+                      <div
+                        key={idx}
+                        className="rounded-2xl p-5 border bg-white/[0.02] hover:bg-white/[0.04] transition-all relative overflow-hidden flex flex-col justify-between group hover:border-white/20"
+                        style={{
+                          borderColor: idx === 0 ? `${service.accent}45` : 'rgba(255,255,255,0.08)',
+                          boxShadow: idx === 0 ? `0 0 25px ${service.accent}0a` : 'none',
+                        }}
+                      >
+                        <div>
+                          <div className="flex items-center justify-between gap-2 mb-3">
+                            <span
+                              className="text-[11px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md"
+                              style={{ background: `${service.accent}18`, color: service.accent, border: `1px solid ${service.accent}30` }}
+                            >
+                              {cat.aspectRatio}
+                            </span>
+                            {cat.badge && (
+                              <span className="text-[11px] font-bold text-gray-200 bg-white/10 px-2.5 py-1 rounded-full border border-white/10">
+                                {cat.badge}
+                              </span>
+                            )}
+                          </div>
+
+                          <h3 className="text-base font-bold text-white group-hover:text-primary transition-colors mb-1.5">
+                            {cat.title}
+                          </h3>
+
+                          <div className="text-xs font-semibold text-primary/90 mb-3 flex items-center gap-1.5">
+                            <span>{cat.platforms}</span>
+                          </div>
+
+                          <p className="text-xs text-gray-400 leading-relaxed mb-4">
+                            {cat.desc}
+                          </p>
+                        </div>
+
+                        <div className="pt-3 border-t border-white/5">
+                          <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2.5">
+                            Deliverables & Craft:
+                          </p>
+                          <ul className="space-y-1.5">
+                            {cat.highlights.map((h, hIdx) => (
+                              <li key={hIdx} className="flex items-start gap-2 text-xs text-gray-300">
+                                <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: service.accent }} />
+                                <span>{h}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </motion.div>
               )}
