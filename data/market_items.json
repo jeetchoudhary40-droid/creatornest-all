@@ -29,6 +29,34 @@
     "created_at": "2026-10-06T10:00:00.000Z"
   },
   {
+    "id": "tool-yt-channel-optimizer",
+    "item_type": "tool",
+    "title": "YouTube Policy Optimizer & Automation Engine",
+    "short_desc": "Automated YouTube compliance scanner, AI title & description optimizer under 70 chars, human review queue, and 1-click rollback.",
+    "long_desc": "Run automated scans on any YouTube channel for monetization policy compliance and SEO optimization. Flag repetitious titles, phone numbers in titles, tag spam, and missing descriptions. Propose high-CTR, policy-compliant metadata with a full human review queue and 1-click rollback via the official YouTube Data API.",
+    "category": "AI Tools",
+    "icon": "Bot",
+    "accent": "#EF4444",
+    "plan": "free",
+    "price": 0,
+    "rating": 5.0,
+    "thumbnail_url": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=600&auto=format&fit=crop",
+    "file_url": "",
+    "external_url": "/tools/youtube-channel-optimizer",
+    "tags": ["Automation", "Monetization", "YouTube API", "SEO", "Review Queue", "Rollback"],
+    "features": [
+      "Official YouTube Data API v3 live scan (using existing YOUTUBE_API_KEY)",
+      "YouTube Partner Program (YPP) policy checks (reused & repetitious content)",
+      "AI Suggestion Engine (titles <=70 chars, structured descriptions, clean tags)",
+      "Human-in-the-loop Review Queue with Before/After diff and character counters",
+      "Publisher with 1-Click Rollback to revert any published metadata change",
+      "Legal Ground Rules Checklist (OAuth only, AdSense, Made for Kids, Strikes)"
+    ],
+    "badge": "🔥 New AI Automation",
+    "is_published": true,
+    "created_at": "2026-10-16T11:45:00.000Z"
+  },
+  {
     "id": "tool-media-kit-builder",
     "item_type": "tool",
     "title": "Influencer Media Kit & Rate Card Suite",

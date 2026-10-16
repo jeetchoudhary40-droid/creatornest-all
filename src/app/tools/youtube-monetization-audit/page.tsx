@@ -689,6 +689,26 @@ Audited by Creator Nest AI (creatornest.in/tools/youtube-monetization-audit)`;
               </div>
             </div>
 
+            {/* Auto-Fix & Policy Compliance Banner */}
+            <div className="mb-8 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-red-950/60 via-slate-900 to-rose-950/60 border border-red-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xl">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-400 shrink-0">
+                  <Bot className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-white text-sm sm:text-base">Need to auto-fix these policy violations & SEO tags?</h3>
+                  <p className="text-xs text-slate-300">Launch the AI Channel Optimizer with Human Review Queue and 1-Click Rollback.</p>
+                </div>
+              </div>
+              <Link
+                href="/tools/youtube-channel-optimizer"
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-bold text-xs sm:text-sm flex items-center gap-2 transition-all shadow-lg shadow-red-600/30 shrink-0"
+              >
+                <span>Launch Optimizer</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
             {/* Channel Profile Banner */}
             <div className="bg-[#0B1017] border border-white/10 rounded-2xl p-6 sm:p-8 backdrop-blur-xl mb-8 relative overflow-hidden shadow-2xl">
               <div className="absolute top-0 right-0 w-96 h-96 bg-red-500/5 rounded-full blur-3xl pointer-events-none" />

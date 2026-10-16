@@ -380,3 +380,101 @@ def generate_audit(request: AuditRequest):
         return parsed_data
     except json.JSONDecodeError as err:
         raise HTTPException(status_code=500, detail=f"Failed to parse LLM JSON output: {str(err)}. Raw: {cleaned_json[:200]}")
+
+# ── YouTube Automation Pipeline Endpoints ──────────────────────
+from backend.oauth_manager import get_auth_consent_url, exchange_code_for_tokens
+from backend.audit_engine import audit_channel_data
+from backend.rules_engine import evaluate_channel_rules
+from backend.ai_engine import generate_video_fixes
+from backend.review_queue import add_draft, get_channel_drafts, update_draft_status, bulk_approve_all
+from backend.publisher import publish_approved_drafts, rollback_change
+
+class AutomationAuditRequest(BaseModel):
+    channel_handle: str
+
+class SuggestionRequest(BaseModel):
+    channel_title: str
+    channel_id: str
+    flagged_videos: List[Dict[str, Any]]
+    provider: Optional[str] = "auto" # auto | gemini | openai | claude
+    api_keys: Optional[Dict[str, str]] = None
+
+class ReviewUpdateRequest(BaseModel):
+    draft_id: str
+    status: str # approved | rejected
+    edited_value: Optional[str] = None
+
+class PublishRequest(BaseModel):
+    channel_id: str
+    access_token: Optional[str] = None
+
+class RollbackRequest(BaseModel):
+    log_id: str
+    access_token: Optional[str] = None
+
+@app.get("/api/oauth/consent-url")
+def get_oauth_consent_url():
+    """Generates official Google OAuth consent URL for YouTube scopes."""
+    return {"consentUrl": get_auth_consent_url()}
+
+@app.post("/api/oauth/callback")
+def oauth_callback(code: str):
+    """Exchanges Google authorization code for tokens."""
+    try:
+        tokens = exchange_code_for_tokens(code)
+        return {"success": True, "tokens": tokens}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.post("/api/automation/audit")
+def automation_audit(req: AutomationAuditRequest):
+    """Runs full channel extraction and rules evaluation."""
+    try:
+        raw_data = audit_channel_data(req.channel_handle)
+        rules = evaluate_channel_rules(raw_data)
+        return {"channel": raw_data, "evaluation": rules}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/automation/generate-suggestions")
+def automation_suggestions(req: SuggestionRequest):
+    """Uses AI (Gemini, ChatGPT, or Claude) to generate policy-compliant titles, descriptions, and tags."""
+    created_draft_ids = []
+    for v in req.flagged_videos[:10]:
+        fixes = generate_video_fixes(req.channel_title, v, provider=req.provider or "auto", api_keys=req.api_keys)
+        draft_id = add_draft(
+            channel_id=req.channel_id,
+            item_type="video_title",
+            field_name="title",
+            current_value=v.get("title", ""),
+            suggested_value=fixes.get("suggestedTitle", ""),
+            reason=fixes.get("reason", "Policy fix & SEO optimization"),
+            video_id=v.get("id")
+        )
+        created_draft_ids.append(draft_id)
+    return {"success": True, "draftIds": created_draft_ids}
+
+@app.get("/api/automation/review-queue/{channel_id}")
+def get_review_queue(channel_id: str):
+    """Fetches all draft changes awaiting human review."""
+    drafts = get_channel_drafts(channel_id)
+    return {"drafts": drafts}
+
+@app.post("/api/automation/review-queue/update")
+def update_review(req: ReviewUpdateRequest):
+    """Approves, edits, or rejects a draft item."""
+    success = update_draft_status(req.draft_id, req.status, req.edited_value)
+    return {"success": success}
+
+@app.post("/api/automation/publish")
+def publish_changes(req: PublishRequest):
+    """Publishes approved changes to YouTube via API and logs for rollback."""
+    res = publish_approved_drafts(req.channel_id, req.access_token)
+    return res
+
+@app.post("/api/automation/rollback")
+def rollback(req: RollbackRequest):
+    """Rolls back a published change in 1-click."""
+    res = rollback_change(req.log_id, req.access_token)
+    return res
+

@@ -16,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/marketplace', priority: 0.9, changeFrequency: 'daily' as const },
     { path: '/tools/media-kit-builder', priority: 0.9, changeFrequency: 'daily' as const },
     { path: '/tools/youtube-monetization-audit', priority: 0.9, changeFrequency: 'daily' as const },
+    { path: '/tools/youtube-channel-optimizer', priority: 0.9, changeFrequency: 'daily' as const },
     { path: '/tools/youtube-engagement-calculator', priority: 0.9, changeFrequency: 'daily' as const },
     { path: '/tools/brand-deal-calculator', priority: 0.9, changeFrequency: 'weekly' as const },
     { path: '/nschool', priority: 0.9, changeFrequency: 'weekly' as const },
