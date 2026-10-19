@@ -51,3 +51,6 @@ scratch/
 
 # user data & credentials
 data/users.json
+SETUP_NEW_PC*
+setup_creatornest*
+
