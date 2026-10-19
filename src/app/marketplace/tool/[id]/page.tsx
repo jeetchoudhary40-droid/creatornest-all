@@ -211,6 +211,26 @@ export default function ToolDetailPage() {
         window.location.replace(getServiceHref(cleanId));
         return;
       }
+      if (cleanId === 'tool-yt-channel-optimizer' || cleanId === 'youtube-channel-optimizer') {
+        window.location.replace('/tools/youtube-channel-optimizer');
+        return;
+      }
+      if (cleanId === 'tool-yt-monetization-audit' || cleanId === 'youtube-monetization-audit') {
+        window.location.replace('/tools/youtube-monetization-audit');
+        return;
+      }
+      if (cleanId === 'tool-media-kit-builder' || cleanId === 'media-kit-builder') {
+        window.location.replace('/tools/media-kit-builder');
+        return;
+      }
+      if (cleanId === 'tool-youtube-er-calc' || cleanId === 'youtube-engagement-calculator') {
+        window.location.replace('/tools/youtube-engagement-calculator');
+        return;
+      }
+      if (cleanId === 't-calc' || cleanId === 'brand-deal-calculator') {
+        window.location.replace('/tools/brand-deal-calculator');
+        return;
+      }
     }
 
     let foundTool = null;

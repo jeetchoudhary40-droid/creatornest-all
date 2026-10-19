@@ -167,7 +167,9 @@ export default function ServiceDetailPage() {
 
     // Guardrail: Tools must NEVER render on the Done-For-You service booking page!
     if (/^t\d+$/i.test(cleanId) || cleanId.startsWith('tool-') || cleanId === 't-calc' || cleanId === 'brand-deal-calculator') {
-      const dest = cleanId === 'tool-yt-monetization-audit'
+      const dest = cleanId === 'tool-yt-channel-optimizer' || cleanId === 'youtube-channel-optimizer'
+        ? '/tools/youtube-channel-optimizer'
+        : cleanId === 'tool-yt-monetization-audit'
         ? '/tools/youtube-monetization-audit'
         : cleanId === 't-calc' || cleanId === 'brand-deal-calculator'
         ? '/tools/brand-deal-calculator'

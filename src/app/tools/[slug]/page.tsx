@@ -28,6 +28,14 @@ const TOOLS_DATA: Record<string, any> = {
     planRequired: 'free',
     isRedirect: '/tools/youtube-monetization-audit'
   },
+  'youtube-channel-optimizer': {
+    title: 'YouTube Channel Optimizer & Title Policy Engine',
+    description: 'Automated YouTube Partner Program audit, AI metadata optimizer with human-in-the-loop review queue and one-click rollback.',
+    icon: Shield,
+    accent: '#EF4444',
+    planRequired: 'free',
+    isRedirect: '/tools/youtube-channel-optimizer'
+  },
   'script-generator': {
     title: 'YouTube Script Generator',
     description: 'Generate high-retention YouTube scripts with viral hooks and clear storytelling arcs.',

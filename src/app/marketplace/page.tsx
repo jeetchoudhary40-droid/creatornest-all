@@ -44,7 +44,9 @@ function ResourceCard({ item, userTier, isHindi }: { item: any; userTier: string
     ? getServiceHref(item)
     : (isTool
         ? (item.external_url || item.href || (
-            item.id === 'tool-yt-monetization-audit'
+            item.id === 'tool-yt-channel-optimizer'
+              ? '/tools/youtube-channel-optimizer'
+              : item.id === 'tool-yt-monetization-audit'
               ? '/tools/youtube-monetization-audit'
               : item.id === 't-calc' || item.id === 'brand-deal-calculator'
               ? '/tools/brand-deal-calculator'
@@ -272,7 +274,7 @@ function TrendingSpotlight({ items, isHindi }: { items: any[]; isHindi: boolean 
         {highlights.map((h, idx) => {
           const it = h.item;
           const Icon = getLucideIcon(it.icon);
-          const spotlightHref = it.external_url || it.href || (it.type === 'tool' ? (it.id === 'tool-yt-monetization-audit' ? '/tools/youtube-monetization-audit' : it.id === 't-calc' || it.id === 'brand-deal-calculator' ? '/tools/brand-deal-calculator' : `/marketplace/item/${it.id}`) : `/marketplace/item/${it.id}`);
+          const spotlightHref = it.external_url || it.href || (it.type === 'tool' ? (it.id === 'tool-yt-channel-optimizer' ? '/tools/youtube-channel-optimizer' : it.id === 'tool-yt-monetization-audit' ? '/tools/youtube-monetization-audit' : it.id === 't-calc' || it.id === 'brand-deal-calculator' ? '/tools/brand-deal-calculator' : `/marketplace/item/${it.id}`) : `/marketplace/item/${it.id}`);
           return (
             <motion.div
               key={idx}
@@ -351,7 +353,9 @@ export default function MarketplacePage() {
       rating: item.rating || 5.0,
       thumbnail_url: item.thumbnailUrl || '',
       href: item.href || (item.type === 'tool'
-        ? (item.id === 'tool-yt-monetization-audit'
+        ? (item.id === 'tool-yt-channel-optimizer'
+            ? '/tools/youtube-channel-optimizer'
+            : item.id === 'tool-yt-monetization-audit'
             ? '/tools/youtube-monetization-audit'
             : item.id === 't-calc' || item.id === 'brand-deal-calculator' 
             ? '/tools/brand-deal-calculator' 
@@ -360,7 +364,7 @@ export default function MarketplacePage() {
       tags: item.tags || [],
       badge: item.badge || '',
       cta: item.type === 'tool'
-        ? (item.id === 'tool-yt-monetization-audit' ? 'Run Free Audit' : item.id === 't-calc' || item.id === 'brand-deal-calculator' ? 'Calculate Rates' : (item.id === 't1' ? 'Try Free' : 'Buy Now'))
+        ? (item.id === 'tool-yt-channel-optimizer' ? 'Open Optimizer' : item.id === 'tool-yt-monetization-audit' ? 'Run Free Audit' : item.id === 't-calc' || item.id === 'brand-deal-calculator' ? 'Calculate Rates' : (item.id === 't1' ? 'Try Free' : 'Buy Now'))
         : (item.cta || 'Open')
     }));
   });
@@ -393,7 +397,9 @@ export default function MarketplacePage() {
               file_url: item.file_url,
               external_url: item.external_url,
               href: item.external_url || item.href || (
-                (item.id === 'tool-yt-monetization-audit')
+                (item.id === 'tool-yt-channel-optimizer')
+                  ? '/tools/youtube-channel-optimizer'
+                  : (item.id === 'tool-yt-monetization-audit')
                   ? '/tools/youtube-monetization-audit'
                   : (item.id === 't-calc' || item.id === 'brand-deal-calculator') 
                   ? '/tools/brand-deal-calculator' 
@@ -401,7 +407,9 @@ export default function MarketplacePage() {
               ),
               tags: item.tags || [],
               badge: item.badge || (Number(item.price) === 0 ? 'FREE ACCESS' : 'BUY ONCE'),
-              cta: (item.id === 'tool-yt-monetization-audit')
+              cta: (item.id === 'tool-yt-channel-optimizer')
+                ? 'Open Optimizer'
+                : (item.id === 'tool-yt-monetization-audit')
                 ? 'Run Free Audit'
                 : (item.id === 't-calc' || item.id === 'brand-deal-calculator')
                 ? 'Calculate Rates'

@@ -1338,6 +1338,19 @@ Audited by Creator Nest AI (creatornest.in/tools/youtube-monetization-audit)`;
                 ? 'स्क्रीनशॉट की कोई आवश्यकता नहीं। पब्लिक यूट्यूब एपीआई डेटा को यूट्यूब आस्क स्टूडियो की प्राइवेट टेलीमेट्री के साथ जोड़कर 12-पॉइंट पॉलिसी ऑडिट और ₹ INR में सटीक रेवेन्यू विश्लेषण प्राप्त करें।'
                 : 'No screenshots needed. Combine public YouTube API data with private Ask Studio telemetry for a 12-point policy audit and revenue forecast in ₹ INR.'}
             </p>
+
+            {/* Quick Link to Policy Optimizer & Title Engine */}
+            <div className="mt-4 inline-flex items-center gap-2 p-1.5 px-3.5 rounded-2xl bg-white/[0.04] border border-white/10 text-xs text-slate-300 shadow-sm">
+              <span className="text-amber-400 font-bold">New:</span>
+              <span>Need to fix flagged video titles & metadata?</span>
+              <Link
+                href="/tools/youtube-channel-optimizer"
+                className="font-bold text-red-400 hover:text-red-300 underline inline-flex items-center gap-1"
+              >
+                <span>Launch Title Optimizer & Studio Copy</span>
+                <ArrowRight className="w-3 h-3" />
+              </Link>
+            </div>
           </div>
 
           {/* Futuristic Modern Interactive Stepper (1 and 2) */}

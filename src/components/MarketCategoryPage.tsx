@@ -99,7 +99,9 @@ const getStaticItemsForCategory = (categoryType: string) => {
     const resolvedHref = categoryType === 'service'
       ? getServiceHref(item)
       : (item.external_url || item.href || (
-          item.id === 'tool-yt-monetization-audit'
+          item.id === 'tool-yt-channel-optimizer'
+            ? '/tools/youtube-channel-optimizer'
+            : item.id === 'tool-yt-monetization-audit'
             ? '/tools/youtube-monetization-audit'
             : item.id === 't-calc' || item.id === 'brand-deal-calculator'
             ? '/tools/brand-deal-calculator'
@@ -437,7 +439,9 @@ export default function MarketCategoryPage({ categoryType, pageTitle, pageSubtit
                   const targetHref = isService 
                     ? getServiceHref(item)
                     : (item.external_url || item.href || (
-                        item.id === 'tool-yt-monetization-audit'
+                        item.id === 'tool-yt-channel-optimizer'
+                          ? '/tools/youtube-channel-optimizer'
+                          : item.id === 'tool-yt-monetization-audit'
                           ? '/tools/youtube-monetization-audit'
                           : item.id === 't-calc' || item.id === 'brand-deal-calculator'
                           ? '/tools/brand-deal-calculator'
