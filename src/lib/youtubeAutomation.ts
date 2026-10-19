@@ -500,6 +500,54 @@ export function runRulesEngine(channel: any, videos: any[]): {
 // ── 3. AI Suggestion Engine (Multi-Provider: Gemini / OpenAI / Claude) ──────
 
 export type AiProvider = 'gemini' | 'openai' | 'claude' | 'auto';
+export type LanguageMode = 'mixed' | 'hinglish' | 'hindi' | 'english' | 'auto';
+
+export function getLanguageInstructions(mode: LanguageMode = 'mixed', sampleTitle: string = ''): string {
+  const containsDevanagari = /[\u0900-\u097F]/.test(sampleTitle);
+  const containsHinglishWords = /\b(kaise|kare|karein|bhi|nahi|hai|hain|yeh|woh|apna|apne|dekhe|dekho|sikhe|sikho|tarika|aasan|wala|wali|video|shuru|shandar)\b/i.test(sampleTitle);
+
+  switch (mode) {
+    case 'hindi':
+      return `LANGUAGE SPECIFICATION: PURE HINDI (शुद्ध हिन्दी - देवनागरी लिपि).
+- The new title, description, and keywords MUST be in natural, engaging Hindi using Devanagari script (e.g. "घर पर बनाएं रेस्टोरेंट जैसा पनीर टिक्का | आसान रेसिपी" या "यूट्यूब चैनल कैसे ग्रो करें | 3 असरदार टिप्स").
+- Ensure all words are fully spelled out in Hindi with proper matras; do NOT slice or corrupt any words.
+- Tags should include both Hindi keywords in Devanagari and Roman transliterations for maximum search indexing.`;
+
+    case 'hinglish':
+      return `LANGUAGE SPECIFICATION: HINGLISH (Hindi written in Roman/English alphabet - extremely popular for Indian YouTube).
+- The title MUST be in natural, conversational Hinglish (e.g. "Ghar Par Banaye Restaurant Style Paneer Tikka | Aasan Recipe" or "YouTube Views Kaise Badhaye? 3 Viral Tricks 2026").
+- Do NOT use Devanagari script. Use Roman letters that native Hindi speakers type on keyboards.
+- Make it punchy, conversational, and high-CTR.`;
+
+    case 'english':
+      return `LANGUAGE SPECIFICATION: GLOBAL ENGLISH.
+- The title, description, and tags MUST be in clean, grammatically complete English (e.g. "Restaurant Style Paneer Tikka Recipe at Home | Easy Steps").`;
+
+    case 'auto':
+      if (containsDevanagari) {
+        return `LANGUAGE SPECIFICATION: AUTO-DETECTED HINDI / MIXED.
+- The original title contains Hindi in Devanagari script.
+- Generate an optimized title in authentic Hindi or high-CTR Mixed Hindi-English (e.g. "Recipe / Tutorial Name | हिन्दी में आसान तरीका").`;
+      } else if (containsHinglishWords) {
+        return `LANGUAGE SPECIFICATION: AUTO-DETECTED HINGLISH.
+- The original title contains Roman Hindi / Hinglish.
+- Generate an engaging, high-CTR Hinglish title (e.g. "Topic Name | Kaise Kare Aasan Steps").`;
+      } else {
+        return `LANGUAGE SPECIFICATION: AUTO-DETECTED MIXED / ENGLISH.
+- Retain the natural language tone of the original video while optimizing keywords and fixing policy violations.`;
+      }
+
+    case 'mixed':
+    default:
+      return `LANGUAGE SPECIFICATION: MIXED (HINDI / HINGLISH + ENGLISH COMBINATION - HIGHEST RETENTION FOR INDIAN YOUTUBE).
+- You MUST create a high-impact mixed language title popular among top Indian creators.
+- Format options to blend English & Hindi/Hinglish:
+  Option A (English Hook + Hindi in Devanagari): e.g. "Paneer Tikka Recipe | घर पर बनाएं आसान तरीका" or "Viral Shorts Formula | Views कैसे बढ़ाएं?"
+  Option B (English Keywords + Hinglish Question/Hook): e.g. "YouTube Algorithm Secrets: 100K Subscribers Kaise Kare?" or "Best Gaming PC Under ₹50,000 | Sabse Sasta aur Best"
+- Ensure primary search keywords are prominent in English, paired with an emotionally compelling Hindi/Hinglish hook.
+- Description should feature a bilingual or Hinglish friendly greeting and summary.`;
+  }
+}
 
 export interface CustomAiKeys {
   gemini?: string;
@@ -645,9 +693,18 @@ async function callAiProvider(
 async function generateChannelDesc(
   channelTitle: string,
   provider: AiProvider,
-  customKeys?: CustomAiKeys
+  customKeys?: CustomAiKeys,
+  languageMode: LanguageMode = 'mixed'
 ): Promise<string | null> {
-  const prompt = `Write a professional, YouTube policy-compliant 150-word "About" channel description for "${channelTitle}". Include a warm welcome, content value proposition, upload schedule note, and business inquiry call to action. Return ONLY the description text, no extra markdown.`;
+  const langClause = languageMode === 'hindi'
+    ? 'Write in pure Hindi (देवनागरी लिपि में) with warm namaste/swagat.'
+    : languageMode === 'hinglish'
+    ? 'Write in natural conversational Hinglish (Roman Hindi) popular with Indian YouTube creators.'
+    : languageMode === 'english'
+    ? 'Write in clean, professional English.'
+    : 'Write in a friendly, high-converting Mixed Indian Creator style (English + Hindi/Hinglish welcome).';
+
+  const prompt = `Write a professional, YouTube policy-compliant 150-word "About" channel description for "${channelTitle}". ${langClause} Include a warm welcome, content value proposition, upload schedule note, and business inquiry call to action. Return ONLY the description text, no extra markdown.`;
   const systemPrompt = 'You are a professional YouTube channel strategist and copywriter. Return only plain text, no markdown.';
 
   const order: AiProvider[] = provider === 'auto'
@@ -686,7 +743,9 @@ export function cleanTrailingPunctuationAndStopwords(title: string): string {
     // English prepositions and conjunctions
     'and', '&', 'to', 'for', 'with', 'in', 'of', 'a', 'an', 'the', 'by', 'on', 'or', 'at', 'is', 'from', 'about', 'as', 'into', 'part', 'ep', 'episode',
     // Hindi/Hinglish stop words commonly dangling at end of titles
-    'ka', 'ki', 'ke', 'ko', 'se', 'me', 'mein', 'aur', 'par', 'bhi', 'kare', 'karein', 'wala', 'wali'
+    'ka', 'ki', 'ke', 'ko', 'se', 'me', 'mein', 'aur', 'par', 'bhi', 'kare', 'karein', 'wala', 'wali', 'hai', 'hain', 'tha', 'thi', 'the', 'kya', 'kyun', 'kaise', 'dekhe', 'sikhe',
+    // Hindi Devanagari dangling words
+    'का', 'की', 'के', 'को', 'से', 'में', 'और', 'पर', 'भी', 'करें', 'वाला', 'वाली', 'है', 'हैं', 'था', 'थी', 'थे', 'क्या', 'क्यों', 'कैसे', 'देखें', 'सीखें', 'बनाएं'
   ];
 
   for (let iter = 0; iter < 3; iter++) {
@@ -759,7 +818,8 @@ export async function generateAiSuggestions(
   channelDescription: string,
   flaggedVideos: any[],
   provider: AiProvider = 'auto',
-  customKeys?: CustomAiKeys
+  customKeys?: CustomAiKeys,
+  languageMode: LanguageMode = 'mixed'
 ): Promise<{ drafts: DraftChange[]; providerUsed: string }> {
   const drafts: DraftChange[] = [];
   const now = new Date().toISOString();
@@ -771,7 +831,7 @@ export async function generateAiSuggestions(
     let suggestedDesc =
       `Welcome to the official channel of ${channelTitle}! Here you will find regular high-quality videos, tips, and behind-the-scenes updates.\n\nSubscribe to stay updated with our newest uploads!\n\nFor business inquiries & collaborations: contact via our social links below.`;
 
-    const aiDesc = await generateChannelDesc(channelTitle, provider, customKeys);
+    const aiDesc = await generateChannelDesc(channelTitle, provider, customKeys, languageMode);
     if (aiDesc) suggestedDesc = aiDesc;
 
     drafts.push({
@@ -798,24 +858,28 @@ export async function generateAiSuggestions(
     const chunk = targetVideos.slice(i, i + BATCH_SIZE);
     await Promise.all(
       chunk.map(async (v: any) => {
-        const videoPrompt = `You are a YouTube SEO Strategist and Policy Compliance Expert.
+        const langInstructions = getLanguageInstructions(languageMode, v.title);
+        const videoPrompt = `You are an elite YouTube SEO Strategist and Policy Compliance Expert specializing in Indian YouTube channels & global creators.
 Analyze this video:
 - Channel: "${channelTitle}"
 - Current Title: "${v.title}"
 - Current Description: "${v.description || 'Empty'}"
 - Flagged Compliance & SEO Issues: ${v.issues?.join('; ') || 'Title and description require optimization'}
 
+${langInstructions}
+
 CRITICAL RULES FOR METADATA GENERATION:
 1. "newTitle":
    - Complete, sensible, high-CTR, SEO-optimized title strictly between 45 and 60 characters (TARGET: 50-58 CHARACTERS).
    - NEVER exceed 65 characters under ANY circumstances.
-   - NEVER cut off or truncate words (never end on an incomplete word like "tuto" or slice a word in half). Words like "Tutorial", "Recipe", "Guide" MUST be whole.
+   - NEVER cut off or truncate words (never end on an incomplete word like "tuto" or slice a word in half). Words like "Tutorial", "Recipe", "Guide", "रेसिपी", "तरीका" MUST be 100% whole.
+   - Must strictly match the requested language format (${languageMode.toUpperCase()}). If MIXED: blend English keywords with Hindi/Hinglish curiosity hook. If HINGLISH: natural Roman Hindi. If HINDI: authentic Devanagari script.
    - Must be a 100% complete grammatical sentence or title phrase that makes clear sense on its own.
    - Place primary high-search-volume keywords near the beginning.
    - ZERO phone numbers, ZERO repetitious words, ZERO spam hashtags (#viral, #shorts, etc.).
-2. "newDescription": 2 well-structured paragraphs describing the video, 3 timestamp chapters (0:00 Introduction, 0:30 Highlights, 1:00 Summary), 3 relevant niche hashtags, and social/business inquiry disclaimer.
-3. "newTags": An array of 10-12 accurate, highly relevant keyword tags.
-4. "reason": A 1-sentence explanation of why these edits fix policy violations and boost YouTube SEO.
+2. "newDescription": 2 well-structured paragraphs in the selected language style (${languageMode}) describing the video, 3 timestamp chapters (0:00 Introduction, 0:30 Highlights, 1:00 Summary), 3 relevant niche hashtags, and social/business inquiry disclaimer.
+3. "newTags": An array of 10-12 accurate, highly relevant keyword tags (mix of English and Hindi/Hinglish search queries).
+4. "reason": A 1-sentence explanation of why these edits fix policy violations, match audience language (${languageMode}), and boost YouTube SEO.
 
 Output ONLY valid JSON with keys: "newTitle", "newDescription", "newTags", "reason".`;
 
@@ -837,7 +901,7 @@ Output ONLY valid JSON with keys: "newTitle", "newDescription", "newTags", "reas
               currentValue: v.title,
               suggestedValue: sensibleTitle,
               charCount: sensibleTitle.length,
-              reason: parsed.reason || 'Complete, sensible SEO title under 65 chars with high-search keywords and zero word truncation.',
+              reason: parsed.reason || `Complete, sensible SEO title in ${languageMode.toUpperCase()} under 65 chars with high-search keywords and zero word truncation.`,
               status: 'pending',
               createdAt: now,
             });
@@ -888,7 +952,11 @@ Output ONLY valid JSON with keys: "newTitle", "newDescription", "newTags", "reas
           .replace(/\s+/g, ' ')
           .trim();
         if (cleanedTitle.length < 10) {
-          cleanedTitle = `${channelTitle} Highlight - ${cleanedTitle || 'Special Video'}`;
+          cleanedTitle = languageMode === 'hindi'
+            ? `${cleanedTitle || 'खास वीडियो'} | ${channelTitle}`
+            : languageMode === 'hinglish'
+            ? `${cleanedTitle || 'Special Video'} | Full Video Dekhe`
+            : `${channelTitle} Highlight - ${cleanedTitle || 'Special Video'}`;
         }
         const sensibleTitle = formatSensibleTitle(cleanedTitle, 65);
 
@@ -904,7 +972,7 @@ Output ONLY valid JSON with keys: "newTitle", "newDescription", "newTags", "reas
           currentValue: v.title,
           suggestedValue: sensibleTitle,
           charCount: sensibleTitle.length,
-          reason: 'Sanitized complete title under 65 characters without word truncation.',
+          reason: `Sanitized complete title in ${languageMode.toUpperCase()} under 65 characters without word truncation.`,
           status: 'pending',
           createdAt: now,
         });

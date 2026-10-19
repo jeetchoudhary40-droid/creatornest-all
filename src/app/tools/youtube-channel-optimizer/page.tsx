@@ -6,7 +6,7 @@ import {
   Sparkles, AlertTriangle, CheckCircle2, XCircle, ArrowRight,
   RefreshCw, Shield, Bot, Check, ArrowLeft, ExternalLink,
   History, Eye, Sliders, Play, RotateCcw, Lock, Info, AlertCircle, Copy,
-  Key, Settings, Cpu, X, Zap, Loader2, Search, Video, Filter
+  Key, Settings, Cpu, X, Zap, Loader2, Search, Video, Filter, Globe
 } from 'lucide-react';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
@@ -51,6 +51,7 @@ interface ChangeLog {
 }
 
 export type AiProvider = 'auto' | 'gemini' | 'openai' | 'claude';
+export type LanguageMode = 'mixed' | 'hinglish' | 'hindi' | 'english' | 'auto';
 
 export default function YouTubeChannelOptimizerPage() {
   const [handle, setHandle] = useState('@SavitaMaan-g8p');
@@ -58,6 +59,9 @@ export default function YouTubeChannelOptimizerPage() {
   const [generatingAi, setGeneratingAi] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const [activeTab, setActiveTab] = useState<'audit' | 'review' | 'publisher' | 'checklist'>('audit');
+
+  // Language Mode state (Mixed, Hinglish, Hindi, English, Auto)
+  const [selectedLanguage, setSelectedLanguage] = useState<LanguageMode>('mixed');
 
   // AI Provider & Custom API Keys state
   const [selectedProvider, setSelectedProvider] = useState<AiProvider>('auto');
@@ -90,11 +94,14 @@ export default function YouTubeChannelOptimizerPage() {
   const [videoStatusFilter, setVideoStatusFilter] = useState<'all' | 'needs_fix' | 'optimal' | 'in_queue' | 'published'>('all');
   const [singleQueueingId, setSingleQueueingId] = useState<string | null>(null);
 
-  // Load custom keys, OAuth token, and provider on mount
+  // Load custom keys, OAuth token, language, and provider on mount
   React.useEffect(() => {
     try {
       const savedProvider = (localStorage.getItem('creatornest_yt_ai_provider') as AiProvider) || 'auto';
       setSelectedProvider(savedProvider);
+
+      const savedLang = (localStorage.getItem('creatornest_yt_ai_language') as LanguageMode) || 'mixed';
+      setSelectedLanguage(savedLang);
 
       const savedGemini = localStorage.getItem('creatornest_yt_gemini_key') || '';
       const savedOpenai = localStorage.getItem('creatornest_yt_openai_key') || '';
@@ -111,6 +118,15 @@ export default function YouTubeChannelOptimizerPage() {
       console.warn('localStorage not accessible', e);
     }
   }, []);
+
+  const handleSelectLanguage = (lang: LanguageMode) => {
+    setSelectedLanguage(lang);
+    try {
+      localStorage.setItem('creatornest_yt_ai_language', lang);
+    } catch {}
+    const label = lang === 'mixed' ? 'Mixed (Hinglish + Hindi + English)' : lang === 'hinglish' ? 'Hinglish (Roman)' : lang === 'hindi' ? 'शुद्ध हिन्दी (Devanagari)' : lang === 'english' ? 'English' : 'Auto-Detect';
+    showToast(`AI Language set to ${label}!`);
+  };
 
   const handleSaveKeys = () => {
     try {
@@ -248,6 +264,7 @@ export default function YouTubeChannelOptimizerPage() {
           channelDescription: auditData.description,
           flaggedVideos: videosToFix,
           provider: selectedProvider,
+          languageMode: selectedLanguage,
           customKeys: {
             gemini: customKeys.gemini || undefined,
             openai: customKeys.openai || undefined,
@@ -343,10 +360,11 @@ export default function YouTubeChannelOptimizerPage() {
     }
   };
 
-  // 6C. Queue single video title fix
-  const handleGenerateSingleVideoFix = async (video: any) => {
+  // 6C. Queue single video title fix with language override support
+  const handleGenerateSingleVideoFix = async (video: any, overrideLang?: LanguageMode) => {
     if (!auditData) return;
     setSingleQueueingId(video.id);
+    const langToUse = overrideLang || selectedLanguage;
     try {
       const res = await fetch('/api/youtube/automation/suggest', {
         method: 'POST',
@@ -356,6 +374,7 @@ export default function YouTubeChannelOptimizerPage() {
           channelDescription: auditData.description,
           flaggedVideos: [video],
           provider: selectedProvider,
+          languageMode: langToUse,
           customKeys: {
             gemini: customKeys.gemini || undefined,
             openai: customKeys.openai || undefined,
@@ -366,7 +385,7 @@ export default function YouTubeChannelOptimizerPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to generate title fix.');
 
-      showToast(`Queued complete sensible title for "${video.title.slice(0, 30)}..."!`);
+      showToast(`Generated ${langToUse.toUpperCase()} title for "${video.title.slice(0, 30)}..."!`);
       await fetchDrafts(auditData.title);
     } catch (e: any) {
       showToast(`Error: ${e.message}`);
@@ -803,6 +822,84 @@ export default function YouTubeChannelOptimizerPage() {
                       </button>
                     </div>
                   </div>
+
+                  {/* Language Mode Selector (Hindi / Hinglish / Mixed / English) */}
+                  <div className="pt-2 border-t border-slate-800/80">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+                        <Globe className="w-3.5 h-3.5 text-rose-400" />
+                        <span>AI Suggestion Language</span>
+                      </label>
+                      <span className="text-[11px] font-mono text-slate-400">
+                        {selectedLanguage === 'mixed' && 'Mixed: Eng + Hindi/Hinglish (Best CTR)'}
+                        {selectedLanguage === 'hinglish' && 'Hinglish (Roman Hindi)'}
+                        {selectedLanguage === 'hindi' && 'शुद्ध हिन्दी (Devanagari)'}
+                        {selectedLanguage === 'english' && 'Global English'}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                      <button
+                        type="button"
+                        onClick={() => handleSelectLanguage('mixed')}
+                        className={`px-2.5 py-2 rounded-xl border text-left font-medium transition-all flex flex-col gap-0.5 cursor-pointer ${
+                          selectedLanguage === 'mixed'
+                            ? 'bg-gradient-to-r from-rose-500/20 to-red-500/20 border-red-500 text-white font-bold shadow-sm shadow-red-500/20'
+                            : 'bg-black/30 border-slate-800 text-slate-400 hover:text-slate-200'
+                        }`}
+                      >
+                        <span className="flex items-center gap-1 text-rose-400 font-bold">
+                          🌐 Mixed (Eng + Hindi)
+                        </span>
+                        <span className="text-[10px] text-slate-400 leading-tight">High CTR bilingual hook</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleSelectLanguage('hinglish')}
+                        className={`px-2.5 py-2 rounded-xl border text-left font-medium transition-all flex flex-col gap-0.5 cursor-pointer ${
+                          selectedLanguage === 'hinglish'
+                            ? 'bg-amber-500/20 border-amber-500 text-white font-bold shadow-sm shadow-amber-500/20'
+                            : 'bg-black/30 border-slate-800 text-slate-400 hover:text-slate-200'
+                        }`}
+                      >
+                        <span className="flex items-center gap-1 text-amber-300 font-bold">
+                          🇮🇳 Hinglish
+                        </span>
+                        <span className="text-[10px] text-slate-400 leading-tight">Roman script Hindi</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleSelectLanguage('hindi')}
+                        className={`px-2.5 py-2 rounded-xl border text-left font-medium transition-all flex flex-col gap-0.5 cursor-pointer ${
+                          selectedLanguage === 'hindi'
+                            ? 'bg-orange-500/20 border-orange-500 text-white font-bold shadow-sm shadow-orange-500/20'
+                            : 'bg-black/30 border-slate-800 text-slate-400 hover:text-slate-200'
+                        }`}
+                      >
+                        <span className="flex items-center gap-1 text-orange-400 font-bold">
+                          🕉️ शुद्ध हिन्दी
+                        </span>
+                        <span className="text-[10px] text-slate-400 leading-tight">देवनागरी लिपि (Pure Hindi)</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleSelectLanguage('english')}
+                        className={`px-2.5 py-2 rounded-xl border text-left font-medium transition-all flex flex-col gap-0.5 cursor-pointer ${
+                          selectedLanguage === 'english'
+                            ? 'bg-blue-500/20 border-blue-500 text-white font-bold shadow-sm shadow-blue-500/20'
+                            : 'bg-black/30 border-slate-800 text-slate-400 hover:text-slate-200'
+                        }`}
+                      >
+                        <span className="flex items-center gap-1 text-blue-400 font-bold">
+                          🇬🇧 English
+                        </span>
+                        <span className="text-[10px] text-slate-400 leading-tight">Global English titles</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
                 <button
@@ -1204,6 +1301,9 @@ export default function YouTubeChannelOptimizerPage() {
                                     <>
                                       <Sparkles className="w-3.5 h-3.5 text-amber-300" />
                                       <span>Queue AI Title Fix</span>
+                                      <span className="text-[10px] px-1 py-0.2 rounded bg-black/40 font-mono text-rose-300 border border-white/10 uppercase">
+                                        {selectedLanguage}
+                                      </span>
                                     </>
                                   )}
                                 </button>
@@ -1651,6 +1751,79 @@ export default function YouTubeChannelOptimizerPage() {
                             )}
                           </div>
                         </div>
+
+                        {/* 1-Click Language Switcher & Regeneration for Video Titles */}
+                        {draft.itemType === 'video_title' && (
+                          <div className="mt-4 p-3 rounded-xl bg-slate-900/80 border border-slate-800/80 flex flex-wrap items-center justify-between gap-2.5">
+                            <div className="flex items-center gap-2">
+                              <Globe className="w-3.5 h-3.5 text-rose-400" />
+                              <span className="text-xs font-semibold text-slate-300">
+                                Regenerate in another language:
+                              </span>
+                            </div>
+
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <button
+                                type="button"
+                                disabled={singleQueueingId === draft.videoId}
+                                onClick={() => {
+                                  const matchingVideo = totalAuditedVideos.find((v: any) => v.id === draft.videoId) || { id: draft.videoId, title: draft.currentValue, description: '' };
+                                  handleGenerateSingleVideoFix(matchingVideo, 'mixed');
+                                }}
+                                className="px-2.5 py-1 rounded-lg text-xs font-medium bg-rose-500/10 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 transition-all flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                                title="Regenerate with Mixed English + Hindi/Hinglish"
+                              >
+                                <span>🌐 Mixed</span>
+                              </button>
+
+                              <button
+                                type="button"
+                                disabled={singleQueueingId === draft.videoId}
+                                onClick={() => {
+                                  const matchingVideo = totalAuditedVideos.find((v: any) => v.id === draft.videoId) || { id: draft.videoId, title: draft.currentValue, description: '' };
+                                  handleGenerateSingleVideoFix(matchingVideo, 'hinglish');
+                                }}
+                                className="px-2.5 py-1 rounded-lg text-xs font-medium bg-amber-500/10 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 transition-all flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                                title="Regenerate in Roman script Hinglish"
+                              >
+                                <span>🇮🇳 Hinglish</span>
+                              </button>
+
+                              <button
+                                type="button"
+                                disabled={singleQueueingId === draft.videoId}
+                                onClick={() => {
+                                  const matchingVideo = totalAuditedVideos.find((v: any) => v.id === draft.videoId) || { id: draft.videoId, title: draft.currentValue, description: '' };
+                                  handleGenerateSingleVideoFix(matchingVideo, 'hindi');
+                                }}
+                                className="px-2.5 py-1 rounded-lg text-xs font-medium bg-orange-500/10 hover:bg-orange-500/25 text-orange-300 border border-orange-500/30 transition-all flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                                title="Regenerate in Pure Devanagari Hindi (हिन्दी)"
+                              >
+                                <span>🕉️ हिन्दी</span>
+                              </button>
+
+                              <button
+                                type="button"
+                                disabled={singleQueueingId === draft.videoId}
+                                onClick={() => {
+                                  const matchingVideo = totalAuditedVideos.find((v: any) => v.id === draft.videoId) || { id: draft.videoId, title: draft.currentValue, description: '' };
+                                  handleGenerateSingleVideoFix(matchingVideo, 'english');
+                                }}
+                                className="px-2.5 py-1 rounded-lg text-xs font-medium bg-blue-500/10 hover:bg-blue-500/25 text-blue-300 border border-blue-500/30 transition-all flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                                title="Regenerate in English"
+                              >
+                                <span>🇬🇧 English</span>
+                              </button>
+
+                              {singleQueueingId === draft.videoId && (
+                                <span className="flex items-center gap-1.5 text-xs text-amber-300 font-mono pl-2">
+                                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                  <span>Writing new title...</span>
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        )}
 
                         {/* Reason Note & Action Buttons */}
                         <div className="mt-4 pt-4 border-t border-slate-800/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
