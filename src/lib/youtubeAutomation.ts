@@ -566,23 +566,28 @@ interface AiVideoSuggestion {
 async function callGemini(prompt: string, jsonMode = false, customKey?: string): Promise<string | null> {
   const key = customKey || process.env.GEMINI_API_KEY;
   if (!key) return null;
-  try {
-    const body: any = { contents: [{ parts: [{ text: prompt }] }] };
-    if (jsonMode) body.generationConfig = { responseMimeType: 'application/json' };
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,
-      { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }
-    );
-    if (!res.ok) {
-      console.warn(`[Gemini API] Error status: ${res.status}`);
-      return null;
+
+  const models = ['gemini-2.5-flash', 'gemini-3.8-flash', 'gemini-flash-latest'];
+  for (const model of models) {
+    try {
+      const body: any = { contents: [{ parts: [{ text: prompt }] }] };
+      if (jsonMode) body.generationConfig = { responseMimeType: 'application/json' };
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
+        { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }
+      );
+      if (!res.ok) {
+        console.warn(`[Gemini API] Model ${model} returned status: ${res.status}`);
+        continue;
+      }
+      const data = await res.json();
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+      if (text) return text;
+    } catch (e) {
+      console.warn(`[Gemini API] Exception on model ${model}:`, e);
     }
-    const data = await res.json();
-    return data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || null;
-  } catch (e) {
-    console.warn('[Gemini API] Network exception:', e);
-    return null;
   }
+  return null;
 }
 
 // ── Provider: OpenAI GPT-4o ──────────────────────────────────
@@ -813,6 +818,102 @@ export function formatSensibleTitle(rawTitle: string, maxLen = 65): string {
   return cleanTrailingPunctuationAndStopwords(title);
 }
 
+export function generateHeuristicMetadata(
+  title: string,
+  existingDescription: string,
+  channelTitle: string,
+  languageMode: LanguageMode = 'mixed'
+): { newTitle: string; newDescription: string; newTags: string[]; reason: string } {
+  // Strip phone numbers, spam hashtags, duplicate spaces
+  let base = (title || '')
+    .replace(/\b\d{10}\b|\b[6-9]\d{9}\b/g, '')
+    .replace(/#\s*#?[a-zA-Z0-9_]+/g, '')
+    .replace(/[^\w\s\u0900-\u097F-]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (!base || base.length < 3) base = `${channelTitle} Special Video`;
+
+  // Capitalize main words for professional CTR presentation
+  const capitalized = base
+    .split(' ')
+    .map(w => w.length > 2 ? w.charAt(0).toUpperCase() + w.slice(1).toLowerCase() : w)
+    .join(' ');
+
+  let newTitle = '';
+  if (languageMode === 'hindi') {
+    newTitle = `${capitalized} | नए डिज़ाइन और पूरी जानकारी 2026`;
+  } else if (languageMode === 'hinglish') {
+    newTitle = `${capitalized} | Latest Video & Aasan Tarika Dekho`;
+  } else if (languageMode === 'english') {
+    newTitle = `${capitalized} | Official 2026 Showcase & Guide`;
+  } else {
+    // mixed (default)
+    newTitle = `${capitalized} 2026 | खास कलेक्शन और नए डिज़ाइन`;
+  }
+
+  // Keep strictly <= 62 chars and zero broken words
+  newTitle = formatSensibleTitle(newTitle, 62);
+
+  // Structured Description
+  const newDescription = `Welcome to ${channelTitle}! In this video, we showcase "${capitalized}". Watch till the end to discover all key details, designs, and insights.
+
+अगर आपको यह वीडियो पसंद आए तो Like, Share और Subscribe जरूर करें! अपने विचार Comment section में शेयर करें।
+
+Chapters:
+0:00 Introduction & Overview
+0:30 Key Highlights & Features
+1:00 Final Details & Summary
+
+#${capitalized.replace(/\s+/g, '')} #Trending #YouTubeSEO
+For business inquiries & collaborations: contact@${channelTitle.toLowerCase().replace(/[^a-z0-9]/g, '') || 'creator'}.com`;
+
+  // Keywords & Tags
+  const words = capitalized.split(' ').filter(w => w.length > 2);
+  const newTags = [
+    capitalized.toLowerCase(),
+    `${capitalized.toLowerCase()} 2026`,
+    ...(words.map(w => `${w.toLowerCase()} tips`)),
+    ...(languageMode === 'hindi' || languageMode === 'mixed' ? ['नए डिज़ाइन', 'लेटेस्ट वीडियो', 'पूरी जानकारी'] : []),
+    ...(languageMode === 'hinglish' || languageMode === 'mixed' ? ['kaise dekhe', 'aasan tarika', 'best collection'] : []),
+    channelTitle.toLowerCase(),
+    'trending video',
+    'viral'
+  ].slice(0, 12);
+
+  return {
+    newTitle,
+    newDescription,
+    newTags,
+    reason: `Heuristic SEO enhancement in ${languageMode.toUpperCase()}: added keywords, chapters, and audience tags.`
+  };
+}
+
+export async function testAiConnection(
+  provider: AiProvider = 'auto',
+  customKeys?: CustomAiKeys
+): Promise<{ success: boolean; providerUsed: string; sampleTitle?: string; message: string }> {
+  const testPrompt = `Generate a 1-sentence YouTube video title in Mixed Hindi-English for a tech gadget review. Output ONLY JSON: {"newTitle": "..."}`;
+  const systemPrompt = 'Output ONLY valid JSON with key "newTitle".';
+  const start = Date.now();
+  const { suggestion, providerUsed } = await callAiProvider(testPrompt, '', systemPrompt, provider, customKeys);
+  const latency = Date.now() - start;
+
+  if (suggestion && suggestion.newTitle) {
+    return {
+      success: true,
+      providerUsed,
+      sampleTitle: suggestion.newTitle,
+      message: `Connected to ${providerUsed.toUpperCase()} in ${latency}ms! Sample: "${suggestion.newTitle}"`
+    };
+  }
+  return {
+    success: false,
+    providerUsed: 'heuristic',
+    message: 'AI providers did not return a response. Using smart heuristic engine fallback.'
+  };
+}
+
 export async function generateAiSuggestions(
   channelTitle: string,
   channelDescription: string,
@@ -870,16 +971,21 @@ ${langInstructions}
 
 CRITICAL RULES FOR METADATA GENERATION:
 1. "newTitle":
-   - Complete, sensible, high-CTR, SEO-optimized title strictly between 45 and 60 characters (TARGET: 50-58 CHARACTERS).
+   - Complete, sensible, high-CTR, SEO-optimized title strictly between 45 and 62 characters (TARGET: 50-58 CHARACTERS).
+   - ABSOLUTE PROHIBITION: NEVER return the exact same or identical title as the original ("${v.title}"). You MUST rewrite, enhance, and optimize it with high-search keywords and viral curiosity hooks.
+   - For example: if original title is "New 🆕 suits", DO NOT return "New 🆕 suits". Return e.g. "Latest Designer Suits 2026 | नए पार्टी वियर सूट कलेक्शन" or "Trending Suits Collection | 10 Best Designs Dekho".
    - NEVER exceed 65 characters under ANY circumstances.
-   - NEVER cut off or truncate words (never end on an incomplete word like "tuto" or slice a word in half). Words like "Tutorial", "Recipe", "Guide", "रेसिपी", "तरीका" MUST be 100% whole.
-   - Must strictly match the requested language format (${languageMode.toUpperCase()}). If MIXED: blend English keywords with Hindi/Hinglish curiosity hook. If HINGLISH: natural Roman Hindi. If HINDI: authentic Devanagari script.
-   - Must be a 100% complete grammatical sentence or title phrase that makes clear sense on its own.
-   - Place primary high-search-volume keywords near the beginning.
-   - ZERO phone numbers, ZERO repetitious words, ZERO spam hashtags (#viral, #shorts, etc.).
-2. "newDescription": 2 well-structured paragraphs in the selected language style (${languageMode}) describing the video, 3 timestamp chapters (0:00 Introduction, 0:30 Highlights, 1:00 Summary), 3 relevant niche hashtags, and social/business inquiry disclaimer.
-3. "newTags": An array of 10-12 accurate, highly relevant keyword tags (mix of English and Hindi/Hinglish search queries).
-4. "reason": A 1-sentence explanation of why these edits fix policy violations, match audience language (${languageMode}), and boost YouTube SEO.
+   - NEVER cut off or truncate words. All words in English, Devanagari Hindi, or Hinglish MUST be 100% whole words.
+   - Must strictly match the requested language format (${languageMode.toUpperCase()}).
+2. "newDescription":
+   - A complete 2-paragraph SEO description in ${languageMode.toUpperCase()} style describing the video with rich search terms.
+   - 3 structured timestamp chapters (0:00 Introduction, 0:30 Key Highlights, 1:00 Final Details).
+   - 3 relevant niche hashtags.
+   - Social & business inquiry disclaimer.
+3. "newTags":
+   - An array of 10-12 accurate, highly searched keyword tags (mix of English and Hindi/Hinglish search queries matching ${languageMode.toUpperCase()}).
+4. "reason":
+   - A 1-sentence explanation of why these edits fix policy violations, match audience language (${languageMode}), and boost YouTube SEO.
 
 Output ONLY valid JSON with keys: "newTitle", "newDescription", "newTags", "reason".`;
 
@@ -888,7 +994,13 @@ Output ONLY valid JSON with keys: "newTitle", "newDescription", "newTags", "reas
 
         if (parsed) {
           if (parsed.newTitle) {
-            const sensibleTitle = formatSensibleTitle(parsed.newTitle, 65);
+            let finalTitle = parsed.newTitle;
+            // Guard: If AI somehow returned the exact same title as original, enrich it
+            if (finalTitle.trim().toLowerCase() === (v.title || '').trim().toLowerCase()) {
+              const enriched = generateHeuristicMetadata(v.title, v.description || '', channelTitle, languageMode);
+              finalTitle = enriched.newTitle;
+            }
+            const sensibleTitle = formatSensibleTitle(finalTitle, 65);
             drafts.push({
               id: `draft-title-${v.id}-${Date.now()}`,
               channelId: channelTitle,
@@ -901,13 +1013,13 @@ Output ONLY valid JSON with keys: "newTitle", "newDescription", "newTags", "reas
               currentValue: v.title,
               suggestedValue: sensibleTitle,
               charCount: sensibleTitle.length,
-              reason: parsed.reason || `Complete, sensible SEO title in ${languageMode.toUpperCase()} under 65 chars with high-search keywords and zero word truncation.`,
+              reason: parsed.reason || `Optimized ${languageMode.toUpperCase()} SEO title with high-search keywords under 65 chars.`,
               status: 'pending',
               createdAt: now,
             });
           }
 
-          if (parsed.newDescription && (!v.description || v.description.length < 60)) {
+          if (parsed.newDescription) {
             drafts.push({
               id: `draft-desc-${v.id}-${Date.now()}`,
               channelId: channelTitle,
@@ -919,13 +1031,13 @@ Output ONLY valid JSON with keys: "newTitle", "newDescription", "newTags", "reas
               fieldName: 'description',
               currentValue: v.description || '(Empty description)',
               suggestedValue: parsed.newDescription,
-              reason: 'Replaces empty description with structured summary, chapters, and disclaimer.',
+              reason: `SEO-optimized 2-paragraph description in ${languageMode.toUpperCase()} with chapters, keywords, and disclaimer.`,
               status: 'pending',
               createdAt: now,
             });
           }
 
-          if (parsed.newTags && parsed.newTags.length > 0 && (!v.tags || v.tags.length < 3)) {
+          if (parsed.newTags && parsed.newTags.length > 0) {
             drafts.push({
               id: `draft-tags-${v.id}-${Date.now()}`,
               channelId: channelTitle,
@@ -937,7 +1049,7 @@ Output ONLY valid JSON with keys: "newTitle", "newDescription", "newTags", "reas
               fieldName: 'tags',
               currentValue: v.tags?.join(', ') || '(No tags)',
               suggestedValue: parsed.newTags.slice(0, 12).join(', '),
-              reason: 'Adds 10–12 focused keyword tags to improve YouTube search discoverability.',
+              reason: `10–12 high-search keyword tags in ${languageMode.toUpperCase()} to rank in YouTube algorithm.`,
               status: 'pending',
               createdAt: now,
             });
@@ -945,21 +1057,8 @@ Output ONLY valid JSON with keys: "newTitle", "newDescription", "newTags", "reas
           return;
         }
 
-        // Heuristic Fallback if all AI providers fail
-        let cleanedTitle = v.title
-          .replace(/\b\d{10}\b|\b[6-9]\d{9}\b/g, '')
-          .replace(/#\s*#?[a-zA-Z0-9_]+/g, '')
-          .replace(/\s+/g, ' ')
-          .trim();
-        if (cleanedTitle.length < 10) {
-          cleanedTitle = languageMode === 'hindi'
-            ? `${cleanedTitle || 'खास वीडियो'} | ${channelTitle}`
-            : languageMode === 'hinglish'
-            ? `${cleanedTitle || 'Special Video'} | Full Video Dekhe`
-            : `${channelTitle} Highlight - ${cleanedTitle || 'Special Video'}`;
-        }
-        const sensibleTitle = formatSensibleTitle(cleanedTitle, 65);
-
+        // Intelligent Heuristic Fallback if all AI providers fail
+        const fallback = generateHeuristicMetadata(v.title, v.description || '', channelTitle, languageMode);
         drafts.push({
           id: `draft-title-${v.id}-${Date.now()}`,
           channelId: channelTitle,
@@ -970,9 +1069,41 @@ Output ONLY valid JSON with keys: "newTitle", "newDescription", "newTags", "reas
           itemType: 'video_title',
           fieldName: 'title',
           currentValue: v.title,
-          suggestedValue: sensibleTitle,
-          charCount: sensibleTitle.length,
-          reason: `Sanitized complete title in ${languageMode.toUpperCase()} under 65 characters without word truncation.`,
+          suggestedValue: fallback.newTitle,
+          charCount: fallback.newTitle.length,
+          reason: fallback.reason,
+          status: 'pending',
+          createdAt: now,
+        });
+
+        drafts.push({
+          id: `draft-desc-${v.id}-${Date.now()}`,
+          channelId: channelTitle,
+          channelTitle,
+          videoId: v.id,
+          videoTitle: v.title,
+          thumbnailUrl: v.thumbnailUrl,
+          itemType: 'video_description',
+          fieldName: 'description',
+          currentValue: v.description || '(Empty description)',
+          suggestedValue: fallback.newDescription,
+          reason: `Smart fallback structured description in ${languageMode.toUpperCase()} with chapters.`,
+          status: 'pending',
+          createdAt: now,
+        });
+
+        drafts.push({
+          id: `draft-tags-${v.id}-${Date.now()}`,
+          channelId: channelTitle,
+          channelTitle,
+          videoId: v.id,
+          videoTitle: v.title,
+          thumbnailUrl: v.thumbnailUrl,
+          itemType: 'video_tags',
+          fieldName: 'tags',
+          currentValue: v.tags?.join(', ') || '(No tags)',
+          suggestedValue: fallback.newTags.join(', '),
+          reason: `Smart fallback keyword tags in ${languageMode.toUpperCase()}.`,
           status: 'pending',
           createdAt: now,
         });

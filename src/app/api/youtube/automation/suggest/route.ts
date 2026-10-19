@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { generateAiSuggestions, AiProvider, LanguageMode } from '@/lib/youtubeAutomation';
+import { generateAiSuggestions, testAiConnection, AiProvider, LanguageMode } from '@/lib/youtubeAutomation';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
@@ -7,15 +7,21 @@ export const maxDuration = 60;
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { channelTitle, channelDescription, flaggedVideos, provider, customKeys, languageMode } = body;
-
-    if (!channelTitle || !flaggedVideos) {
-      return NextResponse.json({ error: 'Missing channelTitle or flaggedVideos.' }, { status: 400 });
-    }
+    const { channelTitle, channelDescription, flaggedVideos, provider, customKeys, languageMode, action } = body;
 
     const aiProvider: AiProvider = (['gemini', 'openai', 'claude', 'auto'] as const).includes(provider)
       ? (provider as AiProvider)
       : 'auto';
+
+    // Handle instant connection test
+    if (action === 'test') {
+      const testResult = await testAiConnection(aiProvider, customKeys);
+      return NextResponse.json(testResult);
+    }
+
+    if (!channelTitle || !flaggedVideos) {
+      return NextResponse.json({ error: 'Missing channelTitle or flaggedVideos.' }, { status: 400 });
+    }
 
     const langMode: LanguageMode = (['mixed', 'hinglish', 'hindi', 'english', 'auto'] as const).includes(languageMode)
       ? (languageMode as LanguageMode)

@@ -193,10 +193,44 @@ export default function YouTubeChannelOptimizerPage() {
   // Change Log state
   const [changeLogs, setChangeLogs] = useState<ChangeLog[]>([]);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [testingAi, setTestingAi] = useState<boolean>(false);
+  const [aiTestResult, setAiTestResult] = useState<{ success: boolean; message: string; sampleTitle?: string } | null>(null);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 4000);
+  };
+
+  const handleTestAiConnection = async () => {
+    setTestingAi(true);
+    setAiTestResult(null);
+    try {
+      const res = await fetch('/api/youtube/automation/suggest', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'test',
+          provider: selectedProvider,
+          customKeys: {
+            gemini: keyInputTemp.gemini.trim() || customKeys.gemini || undefined,
+            openai: keyInputTemp.openai.trim() || customKeys.openai || undefined,
+            claude: keyInputTemp.claude.trim() || customKeys.claude || undefined,
+          },
+        }),
+      });
+      const data = await res.json();
+      setAiTestResult(data);
+      if (data.success) {
+        showToast(data.message || 'AI Connection Verified Active!');
+      } else {
+        showToast(data.message || 'AI test returned fallback.');
+      }
+    } catch (e: any) {
+      setAiTestResult({ success: false, message: e.message || 'Failed to ping AI service' });
+      showToast(`AI Test Failed: ${e.message}`);
+    } finally {
+      setTestingAi(false);
+    }
   };
 
   // 1. Run live audit via official YouTube API
@@ -742,18 +776,36 @@ export default function YouTubeChannelOptimizerPage() {
                     <div className="inline-flex items-center gap-1.5 text-xs font-bold text-red-400">
                       <Sparkles className="w-4 h-4" />
                       AI Action Engine
+                      <span className="ml-1 px-1.5 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-300 font-semibold border border-emerald-500/30 flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        Gemini Active
+                      </span>
                     </div>
-                    <button
-                      onClick={() => setShowKeyModal(true)}
-                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-xs font-medium text-slate-300 border border-slate-700 transition-colors"
-                      title="Configure Google Gemini, ChatGPT, and Claude API Keys"
-                    >
-                      <Key className="w-3 h-3 text-amber-400" />
-                      <span>API Keys</span>
-                      {(customKeys.gemini || customKeys.openai || customKeys.claude) && (
-                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                      )}
-                    </button>
+
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        type="button"
+                        onClick={handleTestAiConnection}
+                        disabled={testingAi}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-xs font-semibold text-blue-300 border border-blue-500/30 transition-all cursor-pointer disabled:opacity-50"
+                        title="Ping Gemini API to verify speed and model connection"
+                      >
+                        {testingAi ? <Loader2 className="w-3 h-3 animate-spin" /> : <Zap className="w-3 h-3 text-amber-300" />}
+                        <span>{testingAi ? 'Testing...' : 'Test AI'}</span>
+                      </button>
+
+                      <button
+                        onClick={() => setShowKeyModal(true)}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-xs font-medium text-slate-300 border border-slate-700 transition-colors cursor-pointer"
+                        title="Configure Google Gemini, ChatGPT, and Claude API Keys"
+                      >
+                        <Key className="w-3 h-3 text-amber-400" />
+                        <span>API Keys</span>
+                        {(customKeys.gemini || customKeys.openai || customKeys.claude) && (
+                          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                        )}
+                      </button>
+                    </div>
                   </div>
                   <h3 className="text-lg font-bold text-white">Generate Compliant Fixes</h3>
                   <p className="text-xs text-slate-300 mt-1.5 leading-relaxed">
@@ -2140,20 +2192,48 @@ export default function YouTubeChannelOptimizerPage() {
                   </div>
                 </div>
 
+                {/* AI Connection Test Feedback Banner */}
+                {aiTestResult && (
+                  <div className={`mt-4 p-3.5 rounded-2xl border text-xs flex items-start gap-2.5 ${
+                    aiTestResult.success ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-200' : 'bg-red-950/40 border-red-500/40 text-red-200'
+                  }`}>
+                    {aiTestResult.success ? <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" /> : <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />}
+                    <div className="space-y-1">
+                      <p className="font-semibold">{aiTestResult.message}</p>
+                      {aiTestResult.sampleTitle && (
+                        <p className="font-mono text-[11px] text-emerald-300/90 bg-black/40 px-2 py-1 rounded border border-emerald-500/20">
+                          Sample Test Title: &quot;{aiTestResult.sampleTitle}&quot;
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 <div className="flex items-center justify-between gap-3 mt-6 pt-4 border-t border-slate-800">
-                  <button
-                    type="button"
-                    onClick={handleClearKeys}
-                    className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white text-xs font-medium transition-colors"
-                  >
-                    Clear Keys
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handleClearKeys}
+                      className="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white text-xs font-medium transition-colors cursor-pointer"
+                    >
+                      Clear Keys
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleTestAiConnection}
+                      disabled={testingAi}
+                      className="px-3.5 py-2.5 rounded-xl bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 border border-blue-500/30 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                    >
+                      {testingAi ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Zap className="w-3.5 h-3.5 text-amber-300" />}
+                      <span>{testingAi ? 'Testing Key...' : 'Test Connection'}</span>
+                    </button>
+                  </div>
 
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
                       onClick={() => setShowKeyModal(false)}
-                      className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors"
+                      className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors cursor-pointer"
                     >
                       Cancel
                     </button>
