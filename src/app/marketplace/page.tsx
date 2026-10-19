@@ -231,17 +231,17 @@ function ResourceCard({ item, userTier, isHindi }: { item: any; userTier: string
 
 // ── Compact Trending Spotlight ────────────────────────────────────────────────
 function TrendingSpotlight({ items, isHindi }: { items: any[]; isHindi: boolean }) {
-  const topTool = items.find(i => i.id === 'tool-yt-monetization-audit' || i.id === 'tool-media-kit-builder' || i.id === 't1' || i.type === 'tool') || items[0];
+  const topTool = items.find(i => i.id === 'tool-yt-channel-optimizer') || items.find(i => i.id === 'tool-yt-monetization-audit' || i.type === 'tool') || items[0];
   const topCourse = items.find(i => i.id === 'c17' || i.id === '17' || i.type === 'course') || items[1];
   const topService = items.find(i => i.id === 's1' || i.type === 'service') || items[2];
 
   const highlights = [
     {
       item: topTool,
-      tag: isHindi ? '🔥 #1 एआई टूल' : '🔥 #1 AI Tool',
-      color: '#00F2FE',
-      bg: 'from-cyan-500/15 via-surface/80 to-[#0B0F15]',
-      border: 'border-cyan-500/30'
+      tag: isHindi ? '🔥 #1 ट्रेंडिंग एआई टूल' : '🔥 #1 Trending AI Tool',
+      color: '#EF4444',
+      bg: 'from-red-500/20 via-surface/80 to-[#0B0F15]',
+      border: 'border-red-500/40'
     },
     {
       item: topCourse,
